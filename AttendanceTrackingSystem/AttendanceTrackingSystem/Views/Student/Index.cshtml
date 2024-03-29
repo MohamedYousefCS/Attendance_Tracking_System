@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<hr />
+
+@foreach(var item in Model)
+{
+    <h3>@item.Name</h3>
+    <h3>@item.StudentTrack</h3>
+    <h3>@item.Email</h3>
+}
+
+
