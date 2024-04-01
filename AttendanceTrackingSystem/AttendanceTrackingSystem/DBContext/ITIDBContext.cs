@@ -7,6 +7,7 @@ namespace AttendanceTrackingSystem.DBContext
     {
 
       public DbSet<Student> students {  get; set; }
+      
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
