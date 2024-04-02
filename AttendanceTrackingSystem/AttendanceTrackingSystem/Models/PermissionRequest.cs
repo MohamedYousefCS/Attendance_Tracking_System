@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AttendanceTrackingSystem.Models
 {
@@ -30,6 +31,15 @@ namespace AttendanceTrackingSystem.Models
 
         [Required(ErrorMessage = "Type is required.")]
         public RequestType Type { get; set; }
+
+        //NV
+        public int userId {  get; set; }
+        [ForeignKey("userId")]
+        public virtual User User { get; set; }
+        public ICollection<AttendancePermission> AttendancePermissions { get; set; } = new HashSet<AttendancePermission>();
+
+        //public virtual List<Attendance> Attendances { get; set; }= new List<Attendance>();
+
 
 
     }

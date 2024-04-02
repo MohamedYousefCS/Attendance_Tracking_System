@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AttendanceTrackingSystem.Models
 {
@@ -31,6 +32,14 @@ namespace AttendanceTrackingSystem.Models
         [Required(ErrorMessage = "GraduationYear is Required. ")]
         [Range(2014, int.MaxValue, ErrorMessage = "Graduation year must be between 2015 and the current year.")]
         public int GraduationYear { get; set; }
+
+        //NV
+        public int trackId { get; set; }
+
+        [ForeignKey("trackId")]
+        public virtual Track Track { get; set; }
+        
+
 
 
     }

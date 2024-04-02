@@ -14,10 +14,10 @@ namespace AttendanceTrackingSystem.Models
         [MaxLength(10, ErrorMessage = "IntakeName cannot exceed 10 characters.")]
         public string IntakeName { get; set; }
 
-
+        //NV
         public int ProgramId { get; set; }
         [ForeignKey("ProgramId ")]
-        public Program Program { get; set; }    
+        public virtual program program { get; set; }    
 
 
 

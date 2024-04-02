@@ -5,19 +5,19 @@ namespace AttendanceTrackingSystem.Models
 {
     
 
-    public class Program
+    public class program
     {
-        [Key]
-        [Range(100, 1000, ErrorMessage = "TrackId must be greater than or equal to 100.")]
+        //[Range(100, 1000, ErrorMessage = "TrackId must be greater than or equal to 100.")]
 
-        public int ProgramId { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "ProgramName is Required. ")]
         [MinLength(10, ErrorMessage = "ProgramName must be at least 10 characters.")]
         [MaxLength(50, ErrorMessage = "ProgramName cannot exceed 50 characters.")]
         public string ProgramName { get; set; }
-
-        public Intake Intake { get; set; }
+        //NV
+        public virtual Intake Intake { get; set; }
+        public virtual List<Track> Tracks { get; set;}=new List<Track>();
 
       
 
