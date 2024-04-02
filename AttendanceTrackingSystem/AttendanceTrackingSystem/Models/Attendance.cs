@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AttendanceTrackingSystem.Models
 {
@@ -42,7 +43,13 @@ namespace AttendanceTrackingSystem.Models
         public bool? IsPermission { get; set; }
 
         public PermissionType? PermissionType { get; set; }
+        //NV
+        public  int userId { get; set; }
 
+        [ForeignKey("userId")]
+        public  virtual User User { get; set; }
+        public ICollection<AttendancePermission> AttendancePermissions { get; set; }= new HashSet<AttendancePermission>();
 
+        // public  virtual List<PermissionRequest> PermissionRequests { get; set; }= new List<PermissionRequest>();
     }
 }

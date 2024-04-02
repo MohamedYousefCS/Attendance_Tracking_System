@@ -20,9 +20,8 @@ namespace AttendanceTrackingSystem.Models
         Female
     }
 
-    public abstract class User
+    public class User
     {
-        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "First name is required.")]
@@ -55,7 +54,12 @@ namespace AttendanceTrackingSystem.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
-
         public Role Role { get; set; }
+
+        //NV
+        public virtual List<Attendance> Attendances { get; set; } = new List<Attendance>();
+        public virtual List<PermissionRequest> PermissionRequests { get; set; } = new List<PermissionRequest>();
+
+
     }
 }

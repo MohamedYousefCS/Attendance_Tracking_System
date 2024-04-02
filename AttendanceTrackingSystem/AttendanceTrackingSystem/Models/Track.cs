@@ -23,5 +23,19 @@ namespace AttendanceTrackingSystem.Models
 
         [Range(25, 50, ErrorMessage = "Capacity must be between 25 and 50.")]
         public int? Capacity { get; set; }
+
+        //NV
+        public int  programId {  get; set; }
+        [ForeignKey("programId")]
+        public virtual program program { get; set; } 
+        //
+        public int supervisorId { get; set; }
+
+        [ForeignKey("supervisorId")]
+        public virtual Instructor Instructor { get; set; }
+        public virtual List<Instructor> Instructors { get; set; }=new List<Instructor>();
+        public virtual List<Student> Students { get; set; }=new List<Student>();
+
+        
     }
 }
