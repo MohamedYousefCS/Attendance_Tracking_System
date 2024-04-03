@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Student>
-@{
+﻿@* @model IEnumerable<Student>
+ *@@{
     ViewData["Title"] = "Index";
 }
 
@@ -7,11 +7,11 @@
 
 <hr />
 
-@foreach(var item in Model)
+@* @foreach(var item in Model)
 {
-    <h3>@item.Name</h3>
-    <h3>@item.StudentTrack</h3>
+    <h3>@item.Fname</h3>
     <h3>@item.Email</h3>
-}
+    <h3>@item.role</h3>
+} *@
 
 
