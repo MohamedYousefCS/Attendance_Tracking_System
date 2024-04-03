@@ -42,13 +42,23 @@ This web application is developed using the following technologies:
 - **Student Schedule:** Students can view their schedules and manage permissions within the system.
 - **Track Supervisor Schedule:** Allows track supervisors to record student schedules for better organization.
 
-## Installation
+## Getting Started
 
-To install and run the application locally, follow these steps:
+To get started with the Attendance Management System, follow these steps:
+
 1. Clone the repository to your local machine.
-2. Set up the database using SQL Server and execute the necessary scripts provided.
-3. Configure the connection string in the application settings.
-4. Build and run the application using ASP.NET Core.
+    ```bash
+        git clone https://github.com/MohamedYousefCS/Attendance_Tracking_System.git
+    ```
+2. Open the project in Visual Studio.
+3. Install Entity Framework Core and Entity Framework Core tools if not already installed. You can install them via NuGet Package Manager or by using the .NET CLI:
+    ```bash
+        dotnet add package Microsoft.EntityFrameworkCore
+        dotnet add package Microsoft.EntityFrameworkCore.Tools
+    ```
+4. Build the project to resolve any dependencies.
+5. Run the application to start using the Attendance Management System.
+
 
 ## Usage
 
