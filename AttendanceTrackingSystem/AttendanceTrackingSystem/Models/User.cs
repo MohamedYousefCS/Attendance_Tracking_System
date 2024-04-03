@@ -58,7 +58,6 @@ namespace AttendanceTrackingSystem.Models
 
         //NV
         public virtual List<Attendance> Attendances { get; set; } = new List<Attendance>();
-        public virtual List<PermissionRequest> PermissionRequests { get; set; } = new List<PermissionRequest>();
 
 
     }

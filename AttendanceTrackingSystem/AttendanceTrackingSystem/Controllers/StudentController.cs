@@ -17,8 +17,11 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult Index()
         {
-            var model=stuRepo.GetAllStudents();
-            return View(model);
+            //var model = stuRepo.GetAllStudents();
+            return View();
         }
+
+
+
     }
 }

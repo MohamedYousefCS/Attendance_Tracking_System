@@ -2,6 +2,10 @@
 {
     public class Admin:User
     {
-        public Role role { get; private set; } = Role.Admin;
+        public Admin() { 
+        
+        Role= Role.Admin;
+        
+        }
     }
 }

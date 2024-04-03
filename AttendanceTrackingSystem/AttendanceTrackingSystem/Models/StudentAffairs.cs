@@ -2,7 +2,10 @@
 {
     public class StudentAffairs:Employee
     {
-        public Role role { get; private set; } = Role.StudentAffairs;
+        public StudentAffairs() { 
+        
+        Role=Role.StudentAffairs;
+        }
 
     }
 }

@@ -16,7 +16,7 @@ namespace AttendanceTrackingSystem.Models
         [MaxLength(50, ErrorMessage = "ProgramName cannot exceed 50 characters.")]
         public string ProgramName { get; set; }
         //NV
-        public virtual Intake Intake { get; set; }
+        public virtual List<Intake> Intakes { get; set; } = new List<Intake>();
         public virtual List<Track> Tracks { get; set;}=new List<Track>();
 
       

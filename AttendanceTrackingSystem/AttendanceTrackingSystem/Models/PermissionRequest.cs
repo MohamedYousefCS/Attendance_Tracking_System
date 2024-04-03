@@ -33,12 +33,10 @@ namespace AttendanceTrackingSystem.Models
         public RequestType Type { get; set; }
 
         //NV
-        public int userId {  get; set; }
-        [ForeignKey("userId")]
-        public virtual User User { get; set; }
-        public ICollection<AttendancePermission> AttendancePermissions { get; set; } = new HashSet<AttendancePermission>();
+        public int studentId { get; set; }
+        [ForeignKey("studentId")]
+        public virtual Student Student { get; set; }
 
-        //public virtual List<Attendance> Attendances { get; set; }= new List<Attendance>();
 
 
 

@@ -20,7 +20,6 @@ namespace AttendanceTrackingSystem.DBContext
         public DbSet <Track> tracks { get; set; }
         public DbSet <program> programs { get; set; }
         public DbSet <PermissionRequest> permissionRequests { get; set; }
-        public DbSet <AttendancePermission> attendancePermissions { get; set; }
        
 
 
@@ -41,15 +40,15 @@ namespace AttendanceTrackingSystem.DBContext
         {
 
             modelBuilder.Entity<User>(p => { p.UseTptMappingStrategy(); });
-            modelBuilder.Entity<Employee>(e => { e.UseTptMappingStrategy(); });
-            // Define the relationship between Instructor and Track
-            modelBuilder.Entity<Track>()
-                .HasOne(t => t.Instructor)
-                .WithMany(i => i.Tracks)
-                .HasForeignKey(t => t.supervisorId);
-            ///////
-            modelBuilder.Entity<AttendancePermission>()
-      .HasKey(ap => new { ap.AttendanceID, ap.RequestID });
+            modelBuilder.Entity<Employee>(p => { p.UseTptMappingStrategy(); });
+
+            modelBuilder.Entity<Instructor>()
+               .HasOne(e => e.Track)
+               .WithOne(e => e.Instructor)
+               .HasForeignKey<Track>(e => e.supervisorId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict); // Set OnDelete behavior to NoAction
+
 
             base.OnModelCreating(modelBuilder);
         }

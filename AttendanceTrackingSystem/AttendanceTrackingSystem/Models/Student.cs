@@ -38,7 +38,8 @@ namespace AttendanceTrackingSystem.Models
 
         [ForeignKey("trackId")]
         public virtual Track Track { get; set; }
-        
+
+        public virtual List<PermissionRequest> PermissionRequests { get; set; } = new List<PermissionRequest>();
 
 
 

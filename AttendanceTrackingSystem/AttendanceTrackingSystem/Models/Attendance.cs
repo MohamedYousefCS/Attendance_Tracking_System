@@ -48,8 +48,6 @@ namespace AttendanceTrackingSystem.Models
 
         [ForeignKey("userId")]
         public  virtual User User { get; set; }
-        public ICollection<AttendancePermission> AttendancePermissions { get; set; }= new HashSet<AttendancePermission>();
 
-        // public  virtual List<PermissionRequest> PermissionRequests { get; set; }= new List<PermissionRequest>();
     }
 }
