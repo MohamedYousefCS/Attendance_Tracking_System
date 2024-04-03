@@ -6,7 +6,10 @@ namespace AttendanceTrackingSystem.Models
     public class Student:User
     {
 
-        public Role role { get;private set; }=Role.Student;
+        public Student()
+        {
+            Role=Role.Student;
+        }
 
         [Required(ErrorMessage = "University is required.")]
         [MinLength(10, ErrorMessage = "University must be at least 10 characters.")]

@@ -6,7 +6,10 @@ namespace AttendanceTrackingSystem.Models
     public class Instructor:User
     {
 
-        public Role role { get; private set; } = Role.Instructor;
+        public Instructor() { 
+        
+        Role=Role.Instructor;
+        }
 
         [Range(5000, 25000, ErrorMessage = "Salary must be between 5000 and 25000.")]
         [Column(TypeName = "decimal(18, 2)")] // Adjust precision and scale as needed
