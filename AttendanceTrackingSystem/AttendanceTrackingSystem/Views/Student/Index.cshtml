@@ -1,17 +1,18 @@
-﻿@* @model IEnumerable<Student>
- *@@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Your View Title";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<h1>Index</h1>
+<div>
+    <!-- Your view content goes here -->
+</div>
 
-<hr />
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+    {
+        Model = Model,
+        ["PropertiesToShow"] = new List<string> { "Name", "Email", "University", "Faculty" }
+    };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
 
-@* @foreach(var item in Model)
-{
-    <h3>@item.Fname</h3>
-    <h3>@item.Email</h3>
-    <h3>@item.role</h3>
-} *@
-
-
+}
