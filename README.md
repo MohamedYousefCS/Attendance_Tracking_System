@@ -42,7 +42,7 @@ This web application is developed using the following technologies:
 - **Student Schedule:** Students can view their schedules and manage permissions within the system.
 - **Track Supervisor Schedule:** Allows track supervisors to record student schedules for better organization.
 
-## Getting Started
+## Get Started
 
 To get started with the Attendance Management System, follow these steps:
 
@@ -68,10 +68,14 @@ To get started with the Attendance Management System, follow these steps:
 4. Track attendance, handle permissions, and manage student schedules.
 5. Generate reports and analyze attendance data for decision-making.
 
-## Contributors
+## Team Members:
 
-- Mohamed Yousef Ragab
-- Eslam Abdelaziz Abdelwanis Momeh
-- Habiba Helmy Mohamed Badawy
-- Ebrahim Osama Dawoud
-- Bothina Ahmed Ahmed 
+GitHub-Username: [MohamedYousefCS](https://github.com/MohamedYousefCS)
+
+GitHub-Username: [Eslam-Abdelaziz](https://github.com/Eslam-Abdelaziz)
+
+GitHub-Username: [HabibaShata](https://github.com/HabibaShata)
+
+GitHub-Username: []()
+
+GitHub-Username: []()

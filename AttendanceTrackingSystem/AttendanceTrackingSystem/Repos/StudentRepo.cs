@@ -6,7 +6,7 @@ namespace AttendanceTrackingSystem.Repos
     public interface IStudentRepo
     {
 
-        //public List<Student> GetAllStudents();
+        public List<Student> GetAllStudents();
 
     }
 
@@ -20,10 +20,10 @@ namespace AttendanceTrackingSystem.Repos
             this.db = db;
         }
 
-        //public List<Student> GetAllStudents()
-        //{
-        //    return db.students.ToList();
-        //}
+        public List<Student> GetAllStudents()
+        {
+            return db.students.ToList();
+        }
 
 
     }
