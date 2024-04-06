@@ -1,0 +1,21 @@
+﻿@model List<AttendanceTrackingSystem.Models.Instructor>
+@{
+    ViewData["Title"] = "GetInstructorsForTrack";
+}
+
+<h1>GetInstructorsForTrack</h1>
+
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @foreach (var instructor in Model)
+        {
+            <li>@instructor.Fname</li>
+         
+        }
+    </ul>
+}
+else
+{
+    <p>No instructors found for this track.</p>
+}

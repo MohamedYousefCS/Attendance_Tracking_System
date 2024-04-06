@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "showstudentinTrack";
+}
+
+<h3>showstudentinTrack</h3>
+@if (Model != null && Model.Any())
+{
+@foreach(var @item in Model)
+{
+  <h1>@item.Fname</h1>
+}
+}
+else
+{
+    <p>No Student found for this track.</p>
+}

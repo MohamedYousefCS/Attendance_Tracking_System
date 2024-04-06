@@ -15,7 +15,7 @@ namespace AttendanceTrackingSystem.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
+       #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
@@ -55,7 +55,7 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasIndex("userId");
 
-                    b.ToTable("attendances", (string)null);
+                    b.ToTable("attendances");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Intake", b =>
@@ -78,7 +78,7 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasIndex("ProgramId");
 
-                    b.ToTable("intakes", (string)null);
+                    b.ToTable("intakes");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.PermissionRequest", b =>
@@ -110,7 +110,7 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasIndex("studentId");
 
-                    b.ToTable("permissionRequests", (string)null);
+                    b.ToTable("permissionRequests");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Track", b =>
@@ -145,7 +145,7 @@ namespace AttendanceTrackingSystem.Migrations
                     b.HasIndex("supervisorId")
                         .IsUnique();
 
-                    b.ToTable("tracks", (string)null);
+                    b.ToTable("tracks");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.User", b =>
@@ -188,7 +188,7 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users");
 
                     b.UseTptMappingStrategy();
                 });
@@ -208,7 +208,7 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("programs", (string)null);
+                    b.ToTable("programs");
                 });
 
             modelBuilder.Entity("InstructorTrack", b =>
@@ -223,14 +223,14 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasIndex("TracksTrackId");
 
-                    b.ToTable("InstructorTrack", (string)null);
+                    b.ToTable("InstructorTrack");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Admin", b =>
                 {
                     b.HasBaseType("AttendanceTrackingSystem.Models.User");
 
-                    b.ToTable("admins", (string)null);
+                    b.ToTable("admins");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Employee", b =>
@@ -240,7 +240,7 @@ namespace AttendanceTrackingSystem.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.ToTable("employees", (string)null);
+                    b.ToTable("employees");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Instructor", b =>
@@ -250,7 +250,7 @@ namespace AttendanceTrackingSystem.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.ToTable("instructors", (string)null);
+                    b.ToTable("instructors");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Student", b =>
@@ -280,21 +280,21 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.HasIndex("trackId");
 
-                    b.ToTable("students", (string)null);
+                    b.ToTable("students");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Security", b =>
                 {
                     b.HasBaseType("AttendanceTrackingSystem.Models.Employee");
 
-                    b.ToTable("security", (string)null);
+                    b.ToTable("security");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.StudentAffairs", b =>
                 {
                     b.HasBaseType("AttendanceTrackingSystem.Models.Employee");
 
-                    b.ToTable("studentAffairs", (string)null);
+                    b.ToTable("studentAffairs");
                 });
 
             modelBuilder.Entity("AttendanceTrackingSystem.Models.Attendance", b =>

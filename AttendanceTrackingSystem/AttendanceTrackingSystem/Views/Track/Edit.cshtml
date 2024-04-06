@@ -1,0 +1,27 @@
+﻿@model Track
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<form method="post">
+    <label asp-for="TrackName">TrackName</label>
+    <input asp-for="TrackName" />
+    <label asp-for="Status">Status</label>
+    <select asp-for="Status" asp-items="Html.GetEnumSelectList<TrackStatus>()">
+        <option>choose one</option>
+    </select>
+    <label asp-for="Capacity">Capacity</label>
+    <input asp-for="Capacity" />
+    <label asp-for="programId">program Name</label>
+    <select asp-for="programId" asp-items="@ViewBag.programs">
+        <option>choose one</option>
+    </select>
+    <select asp-for="supervisorId" asp-items="@ViewBag.ins">
+        <option>choose one</option>
+    </select>
+
+
+    <input type="submit" value="update" class="btn btn-primary" />
+</form>
+

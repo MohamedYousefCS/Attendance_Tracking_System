@@ -14,7 +14,7 @@ namespace AttendanceTrackingSystem
 
             builder.Services.AddTransient<IStudentRepo, StudentRepo>();
 
-
+           builder.Services.AddScoped<AdTrackRepo>();
             builder.Services.AddDbContext<ITIDBContext>();
 
 
