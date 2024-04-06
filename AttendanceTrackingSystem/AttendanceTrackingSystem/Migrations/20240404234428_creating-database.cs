@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AttendanceTrackingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddModels : Migration
+    public partial class creatingdatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -129,7 +129,6 @@ namespace AttendanceTrackingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    role = table.Column<int>(type: "int", nullable: false),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -235,7 +234,6 @@ namespace AttendanceTrackingSystem.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    role = table.Column<int>(type: "int", nullable: false),
                     University = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Faculty = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Specialization = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
@@ -269,29 +267,11 @@ namespace AttendanceTrackingSystem.Migrations
                     Reason = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsAccepted = table.Column<bool>(type: "bit", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    studentId = table.Column<int>(type: "int", nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: true),
-                    EmployeeId = table.Column<int>(type: "int", nullable: true),
-                    InstructorId = table.Column<int>(type: "int", nullable: true)
+                    studentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_permissionRequests", x => x.RequestID);
-                    table.ForeignKey(
-                        name: "FK_permissionRequests_admins_AdminId",
-                        column: x => x.AdminId,
-                        principalTable: "admins",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_permissionRequests_employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "employees",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_permissionRequests_instructors_InstructorId",
-                        column: x => x.InstructorId,
-                        principalTable: "instructors",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_permissionRequests_students_studentId",
                         column: x => x.studentId,
@@ -314,21 +294,6 @@ namespace AttendanceTrackingSystem.Migrations
                 name: "IX_intakes_ProgramId",
                 table: "intakes",
                 column: "ProgramId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permissionRequests_AdminId",
-                table: "permissionRequests",
-                column: "AdminId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permissionRequests_EmployeeId",
-                table: "permissionRequests",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permissionRequests_InstructorId",
-                table: "permissionRequests",
-                column: "InstructorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_permissionRequests_studentId",
@@ -356,6 +321,9 @@ namespace AttendanceTrackingSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "admins");
+
+            migrationBuilder.DropTable(
                 name: "attendances");
 
             migrationBuilder.DropTable(
@@ -372,9 +340,6 @@ namespace AttendanceTrackingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "studentAffairs");
-
-            migrationBuilder.DropTable(
-                name: "admins");
 
             migrationBuilder.DropTable(
                 name: "students");

@@ -1,0 +1,126 @@
+﻿@model Student;
+@{
+    ViewData["Title"] = "create";
+    Layout = null;
+    List<Track> Tracks= ViewBag.tracks as List<Track>;
+    SelectList tracks = new SelectList(Tracks, "TrackId", "TrackName");
+    var GenderVal = Enum.GetValues(typeof(Gender));
+
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create student</title>
+    <link rel="stylesheet" href="/css/StudentForm.css" />
+
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<body>
+    <form asp-action="create">
+        <div id="focus"></div>
+        <h1>Add Student</h1>
+        <span asp-validation-for="@Model.Fname"></span>
+        <input type="text" half placeholder="First name" asp-for="@Model.Fname" >
+
+        <span asp-validation-for="@Model.Lname"></span>
+        <input type="text" half placeholder="Last name" asp-for="@Model.Lname">
+
+        <span asp-validation-for="@Model.Email"></span>
+        <input type="email" placeholder="Mail" asp-for="@Model.Email">
+
+        <span asp-validation-for="@Model.Password"></span>
+        <input type="text" half placeholder="PassWord" asp-for="@Model.Password">
+
+        <span asp-validation-for="@Model.Mobile"></span>
+        <input type="text" half placeholder="Mobile" asp-for="@Model.Mobile">
+
+        <span asp-validation-for="@Model.University"></span>
+        <input type="text" placeholder="University" asp-for="@Model.University">
+
+        <span asp-validation-for="@Model.Faculty"></span>
+        <input type="text" half placeholder="Faculty" asp-for="@Model.Faculty">
+
+        <span asp-validation-for="@Model.Specialization"></span>
+        <input type="text" half placeholder="Specialization" asp-for="@Model.Specialization">
+
+        <span asp-validation-for="@Model.BirthDate"></span>
+        <input type="date" half placeholder="BirthDate" asp-for="@Model.BirthDate">
+
+        <span asp-validation-for="@Model.GraduationYear"></span>
+        <input type="number" half placeholder="GraduationYear" asp-for="@Model.GraduationYear" min="1">
+
+        <div style="display:flex; width: 100%;margin-bottom: 14px;">
+            <select asp-for="@Model.trackId" asp-items="tracks" class="styled-select">
+            </select>
+
+            <select asp-for="@Model.gender" class="styled-select">
+                @foreach (var value in GenderVal)
+                {
+                    <option value="@((int)value)">@value</option>
+                }
+            </select>
+        </div>
+
+        <input type="submit">
+    </form>
+    <script>
+        const FORM = $("form"); // set form or other element here
+        const TYPES = ["input[type=text], input[type=submit]"]; // set which elements get targeted by the focus
+        const FOCUS = $("#focus"); // focus element
+
+        // function for positioning the div
+        function position(e) {
+            // get position
+            var props = {
+                top: e.offset().top,
+                left: e.offset().left,
+                width: e.outerWidth(),
+                height: e.outerHeight(),
+                radius: parseInt(e.css("border-radius"))
+            };
+
+            // set position
+            FOCUS.css({
+                top: props.top,
+                left: props.left,
+                width: props.width,
+                height: props.height,
+                "border-radius": props.radius
+            });
+
+            FOCUS.fadeIn(200);
+        }
+
+        FORM.find(TYPES.join()).each(function (i) {
+            // when clicking an input defined in TYPES
+            $(this).focus(function () {
+                el = $(this);
+
+                // adapt size/position when resizing browser
+                $(window).resize(function () {
+                    position(el);
+                });
+
+                position(el);
+            });
+        });
+
+        FORM.on("focusout", function (e) {
+            setTimeout(function () {
+                if (!e.delegateTarget.contains(document.activeElement)) {
+                    FOCUS.fadeOut(200);
+                }
+            }, 0);
+        });
+
+    </script>
+    <script src="h:\iti-9\attendancemvcproject\attendance_tracking_system\attendancetrackingsystem\attendancetrackingsystem\wwwroot\lib\jquery\dist\jquery.min.js"></script>
+    <script src="h:\iti-9\attendancemvcproject\attendance_tracking_system\attendancetrackingsystem\attendancetrackingsystem\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js"></script>
+    <script src="h:\iti-9\attendancemvcproject\attendance_tracking_system\attendancetrackingsystem\attendancetrackingsystem\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

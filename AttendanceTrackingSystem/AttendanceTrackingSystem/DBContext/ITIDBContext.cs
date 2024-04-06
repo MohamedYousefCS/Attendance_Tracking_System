@@ -52,6 +52,11 @@ namespace AttendanceTrackingSystem.DBContext
 
             base.OnModelCreating(modelBuilder);
         }
+        public async Task BulkInsertStudentsAsync(List<Student> stds)
+        {
+            await students.AddRangeAsync(stds);//Is =>my table object here 
+            await SaveChangesAsync();
+        }
 
 
     }
