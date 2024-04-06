@@ -1,0 +1,55 @@
+﻿@model IEnumerable<object>
+
+@functions {
+    List<string> GetSelectedProperties(object model, List<string> propertyNames)
+    {
+        List<string> values = new List<string>();
+        foreach (var propertyName in propertyNames)
+        {
+            System.Reflection.PropertyInfo property = null;
+            var value = "";
+            if (propertyName.ToLower() == "name")
+            {
+                property = model.GetType().GetProperties()
+                .FirstOrDefault(p => string.Equals(p.Name, "fname", StringComparison.OrdinalIgnoreCase));
+            }
+            else
+            {
+                property = model.GetType().GetProperties()
+                    .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+
+            }
+            if (property != null)
+            {
+                value = property.GetValue(model)?.ToString();
+            }
+            values.Add(value);
+        }
+        return values;
+    }
+}
+
+<table id="dataTable" class="display">
+    <thead>
+        <tr>
+            @foreach (var propertyName in (List<string>)ViewData["propertiesToShow"])
+            {
+                <th>@propertyName</th>
+            }
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @foreach (var value in GetSelectedProperties(item, (List<string>)ViewData["propertiesToShow"]))
+                {
+                    <td>@value</td>
+                }
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
