@@ -12,16 +12,16 @@ namespace AttendanceTrackingSystem.Models
         }
 
         [Required(ErrorMessage = "University is required.")]
-        [MinLength(9, ErrorMessage = "University must be at least 9 characters.")]
+        [MinLength(8, ErrorMessage = "University must be at least 8 characters.")]
         [MaxLength(20, ErrorMessage = "University cannot exceed 20 characters.")]
-        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "Invalid Name")]
+        [RegularExpression(@"^[a-zA-Z\s\-]*$", ErrorMessage = "Invalid Name")]
 
         public string University { get; set; }
 
         [Required(ErrorMessage = "Faculty is Required. ")]
         [MinLength(5, ErrorMessage = "Faculty must be at least 5 characters.")]
         [MaxLength(20, ErrorMessage = " Faculty cannot exceed 20 characters.")]
-        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "Invalid Name")]
+        [RegularExpression(@"^[a-zA-Z\s\-]*$", ErrorMessage = "Invalid Name")]
 
         public string Faculty { get; set; }
 

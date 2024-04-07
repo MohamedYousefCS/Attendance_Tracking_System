@@ -1,33 +1,53 @@
-﻿@model IEnumerable<object>
+﻿@using System.Reflection
+@model IEnumerable<Student>
 
 @functions {
-    List<string> GetSelectedProperties(object model, List<string> propertyNames)
+
+    List<string> GetSelectedProperties(Student student, List<string> propertyNames)
     {
         List<string> values = new List<string>();
         foreach (var propertyName in propertyNames)
         {
-            System.Reflection.PropertyInfo property = null;
-            var value = "";
-            if (propertyName.ToLower() == "name")
-            {
-                property = model.GetType().GetProperties()
-                .FirstOrDefault(p => string.Equals(p.Name, "fname", StringComparison.OrdinalIgnoreCase));
-            }
-            else
-            {
-                property = model.GetType().GetProperties()
-                    .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
-
-            }
-            if (property != null)
-            {
-                value = property.GetValue(model)?.ToString();
-            }
+            var value = FindPropertyValue(student, propertyName);
             values.Add(value);
         }
         return values;
     }
+
+    string FindPropertyValue(object model, string propertyName)
+    {
+        var property = model.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+        if (property != null)
+        {
+            return property.GetValue(model)?.ToString();
+        }
+        else
+        {
+            // Check if the model has a method to retrieve relations
+            var getRelationsMethod = model.GetType().GetMethod("GetRelations");
+            if (getRelationsMethod != null)
+            {
+                // Assuming GetRelations returns a dictionary or something similar
+                var relations = getRelationsMethod.Invoke(model, null) as IDictionary<string, object>;
+                if (relations != null)
+                {
+                    foreach (var relationEntry in relations)
+                    {
+                        var relatedObject = relationEntry.Value;
+                        var relatedValue = FindPropertyValue(relatedObject, propertyName);
+                        if (relatedValue != null)
+                        {
+                            return relatedValue;
+                        }
+                    }
+                }
+            }
+            return null; // Property not found
+        }
+    }
 }
+
+
 
 <table id="dataTable" class="display">
     <thead>
@@ -47,9 +67,21 @@
                 {
                     <td>@value</td>
                 }
-                <td></td>
+                <td class="lastTd">
+                    <a asp-action="showDetails" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-eye text-primary"></i></a> &nbsp;&nbsp;
+                    <a asp-action="Edit" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-pen-to-square text-secondary"></i></a> &nbsp;&nbsp;
+                    <a href="#" onclick="confirmDelete(item.Id)"><i class="fa-solid fa-trash-can text-danger"></i></a>
+
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
+<script>
+    function confirmDelete(studentId) {
+        if (confirm('Are you sure you want to delete this student?')) {
+            window.location.href = '/StudentAffairs/delete/' + studentId;
+        }
+    }
+</script>

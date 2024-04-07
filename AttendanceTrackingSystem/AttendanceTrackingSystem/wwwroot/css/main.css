@@ -335,9 +335,9 @@ ul {
 	Main
 ==============================*/
 .main {
-  position: relative;
-  margin-top: 70px;
-  padding: 0 0 60px;
+    position: relative;
+    margin-top: 107px;
+    padding: 0 0 60px;
 }
 
 /*==============================
@@ -1192,3 +1192,5 @@ ul {
   height: 4px !important;
   border-radius: 4px !important;
 }
+
+
