@@ -129,7 +129,7 @@ namespace AttendanceTrackingSystem.Repos
                     db.students.Add(entity);
                 }
 
-                //db.SaveChanges();
+                db.SaveChanges();
 
             }
 
