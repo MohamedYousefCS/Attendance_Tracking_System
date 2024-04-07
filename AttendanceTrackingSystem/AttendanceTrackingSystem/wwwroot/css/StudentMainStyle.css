@@ -1,0 +1,9 @@
+﻿.addStudent a {
+    text-decoration: none;
+    text-align: center;
+    background-color: darkred;
+    color: white;
+    font-size: 1rem;
+    padding: 5px 33px;
+    border-radius: 12px;
+}
