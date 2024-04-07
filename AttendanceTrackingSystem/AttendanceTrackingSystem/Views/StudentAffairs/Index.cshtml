@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Index";
+
+         int CalculateAge(DateTime birthDate)
+        {
+            // Calculate age based on current date
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthDate.Year;
+
+            // // Subtract a year if the birthdate hasn't occurred yet this year
+            // if (birthDate.Date > today.AddYears(-age))
+            //     age--;
+
+            return age;
+        }
+    
+}
+<table class="table">
+ <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Birth Date</th>
+            <th>Email</th>
+            <th>Faculty</th>
+            <th>Specialization</th>
+            <th>Graduation Year</th>
+            <th>Track Name</th>
+            <th>Age</th> <!-- Added Age column -->
+            <th colspan="11">action</th> <!-- Added Age column -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Fname</td>
+                <td>@item.BirthDate.ToShortDateString()</td> <!-- Display BirthDate -->
+                <td>@item.Email</td>
+                <td>@item.Faculty</td>
+                <td>@item.Specialization</td>
+                <td>@item.GraduationYear</td>
+                <td>@item.Track.TrackName</td>
+                <td>@CalculateAge(item.BirthDate)</td> <!-- Display Age -->
+                <td><a asp-action="Edit" asp-route-id="@item.Id"> Edit</a></td>
+                <td><a asp-action="Delete" asp-route-id="@item.Id"> Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="create" asp-controller="studentaffairs">Add Student</a>
+

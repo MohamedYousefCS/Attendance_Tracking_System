@@ -13,6 +13,7 @@ namespace AttendanceTrackingSystem
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddTransient<IStudentRepo, StudentRepo>();
+            builder.Services.AddTransient<IStudentAffairsRepo, StudentAffairsRepo>();
 
 
             builder.Services.AddDbContext<ITIDBContext>();
@@ -33,7 +34,7 @@ namespace AttendanceTrackingSystem
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=StudentAffairs}/{action=Index}/{id?}");
 
             app.Run();
         }

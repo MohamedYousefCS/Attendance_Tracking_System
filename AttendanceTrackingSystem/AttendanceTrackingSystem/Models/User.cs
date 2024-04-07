@@ -48,7 +48,7 @@ namespace AttendanceTrackingSystem.Models
 
         public Gender gender { get; set; }
 
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Mobile number must be 10 digits.")]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "Mobile number must be 11 digits.")]
         public string Mobile { get; set; }
 
         [DataType(DataType.Date)]
