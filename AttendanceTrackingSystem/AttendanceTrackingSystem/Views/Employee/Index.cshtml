@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Your View Title";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<div>
+    <!-- Your view content goes here -->
+</div>
+<link href="~/css/employeeindex.css" rel="stylesheet" />
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+            {
+                Model = Model,
+                ["PropertiesToShow"] = new List<string> { "Name", "Email", "Salary", "Mobile", "Role" }
+            };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
+
+}
+
+<div class="addEmployee">
+    <a asp-action="create" asp-controller="employee">
+        Add Employee <i class="fa-solid fa-plus"> </i>
+    </a>
+</div>
+

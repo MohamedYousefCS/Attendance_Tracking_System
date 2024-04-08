@@ -1,0 +1,40 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <h1>Employee Details</h1>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+                <th scope="col">BirthDate</th>
+                <th scope="col">gender</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Role</th>
+                <th scope="col">Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Id</td>
+                <td>@Model.Fname</td>
+                <td>@Model.Lname</td>
+                <td>@Model.Email</td>
+                <td>@Model.Password</td>
+                <td>@Model.BirthDate</td>
+                <td>@Model.gender</td>
+                <td>@Model.Mobile</td>
+                <td>@Model.Role</td>
+                <td>@Model.Salary</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/employee/index" class="btn btn-warning">Back</a>
+</div>
