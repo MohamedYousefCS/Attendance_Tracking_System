@@ -1,13 +1,12 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceTrackingSystem.Repos
 {
     public interface IStudentRepo
     {
-
         public List<Student> GetAllStudents();
-
     }
 
 
@@ -22,9 +21,7 @@ namespace AttendanceTrackingSystem.Repos
 
         public List<Student> GetAllStudents()
         {
-            return db.students.ToList();
+            return db.students.Include(S=>S.Track).ToList();
         }
-
-
     }
 }

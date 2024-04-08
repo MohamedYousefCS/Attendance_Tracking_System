@@ -1,31 +1,64 @@
-﻿@model IEnumerable<object>
+﻿@using System.Reflection
+@using System.Text.RegularExpressions
+@model IEnumerable<object>
 
 @functions {
     List<string> GetSelectedProperties(object model, List<string> propertyNames)
     {
+        if (model == null)
+        {
+            throw new ArgumentNullException(nameof(model));
+        }
         List<string> values = new List<string>();
         foreach (var propertyName in propertyNames)
         {
-            System.Reflection.PropertyInfo property = null;
-            var value = "";
-            if (propertyName.ToLower() == "name")
-            {
-                property = model.GetType().GetProperties()
-                .FirstOrDefault(p => string.Equals(p.Name, "fname", StringComparison.OrdinalIgnoreCase));
-            }
-            else
-            {
-                property = model.GetType().GetProperties()
-                    .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
-
-            }
-            if (property != null)
-            {
-                value = property.GetValue(model)?.ToString();
-            }
+            var value = GetPropertyValue(model, propertyName);
             values.Add(value);
         }
         return values;
+    }
+
+    private string GetPropertyValue(object model, string propertyName)
+    {
+        if (propertyName.Equals("Name", StringComparison.OrdinalIgnoreCase))
+        {
+            var firstNameProperty = model.GetType().GetProperty("Fname", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            var lastNameProperty = model.GetType().GetProperty("Lname", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            if (firstNameProperty != null && lastNameProperty != null)
+            {
+                var firstName = firstNameProperty.GetValue(model)?.ToString();
+                var lastName = lastNameProperty.GetValue(model)?.ToString();
+                if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+                    return $"{firstName} {lastName}";
+            }
+        }
+        else
+        {
+            var property = model.GetType().GetProperties().FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            if (property != null)
+            {
+                return property.GetValue(model)?.ToString();
+            }
+            else
+            {
+                foreach (var navigationProperty in model.GetType().GetProperties().Where(p => !p.PropertyType.IsValueType && p.PropertyType != typeof(string)))
+                {
+                    var relatedEntity = navigationProperty.GetValue(model);
+                    if (relatedEntity != null)
+                    {
+                        var value = GetPropertyValue(relatedEntity, propertyName);
+                        if (value != null)
+                            return value;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private string SplitPropertyName(string propertyName)
+    {
+        return Regex.Replace(propertyName, "([a-z])([A-Z])", "$1 $2");
     }
 }
 
@@ -34,7 +67,7 @@
         <tr>
             @foreach (var propertyName in (List<string>)ViewData["propertiesToShow"])
             {
-                <th>@propertyName</th>
+                <th>@SplitPropertyName(propertyName)</th>
             }
             <th>Actions</th>
         </tr>
@@ -52,4 +85,3 @@
         }
     </tbody>
 </table>
-
