@@ -1,60 +1,73 @@
 ﻿@using System.Reflection
-@model IEnumerable<Student>
+@using System.Text.RegularExpressions
+@model IEnumerable<object>
 
 @functions {
-
-    List<string> GetSelectedProperties(Student student, List<string> propertyNames)
+    List<string> GetSelectedProperties(object model, List<string> propertyNames)
     {
+        if (model == null)
+        {
+            throw new ArgumentNullException(nameof(model));
+        }
         List<string> values = new List<string>();
         foreach (var propertyName in propertyNames)
         {
-            var value = FindPropertyValue(student, propertyName);
+            var value = GetPropertyValue(model, propertyName);
             values.Add(value);
         }
         return values;
     }
 
-    string FindPropertyValue(object model, string propertyName)
+    private string GetPropertyValue(object model, string propertyName)
     {
-        var property = model.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-        if (property != null)
+        if (propertyName.Equals("Name", StringComparison.OrdinalIgnoreCase))
         {
-            return property.GetValue(model)?.ToString();
+            var firstNameProperty = model.GetType().GetProperty("Fname", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            var lastNameProperty = model.GetType().GetProperty("Lname", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            if (firstNameProperty != null && lastNameProperty != null)
+            {
+                var firstName = firstNameProperty.GetValue(model)?.ToString();
+                var lastName = lastNameProperty.GetValue(model)?.ToString();
+                if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+                    return $"{firstName} {lastName}";
+            }
         }
         else
         {
-            // Check if the model has a method to retrieve relations
-            var getRelationsMethod = model.GetType().GetMethod("GetRelations");
-            if (getRelationsMethod != null)
+            var property = model.GetType().GetProperties().FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            if (property != null)
             {
-                // Assuming GetRelations returns a dictionary or something similar
-                var relations = getRelationsMethod.Invoke(model, null) as IDictionary<string, object>;
-                if (relations != null)
+                return property.GetValue(model)?.ToString();
+            }
+            else
+            {
+                foreach (var navigationProperty in model.GetType().GetProperties().Where(p => !p.PropertyType.IsValueType && p.PropertyType != typeof(string)))
                 {
-                    foreach (var relationEntry in relations)
+                    var relatedEntity = navigationProperty.GetValue(model);
+                    if (relatedEntity != null)
                     {
-                        var relatedObject = relationEntry.Value;
-                        var relatedValue = FindPropertyValue(relatedObject, propertyName);
-                        if (relatedValue != null)
-                        {
-                            return relatedValue;
-                        }
+                        var value = GetPropertyValue(relatedEntity, propertyName);
+                        if (value != null)
+                            return value;
                     }
                 }
             }
-            return null; // Property not found
         }
+        return null;
+    }
+
+    private string SplitPropertyName(string propertyName)
+    {
+        return Regex.Replace(propertyName, "([a-z])([A-Z])", "$1 $2");
     }
 }
-
-
 
 <table id="dataTable" class="display">
     <thead>
         <tr>
             @foreach (var propertyName in (List<string>)ViewData["propertiesToShow"])
             {
-                <th>@propertyName</th>
+                <th>@SplitPropertyName(propertyName)</th>
             }
             <th>Actions</th>
         </tr>
@@ -77,11 +90,3 @@
         }
     </tbody>
 </table>
-
-<script>
-    function confirmDelete(studentId) {
-        if (confirm('Are you sure you want to delete this student?')) {
-            window.location.href = '/StudentAffairs/delete/' + studentId;
-        }
-    }
-</script>
