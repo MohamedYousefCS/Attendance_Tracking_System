@@ -20,7 +20,10 @@ namespace AttendanceTrackingSystem.DBContext
         public DbSet <Track> tracks { get; set; }
         public DbSet <program> programs { get; set; }
         public DbSet <PermissionRequest> permissionRequests { get; set; }
-       
+
+        
+
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,7 +34,7 @@ namespace AttendanceTrackingSystem.DBContext
                 .AddJsonFile("appsettings.json")
                 .Build();
             string connectionString = configuration.GetConnectionString("con1");
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer(connectionString);
 
             base.OnConfiguring(optionsBuilder);
         }
@@ -48,7 +51,7 @@ namespace AttendanceTrackingSystem.DBContext
                .HasForeignKey<Track>(e => e.supervisorId)
                .IsRequired()
                .OnDelete(DeleteBehavior.Restrict); // Set OnDelete behavior to NoAction
-
+           
 
             base.OnModelCreating(modelBuilder);
         }

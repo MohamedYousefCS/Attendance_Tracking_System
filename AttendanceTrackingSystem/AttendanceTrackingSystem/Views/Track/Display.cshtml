@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Track>
+@{
+    ViewData["Title"] = "Display";
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top:25px;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .create{
+        margin-top:200px;
+        margin-left:1070px;
+        background-color:black;
+        color:white;
+        padding:10px 10px;
+        
+    }
+    .create:hover{
+        background-color:darkred;
+        color:white;
+       
+    }
+
+        a:hover {
+            text-decoration: none;
+            color:red;
+        }
+</style>
+<a asp-action="Create" asp-controller="Track" class="create" >Create Track</a>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Program Name</th>
+        <th>Capacity</th>
+        <th>Supervisor Name</th>
+        <th colspan="4">Actions</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.TrackName</td>
+            <td>@item.Status</td>
+            <td>@item.program.ProgramName</td>
+            <td>@item.Capacity</td>
+            <td>@item.Instructor.Fname @item.Instructor.Lname</td>
+            <td><a asp-action="GetInstructorsForTrack" asp-controller="Track" asp-route-id="@item.TrackId"> <i class="fa-solid fa-eye"></i>  Instructor</a></td>
+            <td><a asp-action="showstudentinTrack" asp-controller="Track" asp-route-id="@item.TrackId"><i class="fa-solid fa-eye"></i>       Students</a></td>
+            <td><a asp-action="Edit" asp-controller="Track" asp-route-id="@item.TrackId"> <i class="fa-regular fa-pen-to-square"></i></a></td>
+            <td><a asp-action="Delete" asp-controller="Track" asp-route-id="@item.TrackId"><i class="fa-solid fa-trash-can"></i></a></td>
+        </tr>
+    }
+</table>
+
+
+
+@if (TempData["AlertMessage"] != null)
+{
+    <script>
+        alert('@TempData["AlertMessage"]');
+    </script>
+}

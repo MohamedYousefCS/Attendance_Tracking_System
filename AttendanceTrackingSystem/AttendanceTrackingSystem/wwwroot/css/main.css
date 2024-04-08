@@ -348,7 +348,8 @@ ul {
   padding-top: 30px;
   position: relative;
   overflow: hidden;
-  margin-top: auto;
+  margin-top: 1500px;
+  margin-left:-800px;
 }
 .footer__logo a {
   margin-top: 60px;
@@ -397,6 +398,7 @@ ul {
   color: #189cf4;
 }*/
 .footer__social {
+
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
