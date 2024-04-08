@@ -16,6 +16,9 @@ namespace AttendanceTrackingSystem
             builder.Services.AddTransient<IStudentRepo, StudentRepo>();
             builder.Services.AddTransient<IStudentAffairsRepo, StudentAffairsRepo>();
 
+            builder.Services.AddTransient<IEmployeeRepo, EmployeeRepo>();
+
+
 
             builder.Services.AddDbContext<ITIDBContext>();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

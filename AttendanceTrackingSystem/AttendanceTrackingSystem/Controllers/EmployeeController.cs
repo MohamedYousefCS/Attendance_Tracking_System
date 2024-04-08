@@ -11,21 +11,22 @@ namespace AttendanceTrackingSystem.Controllers
 
         public EmployeeController(IEmployeeRepo _EmpRepo)
         {
-           this.EmpRepo = _EmpRepo;
+            this.EmpRepo = _EmpRepo;
         }
         public IActionResult Index()
         {
             var model = EmpRepo.GetAllEmployees();
-            var propertyNames = new List<string> { "Name", "Email", "Salary","Mobile","Role"};
+            var propertyNames = new List<string> { "Name", "Email", "Salary", "Mobile", "Role" };
             ViewBag.PropertiesToShow = propertyNames;
             return View(model);
         }
 
-        public IActionResult Create() { 
-        
+        public IActionResult Create()
+        {
+
 
             return View();
-        
+
         }
         [HttpPost]
         public IActionResult Create(Employee Emp)
@@ -59,8 +60,8 @@ namespace AttendanceTrackingSystem.Controllers
         [HttpPost]
         public IActionResult Update(Employee Emp, int id)
         {
-          
-            if (!ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
 
                 EmpRepo.Update(Emp);
@@ -68,11 +69,25 @@ namespace AttendanceTrackingSystem.Controllers
             }
             else
             {
-                return View("Edit", Emp);
+                return View("Update", Emp);
 
             }
         }
 
 
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var employee = EmpRepo.GetById(id.Value);
+            if (employee == null)
+                return NotFound();
+
+            EmpRepo.Delete(id.Value);
+
+            return RedirectToAction("Index");
+
+        }
     }
 }

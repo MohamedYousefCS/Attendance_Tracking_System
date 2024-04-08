@@ -1,5 +1,6 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AttendanceTrackingSystem.Repos
 {
@@ -17,11 +18,11 @@ namespace AttendanceTrackingSystem.Repos
 
         public void Update(Employee employee);
 
-        public void Delete(Employee employee);
+        public void Delete(int id);
     }
 
 
-    public class EmployeeRepo:IEmployeeRepo
+    public class EmployeeRepo : IEmployeeRepo
     {
         ITIDBContext db;
         public EmployeeRepo(ITIDBContext _db)
@@ -34,7 +35,7 @@ namespace AttendanceTrackingSystem.Repos
         {
             return db.employees.ToList();
 
-            
+
         }
 
         //show Employee Data
@@ -62,12 +63,19 @@ namespace AttendanceTrackingSystem.Repos
         }
 
         //Delete Employee
-        public void Delete(Employee employee)
+        public void Delete(int id)
         {
-            db.employees.Remove(employee);
-            db.SaveChanges();
+            var employeeToDelete = db.employees.FirstOrDefault(e => e.Id == id);
+            if (employeeToDelete != null)
+            {
+                db.employees.Remove(employeeToDelete);
+                db.SaveChanges();
+            }
         }
 
 
     }
+
 }
+
+
