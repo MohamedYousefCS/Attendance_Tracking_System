@@ -1,12 +1,78 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AttendanceTrackingSystem.Models;
+using AttendanceTrackingSystem.Repos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AttendanceTrackingSystem.Controllers
 {
     public class EmployeeController : Controller
     {
+
+        IEmployeeRepo EmpRepo;
+
+        public EmployeeController(IEmployeeRepo _EmpRepo)
+        {
+           this.EmpRepo = _EmpRepo;
+        }
         public IActionResult Index()
         {
-            return View();
+            var model = EmpRepo.GetAllEmployees();
+            var propertyNames = new List<string> { "Name", "Email", "Salary","Mobile","Role"};
+            ViewBag.PropertiesToShow = propertyNames;
+            return View(model);
         }
+
+        public IActionResult Create() { 
+        
+
+            return View();
+        
+        }
+        [HttpPost]
+        public IActionResult Create(Employee Emp)
+        {
+            if (!ModelState.IsValid)
+                return View("Create", Emp);
+            EmpRepo.Add(Emp);
+            return RedirectToAction("Index");
+
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+            var model = EmpRepo.GetById(id.Value);
+            if (model == null)
+                return NotFound();
+            return View(model);
+        }
+
+        public IActionResult Update(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+            var model = EmpRepo.GetById(id.Value);
+            if (model == null)
+                return NotFound();
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Update(Employee Emp, int id)
+        {
+          
+            if (!ModelState.IsValid)
+            {
+
+                EmpRepo.Update(Emp);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View("Edit", Emp);
+
+            }
+        }
+
+
     }
 }
