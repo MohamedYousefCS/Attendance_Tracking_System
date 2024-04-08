@@ -21,7 +21,6 @@ namespace AttendanceTrackingSystem.Controllers
             ViewBag.PropertiesToShow = propertyNames;
             return View(model);
         }
-
         public IActionResult GetList()
         {
             var model = new List<object>

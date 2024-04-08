@@ -80,7 +80,12 @@
                 {
                     <td>@value</td>
                 }
-                <td></td>
+                <td class="lastTd">
+                    <a asp-action="showDetails" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-eye text-primary"></i></a> &nbsp;&nbsp;
+                    <a asp-action="Edit" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-pen-to-square text-secondary"></i></a> &nbsp;&nbsp;
+                    <a href="#" onclick="confirmDelete(item.Id)"><i class="fa-solid fa-trash-can text-danger"></i></a>
+
+                </td>
             </tr>
         }
     </tbody>

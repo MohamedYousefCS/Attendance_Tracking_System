@@ -1,5 +1,6 @@
 using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Repos;
+using OfficeOpenXml;
 
 namespace AttendanceTrackingSystem
 {
@@ -13,11 +14,11 @@ namespace AttendanceTrackingSystem
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddTransient<IStudentRepo, StudentRepo>();
+            builder.Services.AddTransient<IStudentAffairsRepo, StudentAffairsRepo>();
 
 
             builder.Services.AddDbContext<ITIDBContext>();
-
-
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,7 +34,7 @@ namespace AttendanceTrackingSystem
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=StudentAffairs}/{action=Index}/{id?}");
 
             app.Run();
         }
