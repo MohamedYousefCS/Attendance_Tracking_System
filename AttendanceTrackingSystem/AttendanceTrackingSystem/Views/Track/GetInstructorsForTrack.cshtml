@@ -3,17 +3,47 @@
     ViewData["Title"] = "GetInstructorsForTrack";
 }
 
+<style>
+    .instructor-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .instructor-table th, .instructor-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .instructor-table th {
+            background-color: #f2f2f2;
+        }
+</style>
+
 <h1>GetInstructorsForTrack</h1>
 
 @if (Model != null && Model.Any())
 {
-    <ul>
+    <table class="instructor-table">
+        <tr>
+            <th> Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+        </tr>
         @foreach (var instructor in Model)
         {
-            <li>@instructor.Fname</li>
-         
+            DateTime birthDate = instructor.BirthDate;
+            int age = DateTime.Today.Year - birthDate.Year;
+            if (birthDate.Date > DateTime.Today.AddYears(-age))
+            {
+                age--;
+            }
+            <tr>
+                <td>@instructor.Fname @instructor.Lname</td>
+                <td>@instructor.gender</td>
+                <td>@age</td>
+            </tr>
         }
-    </ul>
+    </table>
 }
 else
 {
