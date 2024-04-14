@@ -21,6 +21,8 @@ namespace AttendanceTrackingSystem
            builder.Services.AddScoped<AdTrackRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
 
+            builder.Services.AddTransient<IAttendance,AttendanceRepo>();
+
             builder.Services.AddDbContext<ITIDBContext>();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             var app = builder.Build();

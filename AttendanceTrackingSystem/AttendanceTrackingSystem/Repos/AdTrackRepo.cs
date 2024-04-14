@@ -17,6 +17,23 @@ namespace AttendanceTrackingSystem.Repos
         {
             return db.programs.ToList();
         }
+
+        //mohamed
+        public List<Track>GetAllTracks()
+        {
+
+            return db.tracks.ToList();
+        }
+
+
+        public List<Student> GetStudentsByTrackId(int trackId)
+        {
+
+            var students = db.students.Where(s => s.trackId == trackId).ToList();
+            return students;
+        }
+
+        ///////////////
         public List<Instructor> GetInstructorsForTrack(int trackId)
         {
            
