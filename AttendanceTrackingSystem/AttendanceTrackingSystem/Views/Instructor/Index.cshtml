@@ -1,0 +1,51 @@
+﻿@model User
+@{
+	ViewData["Title"] = "Index";
+	ViewData["Name"] = Model.Fname;
+	ViewData["Role"] = Model.Role.ToString();
+	Layout = "~/Views/Shared/_InstructorLayout.cshtml";
+}
+
+
+<div class="text-center">
+	<h1 class="">Welcome to Your Profile</h1>
+	<p>Here you can view and edit your Personal information</p>
+</div>
+<div class="">
+	<h3>Instructor Information</h3>
+</div>
+<hr />
+<div>
+	<table class="table table-active table-hover">
+		<tr>
+			<td>
+				<h5> ID: @Model.Id</h5>
+			</td>
+			<td>
+				<h5>Name: @Model.Fname</h5>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<h5> Email: @Model.Email</h5>
+			</td>
+			<td>
+				<h5> Phone: @Model.Mobile</h5>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<h5>Address: </h5>
+			</td>
+			<td>
+				<h5>Student Birthdate: 11/4/2001</h5>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div>
+	<a asp-action="EditProfile" class="btn btn-lg btn-primary float-end">EditProfile</a>
+</div>
+
+
