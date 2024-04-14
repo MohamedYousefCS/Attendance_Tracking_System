@@ -18,6 +18,7 @@ namespace AttendanceTrackingSystem
             builder.Services.AddTransient<IEmployeeRepo, EmployeeRepo>();
             builder.Services.AddTransient<IAccountRepo, AccountRepo>();
             builder.Services.AddScoped<AdTrackRepo>();
+            builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
             builder.Services.AddDbContext<ITIDBContext>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
