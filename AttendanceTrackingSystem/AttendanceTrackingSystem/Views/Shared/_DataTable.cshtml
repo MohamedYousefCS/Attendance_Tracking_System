@@ -60,6 +60,17 @@
     {
         return Regex.Replace(propertyName, "([a-z])([A-Z])", "$1 $2");
     }
+
+    private string GetId(object model)
+    {
+        var idProperty = model.GetType().GetProperty("Id", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+        if (idProperty != null)
+        {
+            var id = idProperty.GetValue(model)?.ToString();
+            return id;
+        }
+        return null;
+    }
 }
 
 <table id="dataTable" class="display">
@@ -73,7 +84,8 @@
         </tr>
     </thead>
     <tbody>
-@*         @foreach (var item in Model)
+
+        @foreach (var item in Model)
         {
             <tr>
                 @foreach (var value in GetSelectedProperties(item, (List<string>)ViewData["propertiesToShow"]))
@@ -81,33 +93,14 @@
                     <td>@value</td>
                 }
                 <td class="lastTd">
-                    <a asp-action="showDetails" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-eye text-primary"></i></a> &nbsp;&nbsp;
-                    <a asp-action="Edit" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-pen-to-square text-secondary"></i></a> &nbsp;&nbsp;
-                    <a href="#" onclick="confirmDelete(item.Id)"><i class="fa-solid fa-trash-can text-danger"></i></a>
-
+                    <a asp-action="Details" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-eye text-primary"></i></a> &nbsp;&nbsp;
+                    <a asp-action="Update" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a> &nbsp;&nbsp;
+                    <a asp-action="Delete" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)" onclick="confirmDelete('@GetId(item)s')"><i class="fa-solid fa-trash-can text-danger"></i></a>
                 </td>
             </tr>
         }
 
-
-
- *@
-        @foreach (Employee item in Model)
-        {
-            <tr>
-                @foreach (var value in GetSelectedProperties(item, (List<string>)ViewData["propertiesToShow"]))
-                {
-                    <td>@value</td>
-                }
-                <td class="lastTd">
-                    <a asp-action="Details" asp-controller="employee" asp-route-id="@item.Id"><i class="fa-solid fa-eye text-primary"></i></a> &nbsp;&nbsp;
-                    <a asp-action="Update" asp-controller="employee" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square text-secondary"></i></a> &nbsp;&nbsp;
-                    <a asp-action="Delete" asp-controller="employee" asp-route-id="@item.Id" onclick="confirmDelete('@item.Id')"><i class="fa-solid fa-trash-can text-danger"></i></a>
-                </td>
-            </tr>
-        }
-
-</tbody>
+    </tbody>
 </table>
 
 <script>
