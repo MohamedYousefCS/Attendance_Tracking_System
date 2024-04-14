@@ -15,9 +15,12 @@ namespace AttendanceTrackingSystem.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-       #pragma warning disable 612, 618
+#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -267,8 +270,8 @@ namespace AttendanceTrackingSystem.Migrations
 
                     b.Property<string>("Specialization")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("University")
                         .IsRequired()
