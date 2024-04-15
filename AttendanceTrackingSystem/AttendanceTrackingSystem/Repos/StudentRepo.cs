@@ -16,8 +16,6 @@ namespace AttendanceTrackingSystem.Repos
         public void DeleteStudent(int id);
         public void ImportDataFromExcel(string filePath);
 
-
-
     }
 
 
@@ -91,7 +89,8 @@ namespace AttendanceTrackingSystem.Repos
         }
 
 
-        public void ImportDataFromExcel(string filePath)
+
+            public void ImportDataFromExcel(string filePath)
         {
             using (ExcelPackage package = new ExcelPackage(new FileInfo(filePath)))
             {

@@ -22,19 +22,12 @@ namespace AttendanceTrackingSystem.Models
         [Key]
         public int AttendanceID { get; set; }
 
-        [Required(ErrorMessage = "Date is required.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+       
+        public DateOnly Date { get; set; }
 
-        [Required(ErrorMessage = "TimeIn is required.")]
-        [DataType(DataType.Time)]
-        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime TimeIn { get; set; }
+        public TimeOnly TimeIn { get; set; }
 
-        [DataType(DataType.Time)]
-        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime? TimeOut { get; set; }
+        public TimeOnly? TimeOut { get; set; }
 
         [Required(ErrorMessage = "Status is required.")]
         public Status  Status { get; set; }

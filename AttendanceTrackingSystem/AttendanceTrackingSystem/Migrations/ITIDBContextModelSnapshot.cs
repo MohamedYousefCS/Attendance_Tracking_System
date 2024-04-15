@@ -33,8 +33,8 @@ namespace AttendanceTrackingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceID"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
                     b.Property<bool?>("IsPermission")
                         .HasColumnType("bit");
@@ -45,11 +45,11 @@ namespace AttendanceTrackingSystem.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("TimeIn")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeOnly>("TimeIn")
+                        .HasColumnType("time");
 
-                    b.Property<DateTime?>("TimeOut")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeOnly?>("TimeOut")
+                        .HasColumnType("time");
 
                     b.Property<int>("userId")
                         .HasColumnType("int");
