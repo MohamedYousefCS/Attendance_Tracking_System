@@ -1,0 +1,50 @@
+﻿@model List<AttendanceTrackingSystem.Models.Instructor>
+@{
+    ViewData["Title"] = "GetInstructorsForInsTrack";
+}
+
+<style>
+    .instructor-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .instructor-table th, .instructor-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .instructor-table th {
+            background-color: #f2f2f2;
+        }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    <table class="instructor-table">
+        <tr>
+            <th> Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+        </tr>
+        @foreach (var instructor in Model)
+        {
+            DateTime birthDate = instructor.BirthDate;
+            int age = DateTime.Today.Year - birthDate.Year;
+            if (birthDate.Date > DateTime.Today.AddYears(-age))
+            {
+                age--;
+            }
+            <tr>
+                <td>@instructor.Fname @instructor.Lname</td>
+                <td>@instructor.gender</td>
+                <td>@age</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No instructors found for this track.</p>
+}
+

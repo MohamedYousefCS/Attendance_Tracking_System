@@ -64,12 +64,28 @@ namespace AttendanceTrackingSystem.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(Track track, int id)
+        public IActionResult Edit(Track track, int id, int supervisorId)
         {
             track.TrackId = id;
+            var oldSupervisor = Adtrackrepo.GetSupervisorByTrackId(id);
+            if (supervisorId != 0)
+            {
+                var newSupervisor = Adtrackrepo.GetInstructorById(supervisorId);
+                if (newSupervisor != null)
+                {
+                    newSupervisor.Role = Role.Supervisor;
+                    Adtrackrepo.UpdateInstructor(newSupervisor);
+                }
+            }
+            if (oldSupervisor != null && oldSupervisor.Id != supervisorId)
+            {
+                oldSupervisor.Role = Role.Instructor;
+                Adtrackrepo.UpdateInstructor(oldSupervisor);
+            }
             Adtrackrepo.update(track);
             return RedirectToAction("Display");
         }
+
         public IActionResult Delete(int? id)
         {
             Track track = Adtrackrepo.showstudentinTrack(id.Value);

@@ -16,10 +16,20 @@ namespace AttendanceTrackingSystem
             builder.Services.AddTransient<IStudentRepo, StudentRepo>();
             builder.Services.AddTransient<IStudentAffairsRepo, StudentAffairsRepo>();
             builder.Services.AddTransient<IEmployeeRepo, EmployeeRepo>();
-            builder.Services.AddTransient<IAccountRepo, AccountRepo>();
+
+
+           
             builder.Services.AddScoped<AdTrackRepo>();
+            builder.Services.AddScoped<PermissionReqRepo>();
+            builder.Services.AddScoped<InsStdAttendanceRepo>();
+
+
+
+            builder.Services.AddTransient<IAccountRepo, AccountRepo>();
+            
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
             builder.Services.AddTransient<IAttendance,AttendanceRepo>();
+
             builder.Services.AddDbContext<ITIDBContext>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {

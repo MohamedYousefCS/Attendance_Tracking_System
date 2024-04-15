@@ -1,0 +1,78 @@
+﻿@model IEnumerable<PermissionRequest>
+@{
+    ViewData["Title"] = "Display";
+}
+
+<style>
+    /* Style for permission request items */
+    .permission-request {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+     
+    }
+
+    /* Style for headers */
+    .header {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+   
+    input[type="submit"] {
+        margin-top:20px;
+        background-color: #0b0d1b;
+        color: white;
+        padding: 10px 35px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        input[type="submit"]:hover {
+            background-color: darkred;
+        }
+</style>
+
+@foreach (var item in Model)
+{
+    <div class="permission-request">
+
+        <div><a>StudentName:</a>  &nbsp    @item.Student.Fname @item.Student.Lname</div>
+        <div><a>Email:</a>   &nbsp       @item.Student.Email</div>
+        <div><a>Track:</a>   &nbsp  @item.Student.Track.TrackName</div>
+        <div><a>Date:</a>   &nbsp  @item.Date</div>
+        <div><a>Reason:</a>   &nbsp  @item.Reason</div>
+        <div><a>Type:</a>   &nbsp @item.Type</div>
+
+        <form id="acceptForm_@item.RequestID" asp-action="AcceptPermission" asp-route-id="@item.RequestID">
+            <input type="submit" value="Accept" class="btn  accept-btn" />
+            <input type="submit" value="Reject" class="btn reject-btn" />
+        </form>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".accept-btn").click(function (e) {
+                e.preventDefault();
+                var form = $(this).closest("form");
+                var url = form.attr("action");
+                $.post(url, form.serialize(), function () {
+                    form.closest(".permission-request").fadeOut();
+                });
+            });
+
+            $(".reject-btn").click(function (e) {
+                e.preventDefault();
+                $(this).closest("form").closest(".permission-request").fadeOut();
+            });
+        });
+    </script>
+}
+
