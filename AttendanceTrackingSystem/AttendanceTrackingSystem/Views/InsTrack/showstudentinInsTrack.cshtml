@@ -1,8 +1,7 @@
 ﻿@model IEnumerable<Student>
 @{
-    ViewData["Title"] = "showstudentinTrack";
+    ViewData["Title"] = "showstudentinInsTrack";
 }
-
 <style>
     .student-table {
         width: 100%;
@@ -32,9 +31,7 @@
             <th>Name</th>
             <th>Gender</th>
             <th>Age</th>
-            <th>University</th>
-            <th>Faculty</th>
-            <th>Specialization</th>
+       
         </tr>
         @foreach (var item in Model)
         {
@@ -49,10 +46,7 @@
                 <td class="student-name">@item.Fname @item.Lname</td>
                 <td>@item.gender</td>
                 <td>@age</td>
-                <td>@item.University</td>
-                <td>@item.Faculty</td>
-                <td>@item.Specialization</td>
-                
+              
             </tr>
         }
     </table>
@@ -61,3 +55,5 @@ else
 {
     <p>No Student found for this track.</p>
 }
+
+

@@ -18,7 +18,11 @@ namespace AttendanceTrackingSystem
 
             builder.Services.AddTransient<IEmployeeRepo, EmployeeRepo>();
 
-           builder.Services.AddScoped<AdTrackRepo>();
+           
+            builder.Services.AddScoped<AdTrackRepo>();
+            builder.Services.AddScoped<PermissionReqRepo>();
+            builder.Services.AddScoped<InsStdAttendanceRepo>();
+
 
             builder.Services.AddDbContext<ITIDBContext>();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

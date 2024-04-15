@@ -25,14 +25,20 @@ namespace AttendanceTrackingSystem.Repos
             return ins;
         }
 
+      
         public List<User> GetInstructorList()
         {
             return db.users.Where(p=>p.Role==Role.Instructor).ToList();
         }
        
+      
         public List<Track> GetTracks()
         {
             return db.tracks.Include(a=>a.program).Include(a=>a.Instructor).ToList();
+        }
+        public Track GetOneTrack(int id)
+        {
+            return db.tracks.FirstOrDefault(a=>a.supervisorId==id);
         }
         public  Track GetTrackById(int id) {
             return db.tracks.FirstOrDefault(a => a.TrackId == id);
@@ -41,10 +47,11 @@ namespace AttendanceTrackingSystem.Repos
         {
             return db.tracks
                      .Include(t => t.Students)
+                    
                      .FirstOrDefault(t => t.TrackId == trackId);
         
         }
-
+       
         public void Add(Track track)
         {
             db.tracks.Add(track);
@@ -66,7 +73,29 @@ namespace AttendanceTrackingSystem.Repos
                     db.tracks.Remove(track);
                     db.SaveChanges(); 
         }
-      
+        public Instructor GetInstructorById(int id)
+        {
+            return db.instructors.FirstOrDefault(a=>a.Id == id);
+        }
+        public void UpdateInstructor(Instructor instructor)
+        {
+            db.instructors.Update(instructor);
+            db.SaveChanges();
+        }
+        public Instructor GetSupervisorByTrackId(int trackId)
+        {
+            // Find the track by its ID and include the instructor (supervisor) navigation property
+            var track = db.tracks
+                .Where(t => t.TrackId == trackId)
+                .FirstOrDefault();
+
+            // If the track is found, return its supervisor; otherwise, return null
+            return track?.Instructor;
+        }
+
+
+
+
 
     }
 }
