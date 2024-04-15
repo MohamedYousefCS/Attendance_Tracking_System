@@ -11,20 +11,24 @@ namespace AttendanceTrackingSystem.Controllers
         IStudentRepo stuRepo;
         IAttendance Attendance;
         AdTrackRepo trackrepo;
+        IInstructorRepo instructorRepo;
         ITIDBContext db;
 
 
-        public SecurityController(IStudentRepo stuRepo, IAttendance attendance, AdTrackRepo trackrepo)
+        public SecurityController(IStudentRepo stuRepo, IAttendance attendance, AdTrackRepo trackrepo, IInstructorRepo instructorRepo)
         {
             this.stuRepo = stuRepo;
             Attendance = attendance;
             this.trackrepo = trackrepo;
+            this.instructorRepo = instructorRepo;
         }
         public IActionResult Index()
         {
 
             return View();
         }
+
+        [HttpGet("Security/Tracks")]
 
         public ActionResult GetAllTracks()
         {
@@ -33,12 +37,28 @@ namespace AttendanceTrackingSystem.Controllers
             return View(tracks);
         }
 
-        //[HttpGet("GetStudentByTrackID/{id}")]
+        [HttpGet("Security/AllStudents/{id}")]
         public IActionResult GetStudentByTrackID([FromRoute] int id)
         {
             var students = trackrepo.GetStudentsByTrackId(id);
+            var propertyNames = new List<string> { "Id","Fname", "Lname", "TrackName" };
+            ViewBag.PropertiesToShow = propertyNames;
+            ViewBag.Controller = "Security";
+            ViewBag.Action = "AllStudents";
             return View(students);
         }
+        [HttpGet("Security/AllInstructors")]
+
+        public IActionResult AllInstructors()
+        {
+            var instructors=instructorRepo.GetInstructorList();
+            var propertyNames = new List<string> { "Id", "Fname", "Lname" };
+            ViewBag.PropertiesToShow = propertyNames;
+            ViewBag.Controller = "Security";
+            ViewBag.Action = "AllInstructors";
+            return View(instructors);
+        }
+
 
         [HttpPost]
         public IActionResult ConfirmStudentAttendace([FromRoute] int Id)
@@ -70,7 +90,7 @@ namespace AttendanceTrackingSystem.Controllers
             }
             Attendance.ConfirmStudentAttendance(studentAttendance);
 
-            return RedirectToAction("GetAllTracks");
+            return RedirectToAction("Index");
 
 
         }
@@ -82,11 +102,10 @@ namespace AttendanceTrackingSystem.Controllers
 
             Attendance.ConfirmStudentCheckout(Id);
 
-            return RedirectToAction("GetAllTracks");
+            return RedirectToAction("Index");
 
         }
 
-    }
 
-        
-}
+    }
+    }

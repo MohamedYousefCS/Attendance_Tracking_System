@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "AllInstructors";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    var currentDateAndTime = DateTime.Now.ToString("yyyy-MM-dd");
+
+}
+<link href="~/css/attendance.css" rel="stylesheet" />
+
+<h2 class="head">Add Instructors Attendance</h2>
+<div class="date-section">
+    <h3>Date: <span>@currentDateAndTime</span></h3>
+</div>
+
+
+
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+            {
+                Model = Model,
+                ["PropertiesToShow"] = new List<string> { "Id", "Fname", "Lname" }
+            };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
+}
+

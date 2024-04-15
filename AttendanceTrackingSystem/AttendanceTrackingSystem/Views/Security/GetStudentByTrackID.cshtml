@@ -3,12 +3,30 @@
 @{
     ViewData["Title"] = "GetStudentByTrackID";
     Layout = "~/Views/Shared/MainLayout.cshtml";
+    var currentDateAndTime = DateTime.Now.ToString("yyyy-MM-dd");
+
+
+}
+<link href="~/css/attendance.css" rel="stylesheet" />
+
+<h2 class="head">Add Students Attendances </h2>
+<div class="date-section">
+    <h3>Date: <span>@currentDateAndTime</span></h3>
+</div>
+
+
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+            {
+                Model = Model,
+                ["PropertiesToShow"] = new List<string> { "Id", "Fname", "Lname", "TrackName" }
+            };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
 
 }
 
-<h1>GetStudentByTrackID</h1>
-
-<table id="attendanceTable" class="table table-bordered table-hover m-3">
+@*
+    <table id="attendanceTable" class="table table-bordered table-hover m-3">
     <thead>
 
     <th align="center">ID</th>
@@ -60,3 +78,4 @@
     </tbody>
 
 </table>
+ *@

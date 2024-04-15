@@ -29,7 +29,7 @@ namespace AttendanceTrackingSystem.Repos
         public List<Student> GetStudentsByTrackId(int trackId)
         {
 
-            var students = db.students.Where(s => s.trackId == trackId).ToList();
+            var students = db.students.Include(a => a.Track).Where(s => s.trackId == trackId).ToList();
             return students;
         }
 
