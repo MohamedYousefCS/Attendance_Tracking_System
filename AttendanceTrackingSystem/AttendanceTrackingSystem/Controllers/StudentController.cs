@@ -19,6 +19,8 @@ namespace AttendanceTrackingSystem.Controllers
             var model = stuRepo.GetAllStudents();          
             var propertyNames = new List<string> {"TrackName", "Name", "Email", "University" };
             ViewBag.PropertiesToShow = propertyNames;
+            ViewBag.Controller = "Student";
+            ViewBag.Action = "index";
             return View(model);
         }
         public IActionResult GetList()

@@ -18,6 +18,8 @@ namespace AttendanceTrackingSystem.Controllers
             var model = EmpRepo.GetAllEmployees();
             var propertyNames = new List<string> { "Name", "Email", "Salary", "Mobile", "Role" };
             ViewBag.PropertiesToShow = propertyNames;
+            ViewBag.Controller = "Employee";
+            ViewBag.Action = "index";
             return View(model);
         }
 
