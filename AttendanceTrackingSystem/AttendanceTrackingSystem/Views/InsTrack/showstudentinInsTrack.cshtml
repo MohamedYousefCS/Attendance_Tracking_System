@@ -2,37 +2,21 @@
 @{
     ViewData["Title"] = "showstudentinInsTrack";
 }
-<style>
-    .student-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
 
-        .student-table th, .student-table td {
-            border: 1px solid #ccc;
-            padding: 8px;
-        }
 
-        .student-table th {
-            background-color: #f2f2f2;
-        }
 
-    .student-name {
-        font-weight: bold;
-    }
-</style>
-
-<h3>showstudentinTrack</h3>
 
 @if (Model != null && Model.Any())
 {
-    <table class="student-table">
+    <table class="table table-hover">
+        <thead style=" background-color: #7d2222;color: white;" class="border-2">
         <tr>
             <th>Name</th>
             <th>Gender</th>
             <th>Age</th>
        
         </tr>
+        </thead>
         @foreach (var item in Model)
         {
             DateTime birthDate = item.BirthDate;

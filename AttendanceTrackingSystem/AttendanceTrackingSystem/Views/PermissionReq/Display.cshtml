@@ -4,57 +4,104 @@
 }
 
 <style>
-    /* Style for permission request items */
-    .permission-request {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-     
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    /* Style for the permission table */
+    .permission-table {
+        width: 100%;
+        border-collapse: collapse;
     }
 
-    /* Style for headers */
-    .header {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 5px;
+        /* Style for table headers */
+        .permission-table th {
+            background-color: #0b0d1b;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+
+        /* Style for table rows */
+        .permission-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+   .accept-btn{
+       color:forestgreen;
+        border: 1px solid forestgreen !important;
+   }
+   .reject-btn{
+       color:darkred;
+        border: 1px solid darkred !important;
+   }
+
+    .accept-btn:hover {
+        color: white;
+        background-color: forestgreen;
+        
+    }
+
+    .reject-btn:hover {
+        color: white;
+        background-color: darkred;
+
     }
 
    
-    input[type="submit"] {
-        margin-top:20px;
-        background-color: #0b0d1b;
-        color: white;
-        padding: 10px 35px;
+    .accept-btn,
+    .reject-btn {
+        background-color:white;
+        padding: 8px 15px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
     }
-
-        input[type="submit"]:hover {
-            background-color: darkred;
-        }
 </style>
 
-@foreach (var item in Model)
-{
-    <div class="permission-request">
+<table class="permission-table">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Track</th>
+            <th>Date</th>
+            <th>Reason</th>
+            <th>Type</th>
+            <th>Permission Request</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student.Fname @item.Student.Lname</td>
+                <td>@item.Student.Email</td>
+                <td>@item.Student.Track.TrackName</td>
+                <td>@item.Date</td>
+                <td>@item.Reason</td>
+                <td>@item.Type</td>
+                <td>
+                    <form id="acceptForm_@item.RequestID" asp-action="AcceptPermission" asp-route-id="@item.RequestID">
+                        <button type="submit" class="btn accept-btn">
+                            Accept <i class="fa-regular fa-circle-check"></i>
+                        </button>
+                        <button type="submit" class="btn reject-btn">
+                            Reject <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
+                    </form>
 
-        <div><a>StudentName:</a>  &nbsp    @item.Student.Fname @item.Student.Lname</div>
-        <div><a>Email:</a>   &nbsp       @item.Student.Email</div>
-        <div><a>Track:</a>   &nbsp  @item.Student.Track.TrackName</div>
-        <div><a>Date:</a>   &nbsp  @item.Date</div>
-        <div><a>Reason:</a>   &nbsp  @item.Reason</div>
-        <div><a>Type:</a>   &nbsp @item.Type</div>
-
-        <form id="acceptForm_@item.RequestID" asp-action="AcceptPermission" asp-route-id="@item.RequestID">
-            <input type="submit" value="Accept" class="btn  accept-btn" />
-            <input type="submit" value="Reject" class="btn reject-btn" />
-        </form>
-    </div>
-}
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @section scripts {
     <script>
@@ -64,15 +111,14 @@
                 var form = $(this).closest("form");
                 var url = form.attr("action");
                 $.post(url, form.serialize(), function () {
-                    form.closest(".permission-request").fadeOut();
+                    form.closest("tr").fadeOut();
                 });
             });
 
             $(".reject-btn").click(function (e) {
                 e.preventDefault();
-                $(this).closest("form").closest(".permission-request").fadeOut();
+                $(this).closest("tr").fadeOut();
             });
         });
     </script>
 }
-
