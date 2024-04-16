@@ -2,7 +2,6 @@
 @{
 	ViewData["Title"] = "Edit";
 }
-
 <style>
 	body {
 		font-family: Arial, sans-serif;
@@ -24,11 +23,12 @@
 		margin-left: 500px;
 	}
 
-	.field-validation-error {
-		color: red;
-	}
 	label {
 		font-weight: bold;
+	}
+
+	.field-validation-error {
+		color: red;
 	}
 
 	input {
@@ -73,34 +73,29 @@
 <div class="form-container">
 	<h1>Edit</h1>
 	<form method="post">
-		<label asp-for="TrackName">Track Name</label>
+		<label asp-for="TrackName" readonly >TrackName</label>
 		<input asp-for="TrackName" readonly />
-		<span asp-validation-for="TrackName"></span><br />
-		<label asp-for="Status">Status</label>
+		
+		<label asp-for="Status" hidden>Status</label>
 		<select asp-for="Status" asp-items="Html.GetEnumSelectList<TrackStatus>()" hidden>
-			<option>choose one</option>
+			
+			<br />
 		</select>
-		<span asp-validation-for="Status"></span><br />
 		<label asp-for="Capacity">Capacity</label>
 		<input asp-for="Capacity" />
 		<span asp-validation-for="Capacity"></span><br />
-		<label asp-for="programId" hidden>Program Name</label>
+		<label asp-for="programId" hidden>program Name</label>
 		<select asp-for="programId" asp-items="@ViewBag.programs" hidden>
-			<option>Choose one</option>
-		</select><span asp-validation-for="programId"></span><br />
+		</select>
+		
 		<label asp-for="supervisorId" hidden>Supervisor Name</label>
 		<select asp-for="supervisorId" asp-items="@ViewBag.ins" hidden>
-			<option>Choose one</option>
 		</select>
-		<span asp-validation-for="supervisorId"></span>
-		<br />
-
-
-		<input type="submit" value="Update" class="btn btn-primary" />
+		
+		<input type="submit" value="update" class="btn btn-primary" />
 	</form>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-

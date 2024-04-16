@@ -101,12 +101,10 @@ namespace AttendanceTrackingSystem.Repos
         }
         public Instructor GetSupervisorByTrackId(int trackId)
         {
-            // Find the track by its ID and include the instructor (supervisor) navigation property
             var track = db.tracks
                 .Where(t => t.TrackId == trackId)
                 .FirstOrDefault();
 
-            // If the track is found, return its supervisor; otherwise, return null
             return track?.Instructor;
         }
 
