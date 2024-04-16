@@ -26,16 +26,31 @@
             border-bottom: 1px solid #ddd;
         }
 
-    .accept-btn{
-        background-color:forestgreen;
+   .accept-btn{
+       color:forestgreen;
+        border: 1px solid forestgreen !important;
+   }
+   .reject-btn{
+       color:darkred;
+        border: 1px solid darkred !important;
+   }
+
+    .accept-btn:hover {
+        color: white;
+        background-color: forestgreen;
+        
     }
-    .reject-btn{
-        background-color:darkred;
+
+    .reject-btn:hover {
+        color: white;
+        background-color: darkred;
+
     }
+
    
     .accept-btn,
     .reject-btn {
-        color: white;
+        background-color:white;
         padding: 8px 15px;
         border: none;
         border-radius: 4px;
@@ -68,10 +83,10 @@
                 <td>
                     <form id="acceptForm_@item.RequestID" asp-action="AcceptPermission" asp-route-id="@item.RequestID">
                         <button type="submit" class="btn accept-btn">
-                            Accept <i class="fa-solid fa-check"></i>
+                            Accept <i class="fa-regular fa-circle-check"></i>
                         </button>
                         <button type="submit" class="btn reject-btn">
-                            Reject <i class="fa-solid fa-xmark"></i>
+                            Reject <i class="fa-regular fa-circle-xmark"></i>
                         </button>
                     </form>
 
