@@ -13,7 +13,7 @@ namespace AttendanceTrackingSystem.Controllers
         {
             Adtrackrepo = _adtrackrepo;
         }
-        public IActionResult Display(int id)
+        public IActionResult Display(int id=1)
         {
             var model = Adtrackrepo.GetOneTrack(id);
             return View(model);
