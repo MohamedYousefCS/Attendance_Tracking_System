@@ -4,60 +4,39 @@
 }
 
 <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top:25px;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-
-    a {
-        color: black;
+    .addTrack a {
         text-decoration: none;
+        text-align: center;
+        background-color: darkred;
+        color: white;
+        font-size: 1rem;
+        padding: 5px 33px;
+        border-radius: 12px;
+        margin-bottom:50px;
+    }
+    a{
+        color:black;
+    }
+    a:hover{
+        color:darkred;
     }
 
-    .create{
-        margin-top:200px;
-        margin-left:1070px;
-        background-color:black;
-        color:white;
-        padding:10px 10px;
-        
-    }
-    .create:hover{
-        background-color:darkred;
-        color:white;
-       
-    }
-
-        a:hover {
-            text-decoration: none;
-            color:red;
-        }
 </style>
-<a asp-action="Create" asp-controller="Track" class="create" >Create Track</a>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Program Name</th>
-        <th>Capacity</th>
-        <th>Supervisor Name</th>
-        <th colspan="4">Actions</th>
-    </tr>
+
+<table class="table table-hover">
+    <thead style=" background-color: #7d2222;color: white;" class="border-2">
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Program Name</th>
+            <th>Capacity</th>
+            <th>Supervisor Name</th>
+            <th>View Instructor</th>
+            <th>View Student</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
     @foreach (var item in Model)
     {
         <tr>
@@ -73,6 +52,9 @@
         </tr>
     }
 </table>
+<div class="addTrack">
+    <a asp-action="Create" asp-controller="Track" class="create">Create Track <i class="fa-solid fa-plus"> </i></a>
+</div>
 
 
 

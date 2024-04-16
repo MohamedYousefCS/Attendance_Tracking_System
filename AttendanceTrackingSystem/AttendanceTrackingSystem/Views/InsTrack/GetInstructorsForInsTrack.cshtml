@@ -3,30 +3,18 @@
     ViewData["Title"] = "GetInstructorsForInsTrack";
 }
 
-<style>
-    .instructor-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
 
-        .instructor-table th, .instructor-table td {
-            border: 1px solid #ccc;
-            padding: 8px;
-        }
-
-        .instructor-table th {
-            background-color: #f2f2f2;
-        }
-</style>
 
 @if (Model != null && Model.Any())
 {
-    <table class="instructor-table">
+    <table class="table table-hover">
+        <thead style=" background-color: #7d2222;color: white;" class="border-2">
         <tr>
             <th> Name</th>
             <th>Gender</th>
             <th>Age</th>
         </tr>
+        </thead>
         @foreach (var instructor in Model)
         {
             DateTime birthDate = instructor.BirthDate;
