@@ -13,25 +13,38 @@ namespace AttendanceTrackingSystem.Controllers
             {
             PermissionreqRepo = _permissionreqRepo;
              }
-            public IActionResult Display()
-            {
-             var model = PermissionreqRepo.GetPermissions().Where(pr=>!pr.IsAccepted).ToList(); 
+        public IActionResult Display()
+        {
+            var model = PermissionreqRepo.GetPermissions().Where(pr =>pr.IsAccepted==IsAccepted.pending).ToList();
             return View(model);
-            }
-              [HttpPost]
+        }
+        [HttpPost]
         public IActionResult AcceptPermission(int id)
         {
-            var permissionRequest =  PermissionreqRepo.GetPermissionById(id);
+            var permissionRequest = PermissionreqRepo.GetPermissionById(id);
             if (permissionRequest == null)
             {
                 return NotFound();
             }
 
-            permissionRequest.IsAccepted = true;
+            permissionRequest.IsAccepted = IsAccepted.Accepted;
             PermissionreqRepo.savecahaanges();
 
-            return Ok();
+            return RedirectToAction("Display");
         }
-    
-}
+        public IActionResult RejectPermission(int id)
+        {
+            var permissionRequest = PermissionreqRepo.GetPermissionById(id);
+            if (permissionRequest == null)
+            {
+                return NotFound();
+            }
+
+            permissionRequest.IsAccepted = IsAccepted.Rejected;
+            PermissionreqRepo.savecahaanges();
+
+            return RedirectToAction("Display");
+        }
+
+    }
 }

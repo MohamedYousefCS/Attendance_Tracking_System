@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AttendanceTrackingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class m5 : Migration
+    public partial class updatedb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,9 +87,9 @@ namespace AttendanceTrackingSystem.Migrations
                 {
                     AttendanceID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeIn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeOut = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    TimeIn = table.Column<TimeOnly>(type: "time", nullable: false),
+                    TimeOut = table.Column<TimeOnly>(type: "time", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     IsPermission = table.Column<bool>(type: "bit", nullable: true),
                     PermissionType = table.Column<int>(type: "int", nullable: true),
@@ -236,7 +236,7 @@ namespace AttendanceTrackingSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     University = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Faculty = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Specialization = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Specialization = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     GraduationYear = table.Column<int>(type: "int", nullable: false),
                     trackId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -265,7 +265,7 @@ namespace AttendanceTrackingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IsAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    IsAccepted = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     studentId = table.Column<int>(type: "int", nullable: false)
                 },
