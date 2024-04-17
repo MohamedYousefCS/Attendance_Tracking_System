@@ -12,7 +12,6 @@ namespace AttendanceTrackingSystem.Controllers
         IAttendance Attendance;
         AdTrackRepo trackrepo;
         IInstructorRepo instructorRepo;
-        ITIDBContext db;
 
 
         public SecurityController(IStudentRepo stuRepo, IAttendance attendance, AdTrackRepo trackrepo, IInstructorRepo instructorRepo)
@@ -60,9 +59,27 @@ namespace AttendanceTrackingSystem.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult ConfirmStudentAttendace([FromRoute] int Id)
+
+
+
+        public IActionResult ConfirmStudentAttendace(int Id)
         {
+            // Get today's date
+            DateOnly todayDate = DateOnly.FromDateTime(DateTime.Today);
+
+            // Check if the record already exists for the given userId and date
+            Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
+
+            var isAdded=true;
+
+            if (existingAttendance != null)
+            {
+                // If the record already exists, return an error or handle as needed
+                isAdded = false; // Indicate that the record was not added
+                return Json(new { isAdded = isAdded });
+            }
+
+            DateTime.Now.Date.ToString("hh:mm:ss");
             DateTime studentDate = DateTime.Now;
             DateTime dateOnly = studentDate.Date;
             string studentTime = studentDate.ToString("hh:mm:ss");
@@ -77,7 +94,6 @@ namespace AttendanceTrackingSystem.Controllers
 
             if (comparison == 0)
             {
-
                 studentAttendance.Status = Status.Present;
             }
             else if (comparison > 0)
@@ -90,19 +106,18 @@ namespace AttendanceTrackingSystem.Controllers
             }
             Attendance.ConfirmStudentAttendance(studentAttendance);
 
-            return RedirectToAction("Index");
-
-
+             isAdded = true;
+            return Json(new { isAdded = isAdded });
         }
 
 
 
-        public IActionResult ConfirmStudentCheckout([FromRoute] int Id)
+        public IActionResult ConfirmStudentCheckout( int Id)
         {
 
             Attendance.ConfirmStudentCheckout(Id);
-
-            return RedirectToAction("Index");
+            var isAdded = true;
+            return Json(new { isAdded});
 
         }
 
