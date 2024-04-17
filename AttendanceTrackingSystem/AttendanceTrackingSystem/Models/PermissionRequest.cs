@@ -9,6 +9,13 @@ namespace AttendanceTrackingSystem.Models
         Late,
         Absence
     }
+
+    public enum IsAccepted
+    {
+        pending,
+        Rejected,
+        Accepted
+    }
     public class PermissionRequest
     {
         [Key]
@@ -22,15 +29,16 @@ namespace AttendanceTrackingSystem.Models
         [Required(ErrorMessage = "Reason is required.")]
         [MinLength(10)]
         [MaxLength(100)]
-        [RegularExpression(@"^(?![0-9])[a-zA-Z\s]*$", ErrorMessage = "Invalid Reason")]
+        [RegularExpression(@"^(?![0-9])[\p{L}\s]*$", ErrorMessage = "Invalid Reason")]
 
         public string Reason { get; set; }
 
         [Required(ErrorMessage = "IsAccepted is required.")]
-        public bool IsAccepted { get; set; }
+        public IsAccepted IsAccepted { get; set; }
 
         [Required(ErrorMessage = "Type is required.")]
         public RequestType Type { get; set; }
+
 
         //NV
         public int studentId { get; set; }
