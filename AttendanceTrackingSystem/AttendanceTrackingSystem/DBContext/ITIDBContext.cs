@@ -20,6 +20,7 @@ namespace AttendanceTrackingSystem.DBContext
         public DbSet <Track> tracks { get; set; }
         public DbSet <program> programs { get; set; }
         public DbSet <PermissionRequest> permissionRequests { get; set; }
+        public DbSet <Schedule> schedules { get; set; }
 
         
 
