@@ -1,65 +1,93 @@
 ﻿@using System.Reflection
-@model IEnumerable<Student>
+@using System.Text.RegularExpressions
+@model IEnumerable<object>
+
+
+
 
 @functions {
-
-    List<string> GetSelectedProperties(Student student, List<string> propertyNames)
+    List<string> GetSelectedProperties(object model, List<string> propertyNames)
     {
+        if (model == null)
+        {
+            throw new ArgumentNullException(nameof(model));
+        }
         List<string> values = new List<string>();
         foreach (var propertyName in propertyNames)
         {
-            var value = FindPropertyValue(student, propertyName);
+            var value = GetPropertyValue(model, propertyName);
             values.Add(value);
         }
         return values;
     }
 
-    string FindPropertyValue(object model, string propertyName)
+    private string GetPropertyValue(object model, string propertyName)
     {
-        var property = model.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-        if (property != null)
+        if (propertyName.Equals("Name", StringComparison.OrdinalIgnoreCase))
         {
-            return property.GetValue(model)?.ToString();
+            var firstNameProperty = model.GetType().GetProperty("Fname", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            var lastNameProperty = model.GetType().GetProperty("Lname", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            if (firstNameProperty != null && lastNameProperty != null)
+            {
+                var firstName = firstNameProperty.GetValue(model)?.ToString();
+                var lastName = lastNameProperty.GetValue(model)?.ToString();
+                if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+                    return $"{firstName} {lastName}";
+            }
         }
         else
         {
-            // Check if the model has a method to retrieve relations
-            var getRelationsMethod = model.GetType().GetMethod("GetRelations");
-            if (getRelationsMethod != null)
+            var property = model.GetType().GetProperties().FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            if (property != null)
             {
-                // Assuming GetRelations returns a dictionary or something similar
-                var relations = getRelationsMethod.Invoke(model, null) as IDictionary<string, object>;
-                if (relations != null)
+                return property.GetValue(model)?.ToString();
+            }
+            else
+            {
+                foreach (var navigationProperty in model.GetType().GetProperties().Where(p => !p.PropertyType.IsValueType && p.PropertyType != typeof(string)))
                 {
-                    foreach (var relationEntry in relations)
+                    var relatedEntity = navigationProperty.GetValue(model);
+                    if (relatedEntity != null)
                     {
-                        var relatedObject = relationEntry.Value;
-                        var relatedValue = FindPropertyValue(relatedObject, propertyName);
-                        if (relatedValue != null)
-                        {
-                            return relatedValue;
-                        }
+                        var value = GetPropertyValue(relatedEntity, propertyName);
+                        if (value != null)
+                            return value;
                     }
                 }
             }
-            return null; // Property not found
         }
+        return null;
+    }
+
+    private string SplitPropertyName(string propertyName)
+    {
+        return Regex.Replace(propertyName, "([a-z])([A-Z])", "$1 $2");
+    }
+
+    private string GetId(object model)
+    {
+        var idProperty = model.GetType().GetProperty("Id", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+        if (idProperty != null)
+        {
+            var id = idProperty.GetValue(model)?.ToString();
+            return id;
+        }
+        return null;
     }
 }
-
-
 
 <table id="dataTable" class="display">
     <thead>
         <tr>
             @foreach (var propertyName in (List<string>)ViewData["propertiesToShow"])
             {
-                <th>@propertyName</th>
+                <th>@SplitPropertyName(propertyName)</th>
             }
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
+
         @foreach (var item in Model)
         {
             <tr>
@@ -68,20 +96,172 @@
                     <td>@value</td>
                 }
                 <td class="lastTd">
-                    <a asp-action="showDetails" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-eye text-primary"></i></a> &nbsp;&nbsp;
-                    <a asp-action="Edit" asp-controller=" StudentAffairs" asp-route-id="item.Id"><i class="fa-solid fa-pen-to-square text-secondary"></i></a> &nbsp;&nbsp;
-                    <a href="#" onclick="confirmDelete(item.Id)"><i class="fa-solid fa-trash-can text-danger"></i></a>
+                    @if (ViewBag.Controller == "Employee" && ViewBag.Action == "index")
+                    {
 
+                        <a asp-action="Details" asp-controller="Employee" asp-route-id="@GetId(item)"><i class="fa-solid fa-eye text-primary"></i></a>
+                        @: &nbsp;&nbsp;
+                        <a asp-action="Update" asp-controller="Employee" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+
+                        @: &nbsp;&nbsp;
+                        <a asp-action="Delete" asp-controller="Employee" asp-route-id="@GetId(item)" onclick="return confirmDelete('@GetId(item)')">
+                            <i class="fa-solid fa-trash-can text-danger"></i>
+                        </a>
+                    }
+                    else if (ViewBag.Controller == "Security" && ViewBag.Action == "AllStudents" || ViewBag.Action == "AllInstructors")
+                    {
+
+                        <div class="row">
+                            
+                            @{
+                                var studentId = GetId(item); // Rename 'id' to 'studentId'
+                            }          <div class="col-md-4">
+@*                                     <form method="post" asp-action="ConfirmStudentAttendace" asp-controller="Security" asp-route-id="@studentId">
+ *@                                        <button type="submit" class="btn btn-success btn-sm confirmAtt" data-id="@studentId" @{
+                                            // if (DateTime.Now.TimeOfDay > new TimeSpan(1, 0, 0) & DateTime.Now.TimeOfDay < new TimeSpan(15, 0, 0))
+                                            // {
+                                            //         @:disabled
+                                            // }
+                                        }>
+                                            Confirm Attendance
+                                        </button>    
+@*                                     </form>
+ *@                                </div>
+                                <div class="col-md-4">
+                                    @* <form method="post" asp-action="ConfirmStudentCheckout" asp-controller="Security" asp-route-id="@studentId"> *@
+                                <button type="submit" class="btn btn-danger btn-sm leave " data-id="@studentId">Confirm Leave</button>
+                                    @* </form> *@
+                                </div>
+                            
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <a asp-action="Details" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-eye text-primary"></i></a> @:&nbsp;&nbsp;
+                        <a asp-action="Update" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+
+                        @: &nbsp;&nbsp;
+                        <a asp-action="Delete" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)" onclick="return confirmDelete('@GetId(item)')">
+                            <i class="fa-solid fa-trash-can text-danger"></i>
+                        </a>
+                    }
                 </td>
             </tr>
         }
+
     </tbody>
+
 </table>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    function confirmDelete(studentId) {
-        if (confirm('Are you sure you want to delete this student?')) {
-            window.location.href = '/StudentAffairs/delete/' + studentId;
+
+    function confirmDelete(employeeId) {
+        if (confirm("Are you sure you want to delete this employee?")) {
+            alert("The employee has been deleted successfully.");
+            return true;
+        } else {
+            return false;
         }
     }
+
+
+        // $(document).ready(() => {
+        //     $(".confirmAtt").each(function () {
+        //         let btnAtt = $(this);
+        //         let studentId = btnAtt.data('id');
+        //         console.log(studentId);
+        //         $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
+        //             .done(function (data) {
+        //                 if (!data.isAdded) {
+        //                     btnAtt.prop('disabled', true);
+        //                     console.log("confirmed");
+        //                 }
+        //             });
+
+        //         btnAtt.click(() => {
+        //             $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
+        //                 .done(function (data) {
+        //                     if (data.isAdded) {
+        //                         btnAtt.prop('disabled', true);
+        //                         console.log("confirmed");
+        //                     } else {
+        //                         btnAtt.prop('disabled', true);
+        //                     }
+        //                 });
+        //         });
+        //     });
+        // });
+
+
+        //////////////////////////////////////
+    $(document).ready(() => {
+        $(".confirmAtt").click(function () {
+            let btnAtt = $(this); // Select the clicked button
+            let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
+            console.log(studentId);
+            // Function to handle button click
+            function handleButtonClick() {
+                $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
+                    .done(function (data) {
+                        if (data.isAdded) {
+                            btnAtt.prop('disabled', true);
+                            console.log("confirmed");
+                        } else {
+                            btnAtt.prop('disabled', true);
+                        }
+                    });
+            }
+
+            // Initial check on page load
+            $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
+                .done(function (data) {
+                    if (!data.isAdded) {
+                        btnAtt.prop('disabled', true);
+                        console.log("confirmed");
+                    }
+                });
+
+            // Call the handleButtonClick function when the button is clicked
+            handleButtonClick();
+        });
+    });
+
+
+
+    $(document).ready(() => {
+        $(".leave").click(function () {
+            let btn = $(this); // Select the clicked button
+            let studentId = btn.data('id'); // Get the student ID associated with the clicked button
+            console.log(studentId);
+            // Function to handle button click
+            function handleButtonClick() {
+                $.get('@Url.Action("ConfirmStudentCheckout", "Security")', { Id: studentId })
+                    .done(function (data) {
+                        if (data.isAdded) {
+                            btn.prop('disabled', true);
+                            console.log("confirmed");
+                        } else {
+                            btn.prop('disabled', true);
+                        }
+                    });
+            }
+
+            // Initial check on page load
+            $.get('@Url.Action("ConfirmStudentCheckout", "Security")', { Id: studentId })
+                .done(function (data) {
+                    if (!data.isAdded) {
+                        btn.prop('disabled', true);
+                        console.log("confirmed");
+                    }
+                });
+
+            // Call the handleButtonClick function when the button is clicked
+            handleButtonClick();
+        });
+    });
+
+
 </script>

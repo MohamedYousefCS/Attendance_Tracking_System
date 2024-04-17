@@ -1,0 +1,52 @@
+﻿@model Track
+@{
+    ViewData["Title"] = "Display";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    a{
+        color:black;
+    }
+    a:hover{
+        color:darkred;
+    }
+   
+</style>
+
+<table class="table table-hover">
+    <thead style=" background-color: #7d2222;color: white;" class="border-2">
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Capacity</th>
+        <th>View Instructor</th>
+        <th>View Student</th>
+        <th>Edit</th>
+    </tr>
+  </thead>
+        <tr>
+            <td>@Model.TrackName</td>
+            <td>@Model.Status</td>
+           
+            <td>@Model.Capacity</td>
+          
+  
+            <td><a asp-action="GetInstructorsForInsTrack" asp-controller="InsTrack" asp-route-id="@Model.TrackId"> <i class="fa-solid fa-eye"></i>  Instructor</a></td>
+            <td><a asp-action="showstudentinInsTrack" asp-controller="InsTrack" asp-route-id="@Model.TrackId"><i class="fa-solid fa-eye"></i>       Students</a></td>
+        <td><a asp-action="Edit" asp-controller="InsTrack" asp-route-id="@Model.TrackId"> <i class="fa-regular fa-pen-to-square"></i></a></td>
+            
+        </tr>
+    
+</table>
+
+
+
+
+

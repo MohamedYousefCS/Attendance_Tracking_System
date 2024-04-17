@@ -1,0 +1,124 @@
+﻿@model IEnumerable<PermissionRequest>
+@{
+    ViewData["Title"] = "Display";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    /* Style for the permission table */
+    .permission-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        /* Style for table headers */
+        .permission-table th {
+            background-color: #0b0d1b;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+
+        /* Style for table rows */
+        .permission-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+   .accept-btn{
+       color:forestgreen;
+        border: 1px solid forestgreen !important;
+   }
+   .reject-btn{
+       color:darkred;
+        border: 1px solid darkred !important;
+   }
+
+    .accept-btn:hover {
+        color: white;
+        background-color: forestgreen;
+        
+    }
+
+    .reject-btn:hover {
+        color: white;
+        background-color: darkred;
+
+    }
+
+   
+    .accept-btn,
+    .reject-btn {
+        background-color:white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<table class="permission-table">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Track</th>
+            <th>Date</th>
+            <th>Reason</th>
+            <th>Type</th>
+            <th>Permission Request</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student.Fname @item.Student.Lname</td>
+                <td>@item.Student.Email</td>
+                <td>@item.Student.Track.TrackName</td>
+                <td>@item.Date</td>
+                <td>@item.Reason</td>
+                <td>@item.Type</td>
+                <td>
+                    <form id="acceptForm_@item.RequestID" asp-action="AcceptPermission" asp-route-id="@item.RequestID">
+                        <button type="submit" class="btn accept-btn">
+                            Accept <i class="fa-regular fa-circle-check"></i>
+                        </button>
+                        <button type="submit" class="btn reject-btn">
+                            Reject <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".accept-btn").click(function (e) {
+                e.preventDefault();
+                var form = $(this).closest("form");
+                var url = form.attr("action");
+                $.post(url, form.serialize(), function () {
+                    form.closest("tr").fadeOut();
+                });
+            });
+
+            $(".reject-btn").click(function (e) {
+                e.preventDefault();
+                $(this).closest("tr").fadeOut();
+            });
+        });
+    </script>
+}

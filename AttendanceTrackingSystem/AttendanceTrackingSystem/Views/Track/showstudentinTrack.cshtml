@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "showstudentinTrack";
+}
+
+
+
+<h3>showstudentinTrack</h3>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-hover">
+        <thead style=" background-color: #7d2222;color: white;" class="border-2">
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>University</th>
+            <th>Faculty</th>
+            <th>Specialization</th>
+        </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            DateTime birthDate = item.BirthDate;
+            int age = DateTime.Today.Year - birthDate.Year;
+            if (birthDate.Date > DateTime.Today.AddYears(-age))
+            {
+                age--;
+            }
+
+            <tr>
+                <td class="student-name">@item.Fname @item.Lname</td>
+                <td>@item.gender</td>
+                <td>@age</td>
+                <td>@item.University</td>
+                <td>@item.Faculty</td>
+                <td>@item.Specialization</td>
+                
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No Student found for this track.</p>
+}

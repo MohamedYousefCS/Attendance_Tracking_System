@@ -1,0 +1,161 @@
+﻿@model IEnumerable<StudentWithAttendance>
+
+@{
+    ViewData["Title"] = "GetStudentsWithAttendanceForSupervisor";
+    var instructorFirstName = Model.FirstOrDefault()?.Student?.Track?.Instructor?.Fname;
+    var Trackname = Model.FirstOrDefault()?.Student?.Track?.TrackName;
+
+   
+}
+
+<style>
+ 
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+  
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type=date] {
+        padding: 6px 10px;
+        margin-right: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+
+    p {
+        color: #888;
+    }
+
+
+    h1 {
+        color: #333333;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+
+
+
+    .search-container {
+        margin-bottom: 20px;
+        display: flex; 
+    }
+
+        .search-container input[type="text"],
+        .search-container input[type="date"] {
+            padding: 12px;
+            width: 50%; 
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            margin-left:5px;
+        }
+
+            .search-container input[type="text"]:focus,
+            .search-container input[type="date"]:focus {
+                outline: none;
+                border-color: #0066ff;
+            }
+
+</style>
+@if (!string.IsNullOrEmpty(instructorFirstName))
+{
+    <div style="display: inline-block; margin-bottom:20px; margin-top:10px">
+        <h1 style="display: inline;">Welcome @instructorFirstName</h1>
+        <h1 style="display: inline; margin-left:750px">TrackName :@Trackname</h1>
+    </div>
+}
+
+<div class="search-container">
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for names...">
+    <input type="date" id="searchDate" onchange="searchTableByDate()" placeholder="Search by date">
+</div>
+
+<table class="table table-hover">
+    <thead style=" background-color: #7d2222;color: white;" class="border-2">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>TimeIn</th>
+        <th>TimeOut</th>
+        <th>Status</th>
+        <th>Permission</th>
+        <th>Permission Type</th>
+    </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        @foreach (var attendance in item.Attendances)
+        {
+            <tr>
+                <td>@item.Student.Fname @item.Student.Lname</td>
+                <td>@item.Student.Email</td>
+                <td>@attendance.Date.ToString("yyyy-MM-dd")</td>
+                <td>@attendance.TimeIn.ToString("HH:mm")</td>
+                <td>@(attendance.TimeOut?.ToString("HH:mm") ?? "N/A")</td>
+                <td>@attendance.Status</td>
+                <td>@(attendance.IsPermission == true ? "with Permission" : "without Permission")</td>
+                <td>@attendance.PermissionType</td>
+            </tr>
+        }
+    }
+</table>
+
+
+<script>
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("studentsTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function searchTableByDate() {
+        var inputDate = document.getElementById("searchDate").value;
+        var table = document.getElementById("studentsTable");
+        var rows = table.getElementsByTagName("tr");
+        for (var i = 1; i < rows.length; i++) {
+            var row = rows[i];
+            var dateCell = row.getElementsByTagName("td")[2]; 
+            var dateValue = dateCell.textContent || dateCell.innerText;
+            if (dateValue.includes(inputDate)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+    }
+</script>

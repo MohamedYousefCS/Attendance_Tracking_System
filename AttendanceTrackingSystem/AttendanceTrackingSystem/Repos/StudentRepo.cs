@@ -10,7 +10,6 @@ namespace AttendanceTrackingSystem.Repos
 {
     public interface IStudentRepo
     {
-
         public List<Student> GetAllStudents();
         public void AddStudent(Student student);
         public Student GetStudentById(int id);
@@ -107,7 +106,8 @@ namespace AttendanceTrackingSystem.Repos
         }
 
 
-        public void ImportDataFromExcel(string filePath)
+
+            public void ImportDataFromExcel(string filePath)
         {
             using (ExcelPackage package = new ExcelPackage(new FileInfo(filePath)))
             {
