@@ -1,0 +1,59 @@
+﻿
+@model IEnumerable<AttendanceTrackingSystem.Models.Attendance>
+@{
+    ViewData["Title"] = "_AttendanceTable";
+}
+
+
+
+<table class="table table-responsive table-borderless">
+    <thead>
+        <tr class="bg-light">
+            <th>Date</th>
+            <th>Status</th>
+            <th>Is Permission</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="4" style="text-align:center">معندكش غياب والله لسه ...شكلك جديد عندنا </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var day in Model)
+            {
+                <tr>
+                    <td>@day.Date</td>
+                    @if (day.Status == 0)
+                    {
+                        <td><i class="fa fa-check-circle-o green"></i><span class="ms-1">Present</span></td>
+                    }
+                    else if ((int)day.Status == 1)
+                    {
+                        <td><i class="fa fa-dot-circle-o text-danger"></i><span class="ms-1">Absent</span></td>
+                    }
+                    else
+                    {
+                        <td><i class="fa fa-dot-circle-o text-warning"></i><span class="ms-1">Late</span></td>
+                    }
+
+                    @if (day.PermissionType == null && day.IsPermission == null)
+                    {
+                        <td><i class="fa-solid fa-window-minimize"></i></td>
+                    }
+                    else if (day.PermissionType == PermissionType.Excused || day.IsPermission == true)
+                    {
+                        <td>yes</td>
+                    }
+                    else if (day.IsPermission == null || day.IsPermission == false)
+                    {
+                        <td>no</td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
