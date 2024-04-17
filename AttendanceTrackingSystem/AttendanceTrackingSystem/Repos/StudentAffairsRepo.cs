@@ -1,4 +1,7 @@
 ﻿using AttendanceTrackingSystem.DBContext;
+using AttendanceTrackingSystem.Models;
+using AttendanceTrackingSystem.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace AttendanceTrackingSystem.Repos
 {
@@ -7,7 +10,11 @@ namespace AttendanceTrackingSystem.Repos
     {
 
       // public IStudentAffairsRepo GetAllStudents();
-       //public IStudentAffairsRepo GetById(int id);
+       //public IStudentAffairsRepo GetById(int id);'
+       public Task<AttendanceViewModel> ViewAllAttendance(DateOnly date);
+        public Task<AttendanceViewModel> ViewAttendance(Role role, DateOnly date);
+
+
 
 
     }
@@ -19,6 +26,25 @@ namespace AttendanceTrackingSystem.Repos
         {
             db = _db;
         }
+        public async Task<AttendanceViewModel> ViewAllAttendance(DateOnly date)
+        {
+
+            AttendanceViewModel attendance = new AttendanceViewModel();
+            var users = await db.users.Include(u => u.Attendances).ToListAsync();
+            attendance.Present = users.Where(u => u.Attendances.Any(a => a.Date == date && a.Status != Status.Absent)).ToList();
+            attendance.Absent = users.Where(u => !u.Attendances.Any(a => a.Date == date) || u.Attendances.Any(a => a.Date == date && a.Status == Status.Absent)).ToList();
+            return attendance;
+        }
+        public async Task<AttendanceViewModel> ViewAttendance(Role role, DateOnly date)
+        {
+            AttendanceViewModel attendance = new AttendanceViewModel();
+            var users = await db.users.Include(u => u.Attendances).Where(u => u.Role == role).ToListAsync();
+            attendance.Present = users.Where(u => u.Attendances.Any(a => a.Date == date && a.Status != Status.Absent)).ToList();
+            attendance.Absent = users.Where(u => !u.Attendances.Any(a => a.Date == date) || u.Attendances.Any(a => a.Date == date && a.Status == Status.Absent)).ToList();
+            return attendance;
+        }
+
+
 
 
     }

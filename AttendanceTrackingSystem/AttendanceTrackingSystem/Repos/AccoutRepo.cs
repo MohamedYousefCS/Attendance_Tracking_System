@@ -10,8 +10,14 @@ namespace AttendanceTrackingSystem.Repos
     {
         UserViewModel AuthenticateUser(UserViewModel login);
         void ChangePassword(string email, string newPassword);
-        UserViewModel GetUserById(int id);
         User GetUserByEmail(string email);
+        User GetUserById(int id);
+        public UserViewModel GetUserByIdReturnViewModel(int id);
+        Student GetStudentById(int id);
+        Instructor GetInstructorById(int id);
+        void UpdateUser(User user);
+        void UpdateStudent(Student student);
+        void UpdateInstructor(Instructor instructor);
     }
 
     public class AccountRepo : IAccountRepo
@@ -38,7 +44,7 @@ namespace AttendanceTrackingSystem.Repos
             }
 
             var name = user.Fname + " " + user.Lname;
-            return new UserViewModel { Email = login.Email, Password = login.Password, Role = user.Role.ToString(), Name = name };
+            return new UserViewModel { Email = login.Email, Password = login.Password, Role = user.Role.ToString(), Name = name, Id = user.Id};
         }
 
         public void ChangePassword(string email, string newPassword)
@@ -51,7 +57,7 @@ namespace AttendanceTrackingSystem.Repos
             }
         }
 
-        public UserViewModel GetUserById(int id)
+        public UserViewModel GetUserByIdReturnViewModel(int id)
         {
             if (db.users.Any(u => u.Id == id))
             {
@@ -66,5 +72,39 @@ namespace AttendanceTrackingSystem.Repos
         {
             return db.users.FirstOrDefault(u => u.Email == email);
         }
+
+        public Student GetStudentById(int id)
+        {
+            return db.students.FirstOrDefault(s => s.Id == id);
+        }
+
+        public Instructor GetInstructorById(int id)
+        {
+            return db.instructors.FirstOrDefault(i => i.Id == id);
+        }
+
+        public User GetUserById(int id)
+        {
+            return db.users.FirstOrDefault(i => i.Id == id);
+        }
+
+        public void UpdateUser(User user)
+        {
+            db.users.Update(user);
+            db.SaveChanges();
+        }
+
+        public void UpdateStudent(Student student)
+        {
+            db.students.Update(student);
+            db.SaveChanges();
+        }
+
+        public void UpdateInstructor(Instructor instructor)
+        {
+            db.instructors.Update(instructor);
+            db.SaveChanges();
+        }
+
     }
 }
