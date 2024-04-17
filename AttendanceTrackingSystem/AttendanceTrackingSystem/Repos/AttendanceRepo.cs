@@ -48,7 +48,7 @@ namespace AttendanceTrackingSystem.Repos
             return db.attendances.FirstOrDefault(a => a.userId == id && a.Date == date);
 
         }
-            public void ConfirmStudentCheckout(int Id)
+        public void ConfirmStudentCheckout(int Id)
         {
 
             var studentAttendance = GetById(Id);
