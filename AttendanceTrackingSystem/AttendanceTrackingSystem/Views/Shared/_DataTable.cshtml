@@ -171,7 +171,7 @@
         // $(document).ready(() => {
         //     $(".confirmAtt").each(function () {
         //         let btnAtt = $(this);
-        //         let studentId = btnAtt.data('id');
+            // let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
         //         console.log(studentId);
         //         $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
         //             .done(function (data) {
@@ -197,24 +197,58 @@
 
 
         //////////////////////////////////////
+    var btn = $(".confirmAtt");
+    var btnLeave = $('.leave');
+    var studentId = btn.data('id');
+
+    function handleReload(btn, studentId, btnLeave) {
+
+        $.get('@Url.Action("CheckStudentAttendace", "Security")', { Id: studentId })
+            .done(function (data) {
+                if (data.isAdded == 0) {
+                    btn.prop('disabled', true);
+                    btnLeave.prop('disabled', false);
+                    console.log("confirmed");
+
+                } else if (data.isAdded == 1) {
+                    btn.prop('disabled', false);
+                    btnLeave.prop('disabled', true);
+                    console.log("No Records")
+                }
+                else{
+                    btnLeave.prop('disabled', true);
+                    btn.prop('disabled', true);
+
+
+                }
+            });
+    }
+    function handleButtonClick(btn, studentId, btnLeave) {
+        
+        $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
+            .done(function (data) {
+                if (!data.isAdded) {
+                    btn.prop('disabled', true);
+                    btnLeave.prop('disabled', false);
+                    console.log("confirmed");
+
+                } else {
+                    btn.prop('disabled', false);
+                    btnLeave.prop('disabled', true);
+                    console.log("No Records")
+
+
+                }
+            });
+    }
     $(document).ready(() => {
+        handleReload(btn, studentId, btnLeave);
+
         $(".confirmAtt").click(function () {
             let btnAtt = $(this); // Select the clicked button
             let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
-            console.log(studentId);
             // Function to handle button click
-            function handleButtonClick() {
-                $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
-                    .done(function (data) {
-                        if (data.isAdded) {
-                            btnAtt.prop('disabled', true);
-                            console.log("confirmed");
-                        } else {
-                            btnAtt.prop('disabled', true);
-                        }
-                    });
-            }
-
+            
             // Initial check on page load
             $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
                 .done(function (data) {
@@ -225,7 +259,7 @@
                 });
 
             // Call the handleButtonClick function when the button is clicked
-            handleButtonClick();
+            handleButtonClick(btnAtt, studentId, btnLeave);
         });
     });
 
