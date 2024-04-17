@@ -14,14 +14,8 @@
 
          int CalculateAge(DateTime birthDate)
         {
-            // Calculate age based on current date
             DateTime today = DateTime.Today;
             int age = today.Year - birthDate.Year;
-
-            // // Subtract a year if the birthdate hasn't occurred yet this year
-            // if (birthDate.Date > today.AddYears(-age))
-            //     age--;
-
             return age;
         }
     
