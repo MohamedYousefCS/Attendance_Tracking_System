@@ -59,7 +59,37 @@ namespace AttendanceTrackingSystem.Controllers
         }
 
 
+        public IActionResult CheckStudentAttendace(int Id)
+        {
+            DateOnly todayDate = DateOnly.FromDateTime(DateTime.Today);
 
+            // Check if the record already exists for the given userId and date
+            Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
+
+            int isAdded;
+            if (existingAttendance == null)
+            {
+                isAdded = 1; // Indicate that the record was not added
+                return Json(new { isAdded = isAdded });
+            }
+
+            if (existingAttendance.TimeIn != null && existingAttendance.TimeOut == null)
+            {
+                Console.WriteLine(existingAttendance);
+                // If the record already exists, return an error or handle as needed
+                isAdded = 0; // Indicate that the record was not added
+                return Json(new { isAdded = isAdded });
+            }
+            if(existingAttendance.TimeOut == null)
+            {
+                isAdded = 1;
+                return Json(new { isAdded = isAdded });
+            }
+            else { 
+            isAdded = 2;
+            return Json(new { isAdded = isAdded });
+            }
+        }
 
 
         public IActionResult ConfirmStudentAttendace(int Id)
@@ -70,10 +100,15 @@ namespace AttendanceTrackingSystem.Controllers
             // Check if the record already exists for the given userId and date
             Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
 
+<<<<<<< HEAD
             var isAdded=false;
+=======
+            bool isAdded;
+>>>>>>> b2f95b2cf315c84c31033ddd012f8f6a6764a370
 
             if (existingAttendance != null)
             {
+                Console.WriteLine(existingAttendance);
                 // If the record already exists, return an error or handle as needed
                 isAdded = true; // Indicate that the record was not added
                 return Json(new { isAdded = isAdded });
@@ -83,7 +118,7 @@ namespace AttendanceTrackingSystem.Controllers
             DateTime studentDate = DateTime.Now;
             DateTime dateOnly = studentDate.Date;
             string studentTime = studentDate.ToString("hh:mm:ss");
-            string correctTime = String.Format("09:00:00");
+            string correctTime = String.Format("01:00:00");
             Attendance studentAttendance = new Attendance() { Date = DateOnly.Parse(dateOnly.ToString("yyyy-MM-dd")), TimeIn = TimeOnly.Parse(studentTime), userId = Id };
 
 
