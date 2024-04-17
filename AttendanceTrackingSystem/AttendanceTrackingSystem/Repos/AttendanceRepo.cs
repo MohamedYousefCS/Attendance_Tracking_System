@@ -1,6 +1,7 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace AttendanceTrackingSystem.Repos
 {
@@ -9,6 +10,8 @@ namespace AttendanceTrackingSystem.Repos
         public void ConfirmStudentAttendance(Attendance studentAttendance);
 
         public Attendance GetById(int id);
+
+        Attendance GetByIdAndDate(int id, DateOnly date);
 
         public void ConfirmStudentCheckout(int Id);
 
@@ -39,7 +42,13 @@ namespace AttendanceTrackingSystem.Repos
 
         }
 
-        public void ConfirmStudentCheckout(int Id)
+
+        public Attendance GetByIdAndDate(int id, DateOnly date)
+        {
+            return db.attendances.FirstOrDefault(a => a.userId == id && a.Date == date);
+
+        }
+            public void ConfirmStudentCheckout(int Id)
         {
 
             var studentAttendance = GetById(Id);
@@ -47,13 +56,14 @@ namespace AttendanceTrackingSystem.Repos
             if (studentAttendance != null)
             {
                 studentAttendance.TimeOut = TimeOnly.FromDateTime(DateTime.Now);
-                string time12HourFormat = studentAttendance.TimeOut.Value.ToString("hh:mm:ss");
-
+                string time12HourFormat = studentAttendance.TimeOut.Value.ToString("hh:mm:ss tt");
 
                 db.SaveChanges();
             }
 
         }
+
+
 
 
     }

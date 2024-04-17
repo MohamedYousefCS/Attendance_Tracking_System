@@ -18,7 +18,7 @@ namespace AttendanceTrackingSystem.Repos
         public void updateInstructor(Instructor instructor);
         public void AssignInstructorToTrack(int trackId, int instructorId);
         public User  GetInstructorByID(int id);
-
+        public void AddSchedule(Schedule schedule);
     }
     public class InstructorRepo : IInstructorRepo
     {
@@ -91,6 +91,11 @@ namespace AttendanceTrackingSystem.Repos
         public User GetInstructorByID(int id)
         {
             return db.instructors.FirstOrDefault(a => a.Id == id);
+        }
+        public void AddSchedule(Schedule schedule)
+        {
+            db.schedules.Add(schedule);
+            db.SaveChanges();
         }
     }
 

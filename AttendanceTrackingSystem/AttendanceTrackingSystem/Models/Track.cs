@@ -35,6 +35,7 @@ namespace AttendanceTrackingSystem.Models
         public virtual Instructor Instructor { get; set; }
         public virtual List<Instructor> Instructors { get; set; }=new List<Instructor>();
         public virtual List<Student> Students { get; set; }=new List<Student>();
+        public virtual List<Schedule> Schedules { get; set; }=new List<Schedule>();
 
         
     }

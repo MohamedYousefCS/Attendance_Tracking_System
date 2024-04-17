@@ -18,5 +18,6 @@ namespace AttendanceTrackingSystem.Models
         //NV
         public virtual Track Track { get; set; }
         public virtual List<Track> Tracks { get; set; }=new List<Track>();
+        public virtual List<Schedule> Schedules { get; set; }=new List<Schedule>();
     }
 }
