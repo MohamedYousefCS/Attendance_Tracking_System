@@ -95,8 +95,8 @@ namespace AttendanceTrackingSystem.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("bit");
+                    b.Property<int>("IsAccepted")
+                        .HasColumnType("int");
 
                     b.Property<string>("Reason")
                         .IsRequired()
