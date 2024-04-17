@@ -55,7 +55,7 @@ namespace AttendanceTrackingSystem.Controllers
             return View(model);
         }
 
-        public ActionResult AttendanceData(DateTime date, DateTime date2)
+        public ActionResult AttendanceData(DateOnly date, DateOnly date2)
         {
             var attendances = stuRepo.GetAllAttendance(date, date2);
             return PartialView("_AttendanceTable", attendances);

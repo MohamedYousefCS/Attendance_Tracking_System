@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AttendanceTrackingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedb : Migration
+    public partial class createDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -230,6 +230,35 @@ namespace AttendanceTrackingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "schedules",
+                columns: table => new
+                {
+                    ScheduleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Day = table.Column<int>(type: "int", nullable: false),
+                    StartPeriod = table.Column<int>(type: "int", nullable: false),
+                    EndPeriod = table.Column<int>(type: "int", nullable: false),
+                    TrackID = table.Column<int>(type: "int", nullable: false),
+                    InstructorID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_schedules", x => x.ScheduleID);
+                    table.ForeignKey(
+                        name: "FK_schedules_instructors_InstructorID",
+                        column: x => x.InstructorID,
+                        principalTable: "instructors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_schedules_tracks_TrackID",
+                        column: x => x.TrackID,
+                        principalTable: "tracks",
+                        principalColumn: "TrackId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "students",
                 columns: table => new
                 {
@@ -301,6 +330,16 @@ namespace AttendanceTrackingSystem.Migrations
                 column: "studentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_schedules_InstructorID",
+                table: "schedules",
+                column: "InstructorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_schedules_TrackID",
+                table: "schedules",
+                column: "TrackID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_students_trackId",
                 table: "students",
                 column: "trackId");
@@ -334,6 +373,9 @@ namespace AttendanceTrackingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "permissionRequests");
+
+            migrationBuilder.DropTable(
+                name: "schedules");
 
             migrationBuilder.DropTable(
                 name: "security");

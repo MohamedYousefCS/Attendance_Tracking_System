@@ -21,7 +21,7 @@ namespace AttendanceTrackingSystem.Repos
         public Dictionary<string, int> GetAbsentAttendanceSummary(int userId);
 
         public int calcTotalDegree(int userId);
-        public List<Attendance> GetAllAttendance(DateTime date, DateTime date2);
+        public List<Attendance> GetAllAttendance(DateOnly date, DateOnly date2);
         public List<PermissionRequest> GetAllPermissionRequest(int studentId);
         public void DeletePermission(int RequestID);
         public void AddPermission(PermissionRequest PR);
@@ -161,7 +161,7 @@ namespace AttendanceTrackingSystem.Repos
             // Count the number of late days with permission
             int lateDaysWithPermission = db.attendances
                 .Where(a => a.userId == userId && a.Status == Status.Late && a.IsPermission == true)
-                .Select(a => a.Date.Date)
+                .Select(a => a.Date)
                 .Distinct()
                 .Count();
 
@@ -170,7 +170,7 @@ namespace AttendanceTrackingSystem.Repos
             // Count the number of late days without permission
             int lateDaysWithoutPermission = db.attendances
                 .Where(a => a.userId == userId && a.Status == Status.Late && a.IsPermission != true)
-                .Select(a => a.Date.Date)
+                .Select(a => a.Date)
                 .Distinct()
                 .Count();
 
@@ -185,7 +185,7 @@ namespace AttendanceTrackingSystem.Repos
             // Count the number of absent days with permission
             int absentDaysWithPermission = db.attendances
                 .Where(a => a.userId == userId && a.Status == Status.Absent && a.IsPermission == true)
-                .Select(a => a.Date.Date)
+                .Select(a => a.Date)
                 .Distinct()
                 .Count();
 
@@ -194,7 +194,7 @@ namespace AttendanceTrackingSystem.Repos
             // Count the number of absent days without permission
             int absentDaysWithoutPermission = db.attendances
                 .Where(a => a.userId == userId && a.Status == Status.Absent && a.IsPermission != true)
-                .Select(a => a.Date.Date)
+                .Select(a => a.Date)
                 .Distinct()
                 .Count();
 
@@ -229,7 +229,7 @@ namespace AttendanceTrackingSystem.Repos
         }
 
 
-        public List<Attendance> GetAllAttendance(DateTime date, DateTime date2)
+        public List<Attendance> GetAllAttendance(DateOnly date, DateOnly date2)
         {
             return db.attendances.Where(a => a.Date >= date && a.Date <= date2).ToList();
         }
