@@ -1,7 +1,10 @@
-﻿using AttendanceTrackingSystem.Repos;
+﻿using AttendanceTrackingSystem.Models;
+using AttendanceTrackingSystem.Repos;
 using AttendanceTrackingSystem.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -123,56 +126,117 @@ namespace AttendanceTrackingSystem.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        //public IActionResult Profile()
-        //{
-        //    var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var user = accountRepo.GetUserByEmail(userEmail);
+        public IActionResult Profile()
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = accountRepo.GetUserByEmail(userEmail);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var viewModel = new UserViewModel
-        //    {
-        //        Id = user.Id,
-        //        Email = user.Email,
-        //        Name = user.Name,
-        //        Role = user.Role,
-        //        // Add other properties as needed
-        //    };
+            switch (user.Role)
+            {
+                case Role.Student:
+                    var student = accountRepo.GetStudentById(user.Id);
+                    if (student != null)
+                    {
+                        return RedirectToAction("StudentProfile", student);
+                    }
+                    break;
+                case Role.Instructor:
+                    var instructor = accountRepo.GetInstructorById(user.Id);
+                    if (instructor != null)
+                    {
+                        return RedirectToAction("InstructorProfile", new { id = user.Id });
+                    }
+                    break;
+                default:
+                    return RedirectToAction("UserProfile", new { id = user.Id });
+            }
+            return RedirectToAction("UserProfile", new { id = user.Id });
+        }
 
-        //    return View(viewModel);
-        //}
+        public IActionResult StudentProfile(Student student)
+        {
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
+        }
 
-        //[HttpPost]
-        //public IActionResult Profile(UserViewModel model)
-        //{
-        //    // Check if the model is valid
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model); // Return the same view with validation errors
-        //    }
+        public IActionResult InstructorProfile(Instructor instructor)
+        {
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+            return View(instructor);
+        }
 
-        //    // Retrieve the currently logged-in user's information
-        //    var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var user = accountRepo.GetUserByEmail(userEmail);
+        public IActionResult UserProfile(User user)
+        {
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
 
-        //    // Check if the user exists
-        //    if (user == null)
-        //    {
-        //        return NotFound(); // Or return an appropriate error view
-        //    }
+        [HttpPost]
+        public IActionResult UpdateStudentProfile(int id )
+        {
+            var student = accountRepo.GetStudentById(id);
+            if (!ModelState.IsValid)
+            {
+                return View(student);
+            }
+            if (student == null)
+            {
+                return NotFound();
+            }            
+            accountRepo.UpdateStudent(student);
+            return RedirectToAction("Index", "Student", new { id = student.Id });
+        }
 
-        //    // Update the user's data with the data from the submitted form
-        //    user.Name = model.Name;
-        //    // Update other properties as needed
+        [HttpPost]
+        public IActionResult UpdateInstructorProfile(int id)
+        {
+            var instructor = accountRepo.GetInstructorById(id);
+            if (!ModelState.IsValid)
+            {
+                return View(instructor);
+            }
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+            accountRepo.UpdateInstructor(instructor);
+            return RedirectToAction("Index", "Instructor", new { id = instructor.Id });
+        }
+        [HttpPost]
+        public IActionResult UpdateUserProfile(int id)
+        {
+            var user = accountRepo.GetUserById(id);
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+            if (user == null)
+            {
+                return NotFound();
+            }
+            accountRepo.UpdateUser(user);
+            return RedirectToAction("Index", "Instructor", new { id = user.Id });
+        }
 
-        //    // Save the changes to the user's data
-        //    accountRepo.UpdateUser(user);
-
-        //    // Redirect to a confirmation page or refresh the profile page
-        //    return RedirectToAction(nameof(Profile));
-        //}
-
+        private static void CommonPropertiesToBeChanged(User user, User target)
+        {
+            target.Fname = user.Fname;
+            target.Lname = user.Lname;
+            target.Email = user.Email;
+            target.Mobile = user.Mobile;
+        }
     }
 }
