@@ -1,0 +1,76 @@
+﻿@model Schedule
+@{
+    ViewData["Title"] = "Schedule";
+    Layout = "~/Views/Shared/_instructorLayout.cshtml";
+    int TrackID = (int)ViewData["TrackID"];
+    int InstructorID = (int)ViewData["InstructorID"];
+}
+
+<h1>Schedule</h1>
+
+<div class="text-center">
+    <h1>Schedule</h1>
+</div>
+<form method="post" asp-controller="Instructor" asp-action="AddSchedule">
+    <!-- Hidden fields for IDs -->
+    <input asp-for="@TrackID" hidden />
+    <input asp-for="@InstructorID" hidden />
+
+    <!-- Schedule properties -->
+    <table class="table table-active">
+        <tr>
+            <td>
+                <label asp-for="Day">Day</label>
+            </td>
+            <td>
+                <input asp-for="Day" type="number" class="form-control" min="1" max="7" required />
+                <span asp-validation-for="Day" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="StartPeriod">Start Period</label>
+            </td>
+            <td>
+                <input id="StartPeriod"  asp-for="StartPeriod" type="number" class="form-control" required />
+                <span asp-validation-for="StartPeriod" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="E" asp-for="EndPeriod">End Period</label>
+            </td>
+            <td>
+                <input asp-for="EndPeriod" type="number" class="form-control" required />
+                <span asp-validation-for="EndPeriod" class="text-danger"></span>
+            </td>
+        </tr>
+    </table>
+
+    <button id="submit" type="submit" class="btn btn-lg btn-primary float-end">Submit</button>
+</form>
+
+@section Scripts{
+
+<script>
+    $(document).ready(
+        function () {
+            $('#submit').on('click', function () {
+                var startPeriod = $('#StartPeriod').val();
+                let endPeriod = $('#EndPeriod').val();
+                let day = $('#Day').val();
+                // create ajax call for createSchedule
+                console.log(day);
+                $.ajax({
+                    url: '/Instructor/AddSchedule',
+                    type: 'POST',
+                    data: { StartPeriod: startPeriod, EndPeriod: endPeriod, Day: day, },
+                    success: function (response) {
+                        alert("Added successfully");
+                    }
+
+                });
+            });
+        });
+</script>
+}
