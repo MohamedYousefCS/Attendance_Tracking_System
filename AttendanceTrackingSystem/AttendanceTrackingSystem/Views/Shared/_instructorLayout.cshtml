@@ -1,4 +1,28 @@
-﻿<!DOCTYPE html>
+﻿<div class="row mt-2 mb-2">
+    <div class="container-fluid col" id="leftSidebarLinks">
+        <i class=" fa-solid fa-book fs-5 m-2" style="color: #ffffff;"></i>
+        <a asp-action="GetStudentsWithAttendanceForSupervisor" asp-controller="InsStudentAttendance" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5"> Attendance</a>
+    </div>
+</div>
+<div class="row mt-2 mb-2">
+    <div class="container-fluid col" id="leftSidebarLinks">
+        <i class="fa-solid fa-list-check fs-5 m-2" style="color: #ffffff;"></i>
+        <a asp-action="Display" asp-controller="PermissionReq" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5"> permission</a>
+    </div>
+</div>
+<div class="row mt-2 mb-2">
+    <div class="container-fluid col" id="leftSidebarLinks">
+        <i class="fa-solid fa-pen-to-square fs-5 m-2" style="color: #ffffff;"></i>
+        <a asp-action="Display" asp-controller="InsTrack" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5">Mange Track</a>
+    </div>
+</div>
+<div class="row mt-2 mb-2">
+    <div class="container-fluid col" id="leftSidebarLinks">
+        <i class="fa-solid fa-scroll fs-5 m-2" style="color: #ffffff;"></i>
+        <a asp-action="Schedule" asp-controller="Instructor" class="text-white text-decoration-none fw-bold fs-5">Schedules</a>
+    </div>
+</div>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -34,12 +58,30 @@
                                 <a href="Index" class="text-white text-decoration-none fw-bold fs-5">Profile</a>
                             </div>
                         </div>
-                      @*   <div class="row mt-2 mb-2">
+                        <div class="row mt-2 mb-2">
                             <div class="container-fluid col" id="leftSidebarLinks">
                                 <i class=" fa-solid fa-book fs-5 m-2" style="color: #ffffff;"></i>
-                                <a asp-action="Attendance" asp-controller="Instructor" class="text-white text-decoration-none fw-bold fs-5">View Attendance</a>
+                                <a asp-action="GetStudentsWithAttendanceForSupervisor" asp-controller="InsStudentAttendance" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5"> Attendance</a>
                             </div>
-                        </div> *@
+                        </div>
+                        <div class="row mt-2 mb-2">
+                            <div class="container-fluid col" id="leftSidebarLinks">
+                                <i class="fa-solid fa-list-check fs-5 m-2" style="color: #ffffff;"></i>
+                                <a asp-action="Display" asp-controller="PermissionReq" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5"> permission</a>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mb-2">
+                            <div class="container-fluid col" id="leftSidebarLinks">
+                                <i class="fa-solid fa-pen-to-square fs-5 m-2" style="color: #ffffff;"></i>
+                                <a asp-action="Display" asp-controller="InsTrack" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5">Mange Track</a>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mb-2">
+                            <div class="container-fluid col" id="leftSidebarLinks">
+                                <i class="fa-solid fa-scroll fs-5 m-2" style="color: #ffffff;"></i>
+                                <a asp-action="Schedule" asp-controller="Instructor" class="text-white text-decoration-none fw-bold fs-5">Schedules</a>
+                            </div>
+                        </div>
                         <div class="row mt-2 mb-2">
                             <div class="container-fluid col" id="leftSidebarLinks">
                                 <i class="fa-solid fa-scroll fs-5 m-2" style="color: #ffffff;"></i>

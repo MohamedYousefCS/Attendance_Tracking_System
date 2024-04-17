@@ -4,6 +4,8 @@
     ViewData["Title"] = "GetStudentsWithAttendanceForSupervisor";
     var instructorFirstName = Model.FirstOrDefault()?.Student?.Track?.Instructor?.Fname;
     var Trackname = Model.FirstOrDefault()?.Student?.Track?.TrackName;
+    Layout = "~/Views/Shared/_instructorLayout.cshtml";
+    ViewData["Role"] = "Supervisor";
 
    
 }
