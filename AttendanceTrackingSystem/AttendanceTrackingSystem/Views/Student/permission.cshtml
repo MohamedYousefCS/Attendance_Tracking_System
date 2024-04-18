@@ -1,0 +1,136 @@
+﻿@model IEnumerable<PermissionRequest>
+@{
+    ViewData["Title"] = "Permission";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+
+}
+
+<style>
+
+
+     
+        /* Style for table rows */
+        .permission-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .accept-btn {
+        background-color: forestgreen;
+    }
+
+    .reject-btn {
+        background-color: darkred;
+    }
+
+    .accept-btn,
+    .reject-btn, .pending-btn{
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .pending-btn{
+        background-color: orange;
+    }
+
+    .delete-btn{
+        color: darkred;
+        background-color: white;
+    }
+</style>
+<link rel="stylesheet" href="/css/StudentMainStyle.css" />
+
+<table class="table table-hover">
+    <thead style=" background-color: #7d2222;color: white;" class="border-2">
+        <tr>
+            <th>RequestID</th>
+            <th>Date</th>
+            <th>Reason</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RequestID</td>
+                <td>@item.Date</td>
+                <td>@item.Reason</td>
+                <td>@item.Type</td>
+                <td>
+                    <form  asp-action="DeletePermission" asp-route-id="@item.RequestID">
+                        @if (@item.IsAccepted==IsAccepted.pending)
+                        {
+                            <div class="btn pending-btn" style="width:49%">
+                                pending <i class="fa-solid fa-spinner"></i>
+                            </div>
+                            <button type="submit" class="btn delete-btn" style="width:49%" >
+                                Delete <i class="fa-solid fa-trash-can "></i>
+                            </button>
+                        }
+                        else if (@item.IsAccepted == IsAccepted.Accepted)
+                        {
+                            <div  class="btn accept-btn" style="width:100%">
+                                Accepted <i class="fa-solid fa-check"></i>
+                            </div>
+                        }
+                        else if (@item.IsAccepted == IsAccepted.Rejected)
+                        {
+                            <div class=" btn reject-btn" style="width:100%">
+                                Rejected  <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        }
+
+                       
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="addStudent">
+    <a asp-action="createPermission" asp-controller="Student">
+        Add Permission <i class="fa-solid fa-plus"> </i>
+    </a>
+</div>
+
+<script>
+    function confirmDelete(studentId) {
+        if (confirm('Are you sure you want to delete this student?')) {
+            window.location.href = '/StudentAffairs/Delete/' + studentId;
+        }
+    }
+</script>
+@* @section scripts {
+    <script>
+        $(document).ready(function () {
+
+            $(".delete-btn").click(function (e) {
+                e.preventDefault();
+                $(this).closest("tr").fadeOut();
+            });
+        });
+    </script>
+} *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

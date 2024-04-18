@@ -1,17 +1,46 @@
-﻿@{
-    ViewData["Title"] = "All Students";
+@model Student;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
 }
 
-<div>
+<div style="border-radius: 31px;
+    display: flex;
+    padding: 17px;
+    justify-items: center;
+    justify-content: space-around;
+    background-color: #1062a3;">
+    <div style="margin-top:15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;">
+        <span style="color: #ffffffa8; margin-bottom: 10px;">@DateTime.Now</span>
+        <h1 style="color:white;">Welcome Back ,@Model?.Fname ..!</h1>
+        <span style="color: #ffffffa8; margin-bottom: 10px;">always stay updated in your student portal </span>
+    </div>
+    <img src="/imgs/stud.png" style="width: 143px;">
 
 </div>
+<div style="margin-top:16px;
+    display: flex;
+    justify-content: space-between;">
+    <div style="text-align: center;
+    width: 49%;
+    padding: 66px;
+    border-radius:  31px;
+    background-color: white;
+    color: #1062a3;
+    border: 2px solid #1062a3;">
+        <a asp-action="showAttendance">Show Attendance</a>
+    </div>
+    <div style="text-align: center;
+    width: 49%;
+    padding: 66px;
+    border-radius:  31px;
+    background-color: white;
+    color: #1062a3;
+    border: 2px solid #1062a3;">
+        <a asp-action="permission">permission</a>
 
-@{
-    var viewData = new ViewDataDictionary(ViewData)
-    {
-        Model = Model,
-        ["PropertiesToShow"] = new List<string> { "Name", "Email", "University", "Faculty" }
-    };
-    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
-
-}
+    </div>
+</div>

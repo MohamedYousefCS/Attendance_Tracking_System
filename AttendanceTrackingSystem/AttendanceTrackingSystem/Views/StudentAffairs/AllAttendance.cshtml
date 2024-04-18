@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "AllAttendance";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+
+}
+
+<h1>AllAttendance</h1>
+
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+            {
+                Model = Model,
+                ["PropertiesToShow"] = new List<string> { "Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" }
+            };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
+}

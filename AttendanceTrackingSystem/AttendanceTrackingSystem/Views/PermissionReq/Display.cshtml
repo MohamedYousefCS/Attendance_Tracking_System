@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<PermissionRequest>
 @{
     ViewData["Title"] = "Display";
+    Layout = "~/Views/Shared/_instructorLayout.cshtml";
+    ViewData["Role"] = "Supervisor";
 }
 
 <style>
@@ -87,16 +89,17 @@
                 <td>@item.Date</td>
                 <td>@item.Reason</td>
                 <td>@item.Type</td>
-                <td>
+                <td class="d-flex justify-content-between">
                     <form id="acceptForm_@item.RequestID" asp-action="AcceptPermission" asp-route-id="@item.RequestID">
                         <button type="submit" class="btn accept-btn">
                             Accept <i class="fa-regular fa-circle-check"></i>
                         </button>
+                    </form>
+                    <form id="acceptForm_@item.RequestID" asp-action="RejectPermission" asp-route-id="@item.RequestID">
                         <button type="submit" class="btn reject-btn">
                             Reject <i class="fa-regular fa-circle-xmark"></i>
                         </button>
                     </form>
-
                 </td>
             </tr>
         }
@@ -117,8 +120,11 @@
 
             $(".reject-btn").click(function (e) {
                 e.preventDefault();
-                $(this).closest("tr").fadeOut();
-            });
+                var form = $(this).closest("form");
+                var url = form.attr("action");
+                $.post(url, form.serialize(), function () {
+                    form.closest("tr").fadeOut();
+                });
         });
     </script>
 }

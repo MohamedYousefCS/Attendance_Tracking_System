@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "TakeEmployeeAttendance";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    var currentDateAndTime = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+
+<link href="~/css/attendance.css" rel="stylesheet" />
+
+<h2 class="head">Take Employee Attendance</h2>
+<div class="date-section">
+    <h3>Date: <span>@currentDateAndTime</span></h3>
+</div>
+
+
+
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+            {
+                Model = Model,
+                ["PropertiesToShow"] = new List<string> { "Id", "Fname", "Lname","Role" }
+            };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
+}

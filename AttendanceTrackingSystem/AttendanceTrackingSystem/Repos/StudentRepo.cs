@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using System;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AttendanceTrackingSystem.Repos
 {
@@ -12,17 +13,26 @@ namespace AttendanceTrackingSystem.Repos
         public List<Student> GetAllStudents();
         public void AddStudent(Student student);
         public Student GetStudentById(int id);
+        public Student GetStudentByIdWithAttendacne(int id);
         public void UpdateStudent(Student student);
         public void DeleteStudent(int id);
         public void ImportDataFromExcel(string filePath);
-        public Task AddAttendanceRecord();
+        public Dictionary<string, int> GetLateAttendanceSummary(int userId);
+        public Dictionary<string, int> GetAbsentAttendanceSummary(int userId);
 
         public int GetStudetnDegree(int id);
         public List<Attendance> GeStudentAttendances(int id);
+        public int calcTotalDegree(int userId);
+        public List<Attendance> GetAllAttendance(DateOnly date, DateOnly date2);
+        public List<PermissionRequest> GetAllPermissionRequest(int studentId);
+        public void DeletePermission(int RequestID);
+        public void AddPermission(PermissionRequest PR);
+
+
     }
 
 
-    public class StudentRepo:IStudentRepo
+    public class StudentRepo : IStudentRepo
     {
         ITIDBContext db;
 
@@ -33,7 +43,7 @@ namespace AttendanceTrackingSystem.Repos
 
         public List<Student> GetAllStudents()
         {
-            return db.students.Include(a=>a.Track).ToList();
+            return db.students.Include(a => a.Track).ToList();
         }
         public void AddStudent(Student student)
         {
@@ -42,8 +52,14 @@ namespace AttendanceTrackingSystem.Repos
         }
         public Student GetStudentById(int id)
         {
-        return db.students.FirstOrDefault(a=>a.Id == id);  
+            return db.students.FirstOrDefault(a => a.Id == id);
         }
+        public Student GetStudentByIdWithAttendacne(int id)
+        {
+            return db.students.Include(a => a.Attendances).FirstOrDefault(a => a.Id == id);
+
+        }
+
         public void UpdateStudent(Student student)
         {
             db.students.Update(student);
@@ -133,6 +149,134 @@ namespace AttendanceTrackingSystem.Repos
                 db.SaveChanges();
 
             }
+
+        }
+
+
+
+
+
+        public Dictionary<string, int> GetLateAttendanceSummary(int userId)
+        {
+            Dictionary<string, int> lateAttendanceSummary = new Dictionary<string, int>();
+
+            // Count the number of late days with permission
+            int lateDaysWithPermission = db.attendances
+                .Where(a => a.userId == userId && a.Status == Status.Late && a.IsPermission == true)
+                .Select(a => a.Date)
+                .Distinct()
+                .Count();
+
+            lateAttendanceSummary["LateDaysWithPermission"] = lateDaysWithPermission;
+
+            // Count the number of late days without permission
+            int lateDaysWithoutPermission = db.attendances
+                .Where(a => a.userId == userId && a.Status == Status.Late && a.IsPermission != true)
+                .Select(a => a.Date)
+                .Distinct()
+                .Count();
+
+            lateAttendanceSummary["LateDaysWithoutPermission"] = lateDaysWithoutPermission;
+
+            return lateAttendanceSummary;
+        }
+        public Dictionary<string, int> GetAbsentAttendanceSummary(int userId)
+        {
+            Dictionary<string, int> absentAttendanceSummary = new Dictionary<string, int>();
+
+            // Count the number of absent days with permission
+            int absentDaysWithPermission = db.attendances
+                .Where(a => a.userId == userId && a.Status == Status.Absent && a.IsPermission == true)
+                .Select(a => a.Date)
+                .Distinct()
+                .Count();
+
+            absentAttendanceSummary["AbsentDaysWithPermission"] = absentDaysWithPermission;
+
+            // Count the number of absent days without permission
+            int absentDaysWithoutPermission = db.attendances
+                .Where(a => a.userId == userId && a.Status == Status.Absent && a.IsPermission != true)
+                .Select(a => a.Date)
+                .Distinct()
+                .Count();
+
+            absentAttendanceSummary["AbsentDaysWithoutPermission"] = absentDaysWithoutPermission;
+
+            return absentAttendanceSummary;
+        }
+
+        public int calcTotalDegree(int userId)
+        {
+            // Get late and absent attendance summaries
+            var lateSummary = GetLateAttendanceSummary(userId);
+            var absentSummary = GetAbsentAttendanceSummary(userId);
+
+            // Calculate deduction for late days
+            int lateDaysWithPermission = lateSummary["LateDaysWithPermission"];
+            int lateDaysWithoutPermission = lateSummary["LateDaysWithoutPermission"];
+            int lateDeduction = (lateDaysWithPermission * 5) + (lateDaysWithoutPermission * 25);
+
+            // Calculate deduction for absent days
+            int absentDaysWithPermission = absentSummary["AbsentDaysWithPermission"];
+            int absentDaysWithoutPermission = absentSummary["AbsentDaysWithoutPermission"];
+            int absentDeduction = (absentDaysWithPermission * 5) + (absentDaysWithoutPermission * 25);
+
+            // Total deduction
+            int totalDeduction = lateDeduction + absentDeduction;
+
+            // Assuming the total degree is initially 100
+            int totalDegree = 250 - totalDeduction;
+
+            return totalDegree;
+        }
+
+
+        public List<Attendance> GetAllAttendance(DateOnly date, DateOnly date2)
+        {
+            return db.attendances.Where(a => a.Date >= date && a.Date <= date2).ToList();
+        }
+        public List<PermissionRequest> GetAllPermissionRequest(int studentId)
+        {
+            return db.permissionRequests.Where(a => a.studentId == studentId).ToList();
+
+        }
+        public void DeletePermission(int requestId)
+        {
+            var request = db.permissionRequests.SingleOrDefault(a => a.RequestID == requestId);
+
+            if (request != null)
+            {
+                db.permissionRequests.Remove(request);
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+        }
+        public void AddPermission(PermissionRequest PR)
+        {
+            if (PR == null)
+            {
+                throw new ArgumentNullException(nameof(PR));
+            }
+
+            if (string.IsNullOrEmpty(PR.Reason))
+            {
+                throw new ArgumentException("Reason cannot be empty or null.", nameof(PR.Reason));
+            }
+
+           
+            db.permissionRequests.Add(PR);
+
+            try
+            {
+                db.SaveChanges();
+            }
             
 
         }
@@ -215,6 +359,7 @@ namespace AttendanceTrackingSystem.Repos
             List<Attendance> userAttendance = db.users.Include(u => u.Attendances).FirstOrDefault(a => a.Id == id).Attendances;
             return userAttendance;
         }
+
 
     }
 }
