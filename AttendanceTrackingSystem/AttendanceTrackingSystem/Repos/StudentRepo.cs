@@ -277,6 +277,10 @@ namespace AttendanceTrackingSystem.Repos
             {
                 db.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                throw;
+            }
             
 
         }

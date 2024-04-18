@@ -102,6 +102,8 @@ namespace AttendanceTrackingSystem.Controllers
                 return RedirectToAction("permission", permissions);
             }
             return View(PR);
+        }
+
         public IActionResult GetList()
         {
             var model = new List<object>
