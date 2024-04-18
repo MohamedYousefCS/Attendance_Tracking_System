@@ -155,8 +155,26 @@
                     }
                     else if (ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")
                     {
-                        <a asp-action="Update" asp-controller="Employee" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
-
+                        <a asp-action="Update" asp-controller="StudentAffairs" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+                        <button class="CalcDegree"><i class="fa-solid fa-eye text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button>
+                      
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body bg-danger">
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                     @*
 
@@ -247,6 +265,21 @@
                     console.log("Error handling the attendance confirmation:", error);
                 });
         });
+    
+    
+        $('.CalcDegree').click(function () {
+            let STDID = $(this).closest('tr').find('td')[0].innerText;
+            $.get('@Url.Action("CaclcDegree", "StudentAffairs")', { id: STDID })
+                .done(function (data) {
+                    console.log($(".modal-body")[0]);
+                    console.log(data.degree);
+                    // Add Model 
+                    
+                    $(".modal-body")[0].innerHTML = `<span class="bg-white"> ${data.degree}</span>`;
+
+
+                });
+        })
     });
 
 
