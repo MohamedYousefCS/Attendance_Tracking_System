@@ -100,13 +100,14 @@ namespace AttendanceTrackingSystem.Controllers
             // Check if the record already exists for the given userId and date
             Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
 
+
             bool isAdded;
 
             if (existingAttendance != null)
             {
                 Console.WriteLine(existingAttendance);
                 // If the record already exists, return an error or handle as needed
-                isAdded = false; // Indicate that the record was not added
+                isAdded = true; // Indicate that the record was not added
                 return Json(new { isAdded = isAdded });
             }
 
@@ -123,18 +124,15 @@ namespace AttendanceTrackingSystem.Controllers
 
             int comparison = TimeSpan.Compare(studentTimeSpan, correctTimeSpan);
 
-            if (comparison == 0)
+            if (comparison <= 0)
             {
                 studentAttendance.Status = Status.Present;
-            }
-            else if (comparison > 0)
-            {
-                studentAttendance.Status = Status.Late;
             }
             else
             {
-                studentAttendance.Status = Status.Present;
+                studentAttendance.Status = Status.Late;
             }
+            
             Attendance.ConfirmStudentAttendance(studentAttendance);
 
              isAdded = true;

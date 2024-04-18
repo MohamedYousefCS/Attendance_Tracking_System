@@ -1,6 +1,7 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
 using AttendanceTrackingSystem.Repos;
+using AttendanceTrackingSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -156,6 +157,27 @@ namespace AttendanceTrackingSystem.Controllers
             return View(model);
         }
 
+
+        public async Task<IActionResult> ViewAttendance(DateOnly date, Role? role = null)
+        {
+            AttendanceViewModel attendance;
+            if (date == DateOnly.MinValue)
+            {
+                date = DateOnly.FromDateTime(DateTime.Now);
+            }
+            if (role == null)
+            {
+                attendance = await StdAffairsRepo.ViewAllAttendance(date);
+                ViewBag.Role = null;
+            }
+            else
+            {
+                attendance = await StdAffairsRepo.ViewAttendance(role.Value, date);
+                ViewBag.Role = (int)role.Value;
+            }
+            ViewBag.Date = date;
+            return View(attendance);
+        }
 
 
 

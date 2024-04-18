@@ -1,0 +1,74 @@
+﻿@model AttendanceTrackingSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+
+    // Add any necessary ViewBag data here
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<form asp-action="UpdateStudentProfile" asp-route-id="@Model.Id" method="post">
+    @* <input type="number" class="form-control" placeholder="First Name" asp-for="Id" hidden> *@
+    <div id="focus"></div>
+    <h1>User Profile</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Fname"></label>
+                    <input type="text" class="form-control" placeholder="First Name" asp-for="Fname">
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Lname"></label>
+                    <input type="text" class="form-control" placeholder="Last Name" asp-for="Lname">
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input type="email" class="form-control" placeholder="Email" asp-for="Email" disabled>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input type="password" class="form-control" placeholder="Password" asp-for="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Mobile"></label>
+                    <input type="text" class="form-control" placeholder="Mobile" asp-for="Mobile">
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="University"></label>
+                    <input type="text" class="form-control" placeholder="University" asp-for="University">
+                    <span asp-validation-for="University" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Faculty"></label>
+                    <input type="text" class="form-control" placeholder="Faculty" asp-for="Faculty">
+                    <span asp-validation-for="Faculty" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Update Profile">
+</form>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
