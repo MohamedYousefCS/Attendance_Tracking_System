@@ -110,11 +110,11 @@ namespace AttendanceTrackingSystem.Controllers
                 return Json(new { isAdded = isAdded });
             }
 
-            DateTime.Now.Date.ToString("hh:mm:ss");
+            DateTime.Now.Date.ToString("HH:mm:ss");
             DateTime studentDate = DateTime.Now;
             DateTime dateOnly = studentDate.Date;
-            string studentTime = studentDate.ToString("hh:mm:ss");
-            string correctTime = String.Format("01:00:00");
+            string studentTime = studentDate.ToString("HH:mm:ss");
+            string correctTime = String.Format("09:00:00");
             Attendance studentAttendance = new Attendance() { Date = DateOnly.Parse(dateOnly.ToString("yyyy-MM-dd")), TimeIn = TimeOnly.Parse(studentTime), userId = Id };
 
 

@@ -83,7 +83,10 @@
             {
                 <th>@SplitPropertyName(propertyName)</th>
             }
-            <th>Actions</th>
+            @* @if (!(ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")) *@
+            @* { *@
+                <th>Actions</th>
+            @* } *@
         </tr>
     </thead>
     <tbody>
@@ -108,7 +111,7 @@
                             <i class="fa-solid fa-trash-can text-danger"></i>
                         </a>
                     }
-                    else if (ViewBag.Controller == "Security" && ViewBag.Action == "AllStudents" || ViewBag.Action == "AllInstructors")
+                    else if ((ViewBag.Controller == "Security" && ViewBag.Action == "AllStudents" || ViewBag.Action == "AllInstructors") || ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "TakeAttendance")
                     {
 
                         <div class="row">
@@ -137,7 +140,7 @@
 
 
                     }
-                    else
+                 @*    else
                     {
                         <a asp-action="Details" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-eye text-primary"></i></a> @:&nbsp;&nbsp;
                         <a asp-action="Update" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
@@ -146,7 +149,7 @@
                         <a asp-action="Delete" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)" onclick="return confirmDelete('@GetId(item)')">
                             <i class="fa-solid fa-trash-can text-danger"></i>
                         </a>
-                    }
+                    } *@
                 </td>
             </tr>
         }
@@ -168,35 +171,6 @@
     }
 
 
-        // $(document).ready(() => {
-        //     $(".confirmAtt").each(function () {
-        //         let btnAtt = $(this);
-            // let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
-        //         console.log(studentId);
-        //         $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
-        //             .done(function (data) {
-        //                 if (!data.isAdded) {
-        //                     btnAtt.prop('disabled', true);
-        //                     console.log("confirmed");
-        //                 }
-        //             });
-
-        //         btnAtt.click(() => {
-        //             $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
-        //                 .done(function (data) {
-        //                     if (data.isAdded) {
-        //                         btnAtt.prop('disabled', true);
-        //                         console.log("confirmed");
-        //                     } else {
-        //                         btnAtt.prop('disabled', true);
-        //                     }
-        //                 });
-        //         });
-        //     });
-        // });
-
-
-        //////////////////////////////////////
     var btn = $(".confirmAtt");
     var btnLeave = $('.leave');
     var studentId = btn.data('id');

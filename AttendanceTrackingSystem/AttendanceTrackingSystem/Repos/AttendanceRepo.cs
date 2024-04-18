@@ -1,6 +1,8 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using System.Globalization;
 
 namespace AttendanceTrackingSystem.Repos
@@ -14,6 +16,9 @@ namespace AttendanceTrackingSystem.Repos
         Attendance GetByIdAndDate(int id, DateOnly date);
 
         public void ConfirmStudentCheckout(int Id);
+
+        public List<Attendance> GetAllAttendance();
+
 
 
 
@@ -60,6 +65,16 @@ namespace AttendanceTrackingSystem.Repos
 
                 db.SaveChanges();
             }
+
+        }
+
+
+
+        //Get All Attendance
+
+        public List<Attendance> GetAllAttendance()
+        {
+            return db.attendances.Include(a=>a.User).ToList();
 
         }
 
