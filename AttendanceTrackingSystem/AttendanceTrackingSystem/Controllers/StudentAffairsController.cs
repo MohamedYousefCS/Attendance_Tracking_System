@@ -14,12 +14,20 @@ namespace AttendanceTrackingSystem.Controllers
          IStudentAffairsRepo StdAffairsRepo;
         
          IStudentRepo StudentRepo;
+
+        IEmployeeRepo EmpRepo;
+
+        IAttendance Attendance;
+
+
         ITIDBContext trackrepo = new ITIDBContext();
 
-        public StudentAffairsController(IStudentAffairsRepo _repo, IStudentRepo _stuRepo)
+        public StudentAffairsController(IStudentAffairsRepo _repo, IStudentRepo _stuRepo, IEmployeeRepo empRepo,IAttendance attendance)
         {
             StdAffairsRepo = _repo;
-            StudentRepo= _stuRepo;
+            StudentRepo = _stuRepo;
+            EmpRepo = empRepo;
+            Attendance = attendance;
         }
         public IActionResult Index()
         {
@@ -121,6 +129,34 @@ namespace AttendanceTrackingSystem.Controllers
 
             return RedirectToAction("index");
         }
+
+        //mohamed
+
+        [HttpGet("StudentAffairs/TakeAttendance")]
+        public IActionResult TakeEmployeeAttendance()
+        {
+            var model = EmpRepo.GetAllEmployees();
+            var propertyNames = new List<string> { "Id","Fname", "Lname","Role" };
+            ViewBag.PropertiesToShow = propertyNames;
+            ViewBag.Controller = "StudentAffairs";
+            ViewBag.Action = "TakeAttendance";
+            return View(model);
+        }
+        //////////////////////
+
+        //Get All attendance
+
+        [HttpGet("StudentAffairs/AllAttendance")]
+        public IActionResult AllAttendance()
+        {
+            var model = Attendance.GetAllAttendance();
+            var propertyNames = new List<string> { "Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" };
+            ViewBag.PropertiesToShow = propertyNames;
+            ViewBag.Controller = "StudentAffairs";
+            ViewBag.Action = "AllAttendance";
+            return View(model);
+        }
+
 
         public async Task<IActionResult> ViewAttendance(DateOnly date, Role? role = null)
         {

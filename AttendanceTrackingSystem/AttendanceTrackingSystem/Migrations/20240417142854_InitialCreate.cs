@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AttendanceTrackingSystem.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:AttendanceTrackingSystem/AttendanceTrackingSystem/Migrations/20240417142854_InitialCreate.cs
-    public partial class InitialCreate : Migration
-========
     public partial class createDatabase : Migration
->>>>>>>> b2f95b2cf315c84c31033ddd012f8f6a6764a370:AttendanceTrackingSystem/AttendanceTrackingSystem/Migrations/20240417142336_createDatabase.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
