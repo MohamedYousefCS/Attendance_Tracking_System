@@ -44,15 +44,9 @@ namespace AttendanceTrackingSystem.Controllers
             int AbsentDaysWithPermission = AbsentAttendanceSummary["AbsentDaysWithPermission"];
             int AbsentDaysWithoutPermission = AbsentAttendanceSummary["AbsentDaysWithoutPermission"];
 
-            // Now you can use these counts as needed
-            /* Console.WriteLine("Late days with permission: " + lateDaysWithPermission);
-            Console.WriteLine("Late days without permission: " + lateDaysWithoutPermission);      
-            Console.WriteLine("Absent days with permission: " + AbsentDaysWithPermission);
-            Console.WriteLine("Absent days without permission: " + AbsentDaysWithoutPermission);
-                       */
             
 
-            ViewBag.tatalDegree= stuRepo.calcTotalDegree(id);
+            ViewBag.tatalDegree= stuRepo.GetStudetnDegree(id);
             ViewBag.absentDays = AbsentDaysWithPermission + AbsentDaysWithoutPermission;
             ViewBag.lateDays = lateDaysWithPermission + lateDaysWithoutPermission;
             return View(model);
@@ -103,7 +97,8 @@ namespace AttendanceTrackingSystem.Controllers
 
                 stuRepo.AddPermission(permissionRequest);
                 var permissions = stuRepo.GetAllPermissionRequest(userId);
-                return RedirectToAction("permission", permissions);
+                ViewBag.Model = permissions;
+                return RedirectToAction("permission");
             }
             return View(PR);
         }

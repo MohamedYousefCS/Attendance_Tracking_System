@@ -231,6 +231,14 @@
     <script>
         $(document).ready(function () {
             $("#dataTable").DataTable();
+
+            const wrapperHeight = $('.wrapper').outerHeight();
+            const viewportHeight = $(window).height();
+            const footer = $('#footer');
+
+            if (wrapperHeight <= viewportHeight) {
+                footer.addClass('fixed-footer');
+            }
         });
     </script>
     @if (!User.Identity.IsAuthenticated)

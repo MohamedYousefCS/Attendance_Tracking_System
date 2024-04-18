@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PermissionRequest>
+﻿
 @{
     ViewData["Title"] = "Permission";
     Layout = "~/Views/Shared/MainLayout.cshtml";
@@ -54,7 +54,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in ViewBag.Model)
         {
             <tr>
                 <td>@item.RequestID</td>
