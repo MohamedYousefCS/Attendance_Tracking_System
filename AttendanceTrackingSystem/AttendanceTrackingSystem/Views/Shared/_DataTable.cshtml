@@ -153,7 +153,22 @@
 
 
                     }
-                 @*    else
+                    else if (ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")
+                    {
+                        <a asp-action="Update" asp-controller="Employee" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+
+                    }
+                    @*
+
+
+
+
+
+
+                ViewBag.PropertiesToShow = propertyNames;
+                ViewBag.Controller = "StudentAffairs";
+                ViewBag.Action = "AllAttendance";
+                 else
                     {
                         <a asp-action="Details" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-eye text-primary"></i></a> @:&nbsp;&nbsp;
                         <a asp-action="Update" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>

@@ -178,6 +178,16 @@ namespace AttendanceTrackingSystem.Controllers
             ViewBag.Date = date;
             return View(attendance);
         }
+        
+        public async Task<IActionResult> AutomateAbsentRecords()
+        {
+            var model = Attendance.GetAllAbsent();
+
+            Attendance.AutomateAttendance(model);
+            
+
+            return RedirectToAction("AllAttendance");
+        }
 
 
 
