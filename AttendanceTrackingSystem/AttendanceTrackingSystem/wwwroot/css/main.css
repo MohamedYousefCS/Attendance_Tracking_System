@@ -390,9 +390,14 @@ ul {
     padding-top: 30px;
     position: relative;
     overflow: hidden;
-    margin-top: 1500px;
-    margin-left: -800px;
 }
+
+.fixed-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
 
 .footer__logo a {
     margin-top: 60px;

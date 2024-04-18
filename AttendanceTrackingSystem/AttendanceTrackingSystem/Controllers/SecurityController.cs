@@ -3,6 +3,7 @@ using AttendanceTrackingSystem.Models;
 using AttendanceTrackingSystem.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace AttendanceTrackingSystem.Controllers
 {
@@ -12,19 +13,22 @@ namespace AttendanceTrackingSystem.Controllers
         IAttendance Attendance;
         AdTrackRepo trackrepo;
         IInstructorRepo instructorRepo;
+        IEmployeeRepo emplyeeRepo;
 
 
-        public SecurityController(IStudentRepo stuRepo, IAttendance attendance, AdTrackRepo trackrepo, IInstructorRepo instructorRepo)
+        public SecurityController(IStudentRepo stuRepo, IAttendance attendance, AdTrackRepo trackrepo, IInstructorRepo instructorRepo, IEmployeeRepo emplyeeRepo)
         {
             this.stuRepo = stuRepo;
             Attendance = attendance;
             this.trackrepo = trackrepo;
             this.instructorRepo = instructorRepo;
+            this.emplyeeRepo = emplyeeRepo;
         }
         public IActionResult Index()
         {
-
-            return View();
+            int userId = int.Parse(User.FindFirstValue("UserId"));
+            var model = emplyeeRepo.GetById(userId);
+            return View(model);
         }
 
         [HttpGet("Security/Tracks")]

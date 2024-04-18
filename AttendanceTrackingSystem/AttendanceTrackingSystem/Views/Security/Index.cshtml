@@ -1,13 +1,97 @@
-﻿@{
+﻿@model Employee
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
+@section Styles {
+    <style>
+        .header-container {
+            border-radius: 31px;
+            display: flex;
+            padding: 17px;
+            justify-items: center;
+            justify-content: space-around;
+            background-color: darkred;
+        }
 
-<h1>Dashborad Attendance</h1>
+        .header-content {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-<div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
-    <div style="text-align: center;">
-        <a href="@Url.Action("GetAllTracks", "Security")" class="btn btn-primary btn-lg" style="margin-right: 20px;"> Students Attendance </a>
-        <a href="@Url.Action("AllInstructors", "Security")" class="btn btn-success btn-lg"> Instructors Attendance</a>
+            .header-content span {
+                color: #ffffffa8;
+                margin-bottom: 10px;
+            }
+
+            .header-content h1 {
+                color: white;
+            }
+
+        .header-image {
+            width: 143px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .addStudent a {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            color: darkred;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 12px;
+            width: 100%;
+            transition: background-color 0.3s;
+            border: 2px solid darkred; 
+        }
+
+            .addStudent a:hover {
+                background-color: #a52a2a;
+                color: white;
+            }
+
+        .addStudent i {
+            margin-left: 10px;
+        }
+
+        .addStudent {
+            margin: 20px 0;
+            width: calc(50% - 10px);
+            float: left;
+            margin-right: 20px;
+        }
+
+            .addStudent:last-child {
+                margin-right: 0;
+            }
+    </style>
+}
+<div class="header-container">
+    <div class="header-content">
+        <span>@DateTime.Now</span>
+        <h1>Welcome Back, @Model?.Fname ..!</h1>
+        <span>always stay updated in your student portal </span>
+    </div>
+    <img src="/imgs/stud.png" class="header-image">
+</div>
+<div class="buttons">
+    <div class="addStudent">
+        <a href="/Security/GetAllTracks">
+            Students Attendance <i class="fa-solid fa-user-graduate"></i>
+        </a>
+    </div>
+
+    <div class="addStudent">
+        <a href="/Security/AllInstructors">
+            Instructors Attendance <i class="fa-solid fa-user-tie"></i>
+        </a>
     </div>
 </div>

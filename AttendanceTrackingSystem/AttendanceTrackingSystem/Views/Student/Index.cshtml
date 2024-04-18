@@ -3,44 +3,95 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
+@section Styles {
+    <style>
+        .header-container {
+            border-radius: 31px;
+            display: flex;
+            padding: 17px;
+            justify-items: center;
+            justify-content: space-around;
+            background-color: darkred;
+        }
 
-<div style="border-radius: 31px;
-    display: flex;
-    padding: 17px;
-    justify-items: center;
-    justify-content: space-around;
-    background-color: #1062a3;">
-    <div style="margin-top:15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;">
-        <span style="color: #ffffffa8; margin-bottom: 10px;">@DateTime.Now</span>
-        <h1 style="color:white;">Welcome Back ,@Model?.Fname ..!</h1>
-        <span style="color: #ffffffa8; margin-bottom: 10px;">always stay updated in your student portal </span>
+        .header-content {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+            .header-content span {
+                color: #ffffffa8;
+                margin-bottom: 10px;
+            }
+
+            .header-content h1 {
+                color: white;
+            }
+
+        .header-image {
+            width: 143px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .addStudent a {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            color: darkred; /* Default button color */
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 12px;
+            width: 100%;
+            transition: background-color 0.3s;
+            border: 2px solid darkred; /* Add border */
+        }
+
+            .addStudent a:hover {
+                background-color: #a52a2a;
+                color: white; /* Change text color on hover */
+            }
+        .addStudent i{
+            margin-left: 10px;
+
+        }
+        .addStudent {
+            margin: 20px 0;
+            width: calc(50% - 10px);
+            float: left;
+            margin-right: 20px;
+        }
+
+            .addStudent:last-child {
+                margin-right: 0;
+            }
+    </style>
+}
+<div class="header-container">
+    <div class="header-content">
+        <span>@DateTime.Now</span>
+        <h1>Welcome Back, @Model?.Fname ..!</h1>
+        <span>always stay updated in your student portal </span>
     </div>
-    <img src="/imgs/stud.png" style="width: 143px;">
-
+    <img src="/imgs/stud.png" class="header-image">
 </div>
-<div style="margin-top:16px;
-    display: flex;
-    justify-content: space-between;">
-    <div style="text-align: center;
-    width: 49%;
-    padding: 66px;
-    border-radius:  31px;
-    background-color: white;
-    color: #1062a3;
-    border: 2px solid #1062a3;">
-        <a asp-action="showAttendance" asp-route-id="@Model.Id">Show Attendance</a>
+<div class="buttons">
+    <div class="addStudent">
+        <a asp-controller="Student" asp-action="ShowAttendance" asp-route-id="@Model.Id">
+            Show Attendance <i class="far fa-file-alt"></i>
+        </a>
     </div>
-    <div style="text-align: center;
-    width: 49%;
-    padding: 66px;
-    border-radius:  31px;
-    background-color: white;
-    color: #1062a3;
-    border: 2px solid #1062a3;">
-        <a asp-action="permission" asp-route-id="@Model.Id">permission</a>
 
+    <div class="addStudent">
+        <a asp-controller="Student" asp-action="CreatePermission" asp-route-id="@Model.Id">
+            Permission <i class="fa-solid fa-user-check"></i>
+        </a>
     </div>
 </div>
+    
