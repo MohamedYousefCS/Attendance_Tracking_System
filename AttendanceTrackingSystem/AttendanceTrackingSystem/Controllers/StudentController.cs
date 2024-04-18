@@ -30,7 +30,8 @@ namespace AttendanceTrackingSystem.Controllers
                 new {Name = "Eslam", Faculty = "engineering", University = "kokok", Email="Mohamef@gmail.com" },
                 new {Name = "Em", Faculty = "enging", University = "klllok", Email="Moha@gmail.com" }
             };
-            //var model = stuRepo.GetAllStudents();
+            var records = stuRepo.GeStudentAttendances(8);
+
             return Json(new { data = model });
         }
 

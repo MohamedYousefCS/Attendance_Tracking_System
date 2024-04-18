@@ -18,6 +18,7 @@ namespace AttendanceTrackingSystem.Repos
         public Task AddAttendanceRecord();
 
         public int GetStudetnDegree(int id);
+        public List<Attendance> GeStudentAttendances(int id);
     }
 
 
@@ -208,7 +209,12 @@ namespace AttendanceTrackingSystem.Repos
 
                 await db.SaveChangesAsync();
             }
-        
+
+        public List<Attendance> GeStudentAttendances(int id)
+        {
+            List<Attendance> userAttendance = db.users.Include(u => u.Attendances).FirstOrDefault(a => a.Id == id).Attendances;
+            return userAttendance;
+        }
 
     }
 }
