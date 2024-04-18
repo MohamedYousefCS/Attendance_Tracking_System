@@ -44,6 +44,7 @@ namespace AttendanceTrackingSystem.Controllers
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "Security";
             ViewBag.Action = "AllStudents";
+            ViewBag.Attendance = Attendance;
             return View(students);
         }
         [HttpGet("Security/AllInstructors")]

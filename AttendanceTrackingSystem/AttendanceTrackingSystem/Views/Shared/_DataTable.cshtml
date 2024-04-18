@@ -1,7 +1,9 @@
 ﻿@using System.Reflection
 @using System.Text.RegularExpressions
 @model IEnumerable<object>
-
+@{
+    IAttendance Attendance = ViewBag.Attendance;
+}
 
 
 
@@ -118,21 +120,32 @@
                             
                             @{
                                 var studentId = GetId(item); // Rename 'id' to 'studentId'
+                                Attendance existingAttendance = Attendance.GetByIdAndDate(Int32.Parse(GetId(item)), DateOnly.FromDateTime(DateTime.Today));
+                                bool Timeout=false;
+
+                                if (existingAttendance!=null)
+                                {
+                                    if (existingAttendance.TimeOut!=null)
+                                    {
+                                        Timeout = true;
+                                    }
+                                }
+                                else
+                                {
+                                    Timeout = true;
+                                }
+
                             }          <div class="col-md-4">
 @*                                     <form method="post" asp-action="ConfirmStudentAttendace" asp-controller="Security" asp-route-id="@studentId">
- *@                                        <button type="submit" class="btn btn-success btn-sm confirmAtt" data-id="@studentId" @{
-                                            // if (DateTime.Now.TimeOfDay > new TimeSpan(1, 0, 0) & DateTime.Now.TimeOfDay < new TimeSpan(15, 0, 0))
-                                            // {
-                                            //         @:disabled
-                                            // }
-                                        }>
+                        *@           <button type="submit" class="btn btn-success btn-sm confirmAtt" data-id="@studentId" @(existingAttendance != null ? "disabled" : "enabled")>
                                             Confirm Attendance
                                         </button>    
 @*                                     </form>
  *@                                </div>
                                 <div class="col-md-4">
                                     @* <form method="post" asp-action="ConfirmStudentCheckout" asp-controller="Security" asp-route-id="@studentId"> *@
-                                <button type="submit" class="btn btn-danger btn-sm leave " data-id="@studentId">Confirm Leave</button>
+                                        
+                                <button type="submit" class="btn btn-danger btn-sm leave " data-id="@studentId" @((Timeout  ) ? "disabled" : "enabled")>Confirm Leave</button>
                                     @* </form> *@
                                 </div>
                             
@@ -175,28 +188,7 @@
     var btnLeave = $('.leave');
     var studentId = btn.data('id');
 
-    function handleReload(btn, studentId, btnLeave) {
 
-        $.get('@Url.Action("CheckStudentAttendace", "Security")', { Id: studentId })
-            .done(function (data) {
-                if (data.isAdded == 0) {
-                    btn.prop('disabled', true);
-                    btnLeave.prop('disabled', false);
-                    console.log("confirmed");
-
-                } else if (data.isAdded == 1) {
-                    btn.prop('disabled', false);
-                    btnLeave.prop('disabled', true);
-                    console.log("No Records")
-                }
-                else{
-                    btnLeave.prop('disabled', true);
-                    btn.prop('disabled', true);
-
-
-                }
-            });
-    }
     function handleButtonClick(btn, studentId, btnLeave) {
         
         $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
@@ -215,27 +207,33 @@
                 }
             });
     }
-    $(document).ready(() => {
-        handleReload(btn, studentId, btnLeave);
-
+    $(document).ready(function () {
         $(".confirmAtt").click(function () {
-            let btnAtt = $(this); // Select the clicked button
-            let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
-            // Function to handle button click
-            
-            // Initial check on page load
+            let btnConfirm = $(this); // The Confirm button that was clicked
+            let studentId = btnConfirm.data('id'); // Student ID from data attribute
+            let btnLeave = btnConfirm.closest('tr').find('.leave'); // Find the Leave button in the same row
+
+            // Call AJAX to check and update button states based on server response
             $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
                 .done(function (data) {
-                    if (!data.isAdded) {
-                        btnAtt.prop('disabled', true);
-                        console.log("confirmed");
+                    if (data.isAdded) {
+                        btnConfirm.prop('disabled', true); // Disable the Confirm button
+                        btnLeave.prop('disabled', false); // Enable the Leave button
+                        console.log(btnLeave);
+                        console.log(btnConfirm);
+                        console.log("Attendance confirmed");
+                    } else {
+                        btnConfirm.prop('disabled', false); // Ensure the Confirm button is enabled
+                        btnLeave.prop('disabled', true); // Ensure the Leave button is disabled
+                        console.log("No records to update");
                     }
+                })
+                .fail(function (error) {
+                    console.log("Error handling the attendance confirmation:", error);
                 });
-
-            // Call the handleButtonClick function when the button is clicked
-            handleButtonClick(btnAtt, studentId, btnLeave);
         });
     });
+
 
 
 
