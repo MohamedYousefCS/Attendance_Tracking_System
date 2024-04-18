@@ -281,7 +281,5 @@ namespace AttendanceTrackingSystem.Repos
                 throw; 
             }
         }
-
-
     }
 }

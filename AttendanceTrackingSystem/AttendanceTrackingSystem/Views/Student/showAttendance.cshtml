@@ -31,21 +31,19 @@
                 @ViewBag.lateDays late Days
             </div>
             <div style="border-radius:11px;display:flex;padding:17px;width:33%;justify-items:center;justify-content:space-around;" class="alert alert-info">
-              CurrentDegree   @ViewBag.tatalDegree
+                CurrentDegree @ViewBag.tatalDegree
             </div>
         </div>
-
-
 
         <form id="attendanceForm">
             <div class="row">
                 <div class="col">
                     <label for="date">Choose a date from:</label>
-                    <input type="date" id="date" name="date">
+                    <input type="date" id="date" name="date" class="calender">
                 </div>
                 <div class="col">
                     <label for="date2">to:</label>
-                    <input type="date" id="date2" name="date2">
+                    <input type="date" id="date2" name="date2" class="calender">
                 </div>
                 <div class="col" style="text-align:end">
                     <button type="submit" class="btn btn-primary">Go</button>
@@ -53,120 +51,59 @@
             </div>
         </form>
 
-
         <div id="attendanceTableContainer"></div>
 
+        </script>
         @section scripts {
             <script>
-                $(document).ready(function () {
-                    // Get today's date
-                    var today = new Date();
-                    // Format today's date as YYYY-MM-DD (required format for input type=date)
-                    var formattedDate = today.toISOString().substr(0, 10);
-                    // Set the value of the 'date2' input field to today's date
-                    $("#date2").val(formattedDate);
-
-                    $("#attendanceForm").submit(function (e) {
-                        e.preventDefault(); // Prevent form submission
-                        var formData = $(this).serialize(); // Serialize form data
-                        $.ajax({
-                            url: "@Url.Action("AttendanceData", "Student")", // Replace with your controller action
-                            type: "GET",
-                            data: formData,
-                            success: function (result) {
-                                $("#attendanceTableContainer").html(result); // Update the partial view
-                            },
-                            error: function () {
-                                alert("An error occurred while fetching attendance data.");
+                    $(document).ready(function () {
+                        const calender_inputs = document.querySelectorAll(".calender");
+                        for (const input of calender_inputs) {
+                            input.addEventListener("focus", () => {
+                                input.type = 'date';
+                                if (calender_inputs[0].value) {
+                                    calender_inputs[1].min = calender_inputs[0].value;
+                                }
+                                input.showPicker();
+                            })
+                        }
+                        calender_inputs[0].addEventListener("change", function () {
+                            const selectedDate1 = new Date(calender_inputs[0].value);
+                            const selectedDate2 = new Date(calender_inputs[1].value);
+                            if (selectedDate2 < selectedDate1) {
+                                calender_inputs[1].value = calender_inputs[0].value;
                             }
+
+                            calender_inputs[1].min = calender_inputs[0].value;
+                        });
+                        
+                        // Get today's date
+                        var today = new Date();
+                        // Format today's date as YYYY-MM-DD (required format for input type=date)
+                        var formattedDate = today.toISOString().substr(0, 10);
+                        // Set the value of the 'date2' input field to today's date
+                        $("#date2").val(formattedDate);
+
+                        $("#attendanceForm").submit(function (e) {
+                            e.preventDefault(); // Prevent form submission
+                            var formData = $(this).serialize(); // Serialize form data
+                            $.ajax({
+                                url: "@Url.Action("AttendanceData", "Student")", // Replace with your controller action
+                                type: "GET",
+                                data: formData,
+                                success: function (result) {
+                                    $("#attendanceTableContainer").html(result); // Update the partial view
+                                },
+                                error: function () {
+                                    alert("An error occurred while fetching attendance data.");
+                                }
+                            });
                         });
                     });
-                });
             </script>
         }
 
-
-        @*
-        <form id="attendanceForm">
-            <div class="row">
-                <div class="col">
-                    <label for="date">Choose a date from:</label>
-                    <input type="date" id="date" name="date">
-                </div>
-                <div class="col">
-                    <label for="date2">to:</label>
-                    <input type="date" id="date2" name="date2">
-                </div>
-                <div class="col " style="text-align:end">
-                    <button type="submit" class="btn btn-primary">Go</button>
-                </div>
-            </div>
-        </form>
-
-        <div class="table-responsive DunamicTable" style="display:none">
-            <table class="table table-responsive table-borderless ">
-
-                <thead>
-                    <tr class="bg-light">
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Ispermission</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Attendances.Count() == 0)
-                    {
-                        <tr>
-                            <td colspan="4" style="text-align:center">معندكش غياب والله لسه ...شكلك جديد عندنا </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        foreach (var day in Model.Attendances)
-                        {
-                            <tr>
-                                <td>@day.Date</td>
-                                @if (day.Status == 0)
-                                {
-                                    <td><i class="fa fa-check-circle-o green"></i><span class="ms-1">Present</span></td>
-                                }
-                                else if ((int)day.Status == 1)
-                                {
-                                    <td><i class="fa fa-dot-circle-o text-danger"></i><span class="ms-1">Absent</span></td>
-                                }
-                                else
-                                {
-                                    <td><i class="fa fa-dot-circle-o text-warning"></i><span class="ms-1">Late</span></td>
-                                }
-
-                                @if (day.PermissionType == null && day.IsPermission == null)
-                                {
-                                    <td><i class="fa-solid fa-window-minimize"></i></td>
-                                }
-                                else if (day.PermissionType == PermissionType.Excused || day.IsPermission == true)
-                                {
-                                    <td>yes</td>
-                                }
-                                else if (day.IsPermission == null || day.IsPermission == false)
-                                {
-                                    <td>no</td>
-                                }
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('#attendanceForm').submit(function (e) {
-                e.preventDefault(); // Prevent form submission
-                $('.DunamicTable').show(); // Show the table
-            });
-        });
-    </script>
-    *@
 </body>
 
 </html>

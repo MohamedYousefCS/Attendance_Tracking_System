@@ -1,6 +1,7 @@
 ﻿using AttendanceTrackingSystem.Models;
 using AttendanceTrackingSystem.Repos;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AttendanceTrackingSystem.Controllers
@@ -10,46 +11,48 @@ namespace AttendanceTrackingSystem.Controllers
 
 
         IStudentRepo stuRepo;
+        IUserRepo userRepo;
 
-        public StudentController(IStudentRepo _stuRepo)
+        public StudentController(IStudentRepo _stuRepo,  IUserRepo user)
         {
             stuRepo = _stuRepo;
+            userRepo = user;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int  id)
         {
-            var model=stuRepo.GetStudentById(2);
+            var model=stuRepo.GetStudentById(id);
             if (model == null)
                 return NotFound();
 
             return View(model);
         }
-        public IActionResult showAttendance()
+        public IActionResult showAttendance(int id)
         {
-            var model = stuRepo.GetStudentByIdWithAttendacne(2);
+            var model = stuRepo.GetStudentByIdWithAttendacne(id);
             if (model == null)
                 return NotFound();
             
-                        Dictionary<string, int> lateAttendanceSummary = stuRepo.GetLateAttendanceSummary(2);
-                        Dictionary<string, int> AbsentAttendanceSummary = stuRepo.GetAbsentAttendanceSummary(2);
+            Dictionary<string, int> lateAttendanceSummary = stuRepo.GetLateAttendanceSummary(id);
+            Dictionary<string, int> AbsentAttendanceSummary = stuRepo.GetAbsentAttendanceSummary(id);
 
-                        // late
-                        int lateDaysWithPermission = lateAttendanceSummary["LateDaysWithPermission"];
-                        int lateDaysWithoutPermission = lateAttendanceSummary["LateDaysWithoutPermission"];
+            // late
+            int lateDaysWithPermission = lateAttendanceSummary["LateDaysWithPermission"];
+            int lateDaysWithoutPermission = lateAttendanceSummary["LateDaysWithoutPermission"];
 
-                        //Absent 
-                        int AbsentDaysWithPermission = AbsentAttendanceSummary["AbsentDaysWithPermission"];
-                        int AbsentDaysWithoutPermission = AbsentAttendanceSummary["AbsentDaysWithoutPermission"];
+            //Absent 
+            int AbsentDaysWithPermission = AbsentAttendanceSummary["AbsentDaysWithPermission"];
+            int AbsentDaysWithoutPermission = AbsentAttendanceSummary["AbsentDaysWithoutPermission"];
 
-                        // Now you can use these counts as needed
-                       /* Console.WriteLine("Late days with permission: " + lateDaysWithPermission);
-                        Console.WriteLine("Late days without permission: " + lateDaysWithoutPermission);      
-                        Console.WriteLine("Absent days with permission: " + AbsentDaysWithPermission);
-                        Console.WriteLine("Absent days without permission: " + AbsentDaysWithoutPermission);
+            // Now you can use these counts as needed
+            /* Console.WriteLine("Late days with permission: " + lateDaysWithPermission);
+            Console.WriteLine("Late days without permission: " + lateDaysWithoutPermission);      
+            Console.WriteLine("Absent days with permission: " + AbsentDaysWithPermission);
+            Console.WriteLine("Absent days without permission: " + AbsentDaysWithoutPermission);
                        */
             
 
-            ViewBag.tatalDegree= stuRepo.calcTotalDegree(2);
+            ViewBag.tatalDegree= stuRepo.calcTotalDegree(id);
             ViewBag.absentDays = AbsentDaysWithPermission + AbsentDaysWithoutPermission;
             ViewBag.lateDays = lateDaysWithPermission + lateDaysWithoutPermission;
             return View(model);
@@ -60,9 +63,9 @@ namespace AttendanceTrackingSystem.Controllers
             var attendances = stuRepo.GetAllAttendance(date, date2);
             return PartialView("_AttendanceTable", attendances);
         }
-        public IActionResult permission()
+        public IActionResult permission(int id)
         {
-            var permissions = stuRepo.GetAllPermissionRequest(2);
+            var permissions = stuRepo.GetAllPermissionRequest(id);
 
             return View(permissions);
         }
@@ -73,7 +76,7 @@ namespace AttendanceTrackingSystem.Controllers
                 return NotFound();  
 
             stuRepo.DeletePermission(id);
-            var permissions = stuRepo.GetAllPermissionRequest(2);
+            var permissions = stuRepo.GetAllPermissionRequest(3);
 
             return View("permission",permissions);
         }
@@ -88,17 +91,18 @@ namespace AttendanceTrackingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                int userId = int.Parse(User.FindFirstValue("UserId"));
                 PermissionRequest permissionRequest = new PermissionRequest
                 {
                     IsAccepted = IsAccepted.pending,
                     Reason = PR.Reason,
                     Date = PR.Date,
                     Type = PR.Type,
-                    studentId = 2,
+                    studentId = userId,
                 };
 
                 stuRepo.AddPermission(permissionRequest);
-                var permissions = stuRepo.GetAllPermissionRequest(2);
+                var permissions = stuRepo.GetAllPermissionRequest(userId);
                 return RedirectToAction("permission", permissions);
             }
             return View(PR);
