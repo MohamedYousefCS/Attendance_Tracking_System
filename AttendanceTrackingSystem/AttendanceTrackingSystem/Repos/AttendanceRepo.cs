@@ -20,7 +20,6 @@ namespace AttendanceTrackingSystem.Repos
         public List<Attendance> GetAllAttendance();
         public List<Student> GetAllAbsent();
         public void AutomateAttendance(List<Student> students);
-
     }
 
     public class AttendanceRepo:IAttendance

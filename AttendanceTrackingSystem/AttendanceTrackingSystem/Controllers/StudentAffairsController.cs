@@ -150,7 +150,7 @@ namespace AttendanceTrackingSystem.Controllers
         public IActionResult AllAttendance()
         {
             var model = Attendance.GetAllAttendance();
-            var propertyNames = new List<string> { "Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" };
+            var propertyNames = new List<string> { "Id","Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" };
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "StudentAffairs";
             ViewBag.Action = "AllAttendance";
@@ -187,6 +187,14 @@ namespace AttendanceTrackingSystem.Controllers
             
 
             return RedirectToAction("AllAttendance");
+        }
+
+        public async Task<IActionResult> CaclcDegree(int id)
+        {
+            var degree = StudentRepo.GetStudetnDegree(id);
+
+            return Json(new { degree}); ;
+
         }
 
 
