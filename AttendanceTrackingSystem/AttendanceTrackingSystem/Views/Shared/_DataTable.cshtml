@@ -1,7 +1,9 @@
 ﻿@using System.Reflection
 @using System.Text.RegularExpressions
 @model IEnumerable<object>
-
+@{
+    IAttendance Attendance = ViewBag.Attendance;
+}
 
 
 
@@ -83,7 +85,10 @@
             {
                 <th>@SplitPropertyName(propertyName)</th>
             }
-            <th>Actions</th>
+            @* @if (!(ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")) *@
+            @* { *@
+                <th>Actions</th>
+            @* } *@
         </tr>
     </thead>
     <tbody>
@@ -108,28 +113,39 @@
                             <i class="fa-solid fa-trash-can text-danger"></i>
                         </a>
                     }
-                    else if (ViewBag.Controller == "Security" && ViewBag.Action == "AllStudents" || ViewBag.Action == "AllInstructors")
+                    else if ((ViewBag.Controller == "Security" && ViewBag.Action == "AllStudents" || ViewBag.Action == "AllInstructors") || ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "TakeAttendance")
                     {
 
                         <div class="row">
                             
                             @{
                                 var studentId = GetId(item); // Rename 'id' to 'studentId'
+                                Attendance existingAttendance = Attendance.GetByIdAndDate(Int32.Parse(GetId(item)), DateOnly.FromDateTime(DateTime.Today));
+                                bool Timeout=false;
+
+                                if (existingAttendance!=null)
+                                {
+                                    if (existingAttendance.TimeOut!=null)
+                                    {
+                                        Timeout = true;
+                                    }
+                                }
+                                else
+                                {
+                                    Timeout = true;
+                                }
+
                             }          <div class="col-md-4">
 @*                                     <form method="post" asp-action="ConfirmStudentAttendace" asp-controller="Security" asp-route-id="@studentId">
- *@                                        <button type="submit" class="btn btn-success btn-sm confirmAtt" data-id="@studentId" @{
-                                            // if (DateTime.Now.TimeOfDay > new TimeSpan(1, 0, 0) & DateTime.Now.TimeOfDay < new TimeSpan(15, 0, 0))
-                                            // {
-                                            //         @:disabled
-                                            // }
-                                        }>
+                        *@           <button type="submit" class="btn btn-success btn-sm confirmAtt" data-id="@studentId" @(existingAttendance != null ? "disabled" : "enabled")>
                                             Confirm Attendance
                                         </button>    
 @*                                     </form>
  *@                                </div>
                                 <div class="col-md-4">
                                     @* <form method="post" asp-action="ConfirmStudentCheckout" asp-controller="Security" asp-route-id="@studentId"> *@
-                                <button type="submit" class="btn btn-danger btn-sm leave " data-id="@studentId">Confirm Leave</button>
+                                        
+                                <button type="submit" class="btn btn-danger btn-sm leave " data-id="@studentId" @((Timeout  ) ? "disabled" : "enabled")>Confirm Leave</button>
                                     @* </form> *@
                                 </div>
                             
@@ -137,7 +153,40 @@
 
 
                     }
-                    else
+                    else if (ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")
+                    {
+                        <a asp-action="Update" asp-controller="StudentAffairs" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+                        <button class="CalcDegree"><i class="fa-solid fa-eye text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button>
+                      
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body bg-danger">
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @*
+
+
+
+
+
+
+                ViewBag.PropertiesToShow = propertyNames;
+                ViewBag.Controller = "StudentAffairs";
+                ViewBag.Action = "AllAttendance";
+                 else
                     {
                         <a asp-action="Details" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-eye text-primary"></i></a> @:&nbsp;&nbsp;
                         <a asp-action="Update" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
@@ -146,7 +195,7 @@
                         <a asp-action="Delete" asp-controller="@nameof(Model)" asp-route-id="@GetId(item)" onclick="return confirmDelete('@GetId(item)')">
                             <i class="fa-solid fa-trash-can text-danger"></i>
                         </a>
-                    }
+                    } *@
                 </td>
             </tr>
         }
@@ -168,61 +217,11 @@
     }
 
 
-        // $(document).ready(() => {
-        //     $(".confirmAtt").each(function () {
-        //         let btnAtt = $(this);
-            // let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
-        //         console.log(studentId);
-        //         $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
-        //             .done(function (data) {
-        //                 if (!data.isAdded) {
-        //                     btnAtt.prop('disabled', true);
-        //                     console.log("confirmed");
-        //                 }
-        //             });
-
-        //         btnAtt.click(() => {
-        //             $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
-        //                 .done(function (data) {
-        //                     if (data.isAdded) {
-        //                         btnAtt.prop('disabled', true);
-        //                         console.log("confirmed");
-        //                     } else {
-        //                         btnAtt.prop('disabled', true);
-        //                     }
-        //                 });
-        //         });
-        //     });
-        // });
-
-
-        //////////////////////////////////////
     var btn = $(".confirmAtt");
     var btnLeave = $('.leave');
     var studentId = btn.data('id');
 
-    function handleReload(btn, studentId, btnLeave) {
 
-        $.get('@Url.Action("CheckStudentAttendace", "Security")', { Id: studentId })
-            .done(function (data) {
-                if (data.isAdded == 0) {
-                    btn.prop('disabled', true);
-                    btnLeave.prop('disabled', false);
-                    console.log("confirmed");
-
-                } else if (data.isAdded == 1) {
-                    btn.prop('disabled', false);
-                    btnLeave.prop('disabled', true);
-                    console.log("No Records")
-                }
-                else{
-                    btnLeave.prop('disabled', true);
-                    btn.prop('disabled', true);
-
-
-                }
-            });
-    }
     function handleButtonClick(btn, studentId, btnLeave) {
         
         $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
@@ -241,27 +240,48 @@
                 }
             });
     }
-    $(document).ready(() => {
-        handleReload(btn, studentId, btnLeave);
-
+    $(document).ready(function () {
         $(".confirmAtt").click(function () {
-            let btnAtt = $(this); // Select the clicked button
-            let studentId = btnAtt.data('id'); // Get the student ID associated with the clicked button
-            // Function to handle button click
-            
-            // Initial check on page load
+            let btnConfirm = $(this); // The Confirm button that was clicked
+            let studentId = btnConfirm.data('id'); // Student ID from data attribute
+            let btnLeave = btnConfirm.closest('tr').find('.leave'); // Find the Leave button in the same row
+
+            // Call AJAX to check and update button states based on server response
             $.get('@Url.Action("ConfirmStudentAttendace", "Security")', { Id: studentId })
                 .done(function (data) {
-                    if (!data.isAdded) {
-                        btnAtt.prop('disabled', true);
-                        console.log("confirmed");
+                    if (data.isAdded) {
+                        btnConfirm.prop('disabled', true); // Disable the Confirm button
+                        btnLeave.prop('disabled', false); // Enable the Leave button
+                        console.log(btnLeave);
+                        console.log(btnConfirm);
+                        console.log("Attendance confirmed");
+                    } else {
+                        btnConfirm.prop('disabled', false); // Ensure the Confirm button is enabled
+                        btnLeave.prop('disabled', true); // Ensure the Leave button is disabled
+                        console.log("No records to update");
                     }
+                })
+                .fail(function (error) {
+                    console.log("Error handling the attendance confirmation:", error);
                 });
-
-            // Call the handleButtonClick function when the button is clicked
-            handleButtonClick(btnAtt, studentId, btnLeave);
         });
+    
+    
+        $('.CalcDegree').click(function () {
+            let STDID = $(this).closest('tr').find('td')[0].innerText;
+            $.get('@Url.Action("CaclcDegree", "StudentAffairs")', { id: STDID })
+                .done(function (data) {
+                    console.log($(".modal-body")[0]);
+                    console.log(data.degree);
+                    // Add Model 
+                    
+                    $(".modal-body")[0].innerHTML = `<span class="bg-white"> ${data.degree}</span>`;
+
+
+                });
+        })
     });
+
 
 
 

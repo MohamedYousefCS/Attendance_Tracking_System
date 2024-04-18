@@ -1,6 +1,8 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using System.Globalization;
 
 namespace AttendanceTrackingSystem.Repos
@@ -15,8 +17,9 @@ namespace AttendanceTrackingSystem.Repos
 
         public void ConfirmStudentCheckout(int Id);
 
-
-
+        public List<Attendance> GetAllAttendance();
+        public List<Student> GetAllAbsent();
+        public void AutomateAttendance(List<Student> students);
     }
 
     public class AttendanceRepo:IAttendance
@@ -65,6 +68,36 @@ namespace AttendanceTrackingSystem.Repos
 
 
 
+        //Get All Attendance
+
+        public List<Attendance> GetAllAttendance()
+        {
+            return db.attendances.Include(a=>a.User).Where(a=> a.User.Role==Role.Student).ToList();
+
+        }
+        public List<Student> GetAllAbsent()
+        {
+            DateOnly curreentDate = DateOnly.FromDateTime(DateTime.Now);
+            var users = db.users.Include(a => a.Attendances).Where(a => a.Role == Role.Student ).ToList();
+            List<User> absentUsers = users.Where(u=>!u.Attendances.Any(a=>a.Date == curreentDate) || u.Attendances.Any(a=>a.Status==Status.Absent && a.Date == curreentDate)).ToList();
+
+            List<Student> students = absentUsers.OfType<Student>().ToList();
+
+            var studentsWithSchedule = students.Where(s => s.Track.Schedules.Any(sc => sc.Day == curreentDate)).ToList();
+
+            return studentsWithSchedule;
+        }
+
+        public void AutomateAttendance(List<Student> students)
+        {
+            DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
+            foreach (var student in students)
+            {
+                student.Attendances.Add(new Attendance { Date = currentDate, TimeIn = null, TimeOut = null, Status = Status.Absent });
+            }
+
+            db.SaveChanges();
+        }
 
     }
 }

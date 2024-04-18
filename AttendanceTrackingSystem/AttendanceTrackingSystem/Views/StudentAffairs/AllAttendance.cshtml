@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "AllAttendance";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+
+}
+
+<h1>AllAttendance</h1>
+<a class="btn btn-danger" asp-controller="StudentAffairs" asp-action="AutomateAbsentRecords">Automate The Attendances</a>
+
+@{
+    var viewData = new ViewDataDictionary(ViewData)
+            {
+                Model = Model,
+                ["PropertiesToShow"] = new List<string> { "Id","Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" }
+            };
+    await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
+
+}
+<script>
+    
+</script>

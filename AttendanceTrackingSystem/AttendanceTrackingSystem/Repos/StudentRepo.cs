@@ -20,6 +20,8 @@ namespace AttendanceTrackingSystem.Repos
         public Dictionary<string, int> GetLateAttendanceSummary(int userId);
         public Dictionary<string, int> GetAbsentAttendanceSummary(int userId);
 
+        public int GetStudetnDegree(int id);
+        public List<Attendance> GeStudentAttendances(int id);
         public int calcTotalDegree(int userId);
         public List<Attendance> GetAllAttendance(DateOnly date, DateOnly date2);
         public List<PermissionRequest> GetAllPermissionRequest(int studentId);
@@ -107,7 +109,7 @@ namespace AttendanceTrackingSystem.Repos
 
 
 
-            public void ImportDataFromExcel(string filePath)
+        public void ImportDataFromExcel(string filePath)
         {
             using (ExcelPackage package = new ExcelPackage(new FileInfo(filePath)))
             {
@@ -275,11 +277,91 @@ namespace AttendanceTrackingSystem.Repos
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
-                
-                throw; 
+                throw;
             }
+            
+
+        }
+        
+        public int GetStudetnDegree(int id)
+        {
+            int counter = 0;
+            int counter2= 0;
+            int degere = 250;
+
+            List<Attendance> stdRecordWithPermission = db.attendances.Where(a => a.userId == id && a.Status == Status.Absent&& a.PermissionType == PermissionType.Excused).ToList();
+            List<Attendance> stdRecordWithoutPerm = db.attendances.Where(a => a.userId == id && a.Status == Status.Absent || a.IsPermission == false).ToList();
+
+            var daysWithPermission = stdRecordWithPermission.Count;
+            var daysWithoutPermission = stdRecordWithoutPerm.Count;
+            while (daysWithPermission > 0)
+            {
+                if(counter == 0)
+                {
+                    counter++;
+                    daysWithPermission--;
+                    continue;
+                }
+                else if (counter <=3 )
+                {
+                    counter++;
+                    daysWithPermission--;
+                    degere -= 5;                    
+                }
+                else if(counter <= 6 && counter > 3)
+                {
+                    counter++;
+                    daysWithPermission--;
+                    degere -= 10;
+                }
+                else
+                {
+                    daysWithPermission--;
+                    degere -= 15;
+                }
+            }
+            while (daysWithoutPermission > 0)
+            {
+                if(counter2 == 0 && daysWithPermission == 0)
+                {
+                    counter2++;
+                    daysWithoutPermission--;
+                }
+                else
+                {
+                    daysWithoutPermission--;
+                    degere -= 25;
+                }
+              
+            }
+            return degere;
+        }
+        public async Task AddAttendanceRecord()
+        {
+           
+                // Create a new Attendance object and set its properties
+                var newAttendance = new Attendance
+                {
+                    Date = DateOnly.FromDateTime(DateTime.Now),
+                    TimeIn = TimeOnly.FromDateTime(DateTime.Now),
+                    // Assuming TimeOut is not mandatory and can be null
+                    TimeOut = null,
+                    Status = Status.Absent,  
+                    IsPermission = false,  
+                    PermissionType = Models.PermissionType.None,
+                    userId = 8  
+                };
+                db.attendances.Add(newAttendance);
+
+                await db.SaveChangesAsync();
+            }
+
+        public List<Attendance> GeStudentAttendances(int id)
+        {
+            List<Attendance> userAttendance = db.users.Include(u => u.Attendances).FirstOrDefault(a => a.Id == id).Attendances;
+            return userAttendance;
         }
     }
 }
