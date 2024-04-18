@@ -45,7 +45,7 @@ namespace AttendanceTrackingSystem.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<TimeOnly>("TimeIn")
+                    b.Property<TimeOnly?>("TimeIn")
                         .HasColumnType("time");
 
                     b.Property<TimeOnly?>("TimeOut")
@@ -124,17 +124,17 @@ namespace AttendanceTrackingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleID"));
 
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
+                    b.Property<DateOnly>("Day")
+                        .HasColumnType("date");
 
-                    b.Property<int>("EndPeriod")
-                        .HasColumnType("int");
+                    b.Property<TimeOnly>("EndPeriod")
+                        .HasColumnType("time");
 
                     b.Property<int>("InstructorID")
                         .HasColumnType("int");
 
-                    b.Property<int>("StartPeriod")
-                        .HasColumnType("int");
+                    b.Property<TimeOnly>("StartPeriod")
+                        .HasColumnType("time");
 
                     b.Property<int>("TrackID")
                         .HasColumnType("int");
