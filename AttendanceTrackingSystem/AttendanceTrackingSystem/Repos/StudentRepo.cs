@@ -291,8 +291,8 @@ namespace AttendanceTrackingSystem.Repos
             int counter2= 0;
             int degere = 250;
 
-            List<Attendance> stdRecordWithPermission = db.attendances.Where(a => a.userId == id && a.Status == Status.Absent&& a.PermissionType == PermissionType.Excused).ToList();
-            List<Attendance> stdRecordWithoutPerm = db.attendances.Where(a => a.userId == id && a.Status == Status.Absent || a.IsPermission == false).ToList();
+            List<Attendance> stdRecordWithPermission = db.attendances.Where(a => a.userId == id && a.Status != Status.Present&& a.PermissionType == PermissionType.Excused).ToList();
+            List<Attendance> stdRecordWithoutPerm = db.attendances.Where(a => a.userId == id && a.Status != Status.Present && a.IsPermission == false).ToList();
 
             var daysWithPermission = stdRecordWithPermission.Count;
             var daysWithoutPermission = stdRecordWithoutPerm.Count;
@@ -324,7 +324,7 @@ namespace AttendanceTrackingSystem.Repos
             }
             while (daysWithoutPermission > 0)
             {
-                if(counter2 == 0 && daysWithPermission == 0)
+                if(counter2 == 0 && degere == 250)
                 {
                     counter2++;
                     daysWithoutPermission--;
