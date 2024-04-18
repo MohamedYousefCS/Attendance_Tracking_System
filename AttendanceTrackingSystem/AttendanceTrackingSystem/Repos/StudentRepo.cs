@@ -363,7 +363,5 @@ namespace AttendanceTrackingSystem.Repos
             List<Attendance> userAttendance = db.users.Include(u => u.Attendances).FirstOrDefault(a => a.Id == id).Attendances;
             return userAttendance;
         }
-
-
     }
 }

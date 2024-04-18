@@ -49,7 +49,8 @@ namespace AttendanceTrackingSystem.Controllers
             Claim c1 = new Claim(ClaimTypes.NameIdentifier, user.Email);
             Claim c2 = new Claim(ClaimTypes.Name, user.Name);
             Claim c3 = new Claim(ClaimTypes.Role, user.Role);
-            ClaimsIdentity claims = new ClaimsIdentity(new[] { c1, c2, c3 }, "cookie");
+            Claim c4 = new Claim("UserId", user.Id.ToString());
+            ClaimsIdentity claims = new ClaimsIdentity([c1, c2, c3, c4], "cookie");
             ClaimsPrincipal principal = new ClaimsPrincipal(claims);
             await HttpContext.SignInAsync(principal);
 
@@ -215,6 +216,7 @@ namespace AttendanceTrackingSystem.Controllers
             accountRepo.UpdateInstructor(instructor);
             return RedirectToAction("Index", "Instructor", new { id = instructor.Id });
         }
+
         [HttpPost]
         public IActionResult UpdateUserProfile(int id)
         {

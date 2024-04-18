@@ -31,7 +31,7 @@
     background-color: white;
     color: #1062a3;
     border: 2px solid #1062a3;">
-        <a asp-action="showAttendance">Show Attendance</a>
+        <a asp-action="showAttendance" asp-route-id="@Model.Id">Show Attendance</a>
     </div>
     <div style="text-align: center;
     width: 49%;
@@ -40,7 +40,7 @@
     background-color: white;
     color: #1062a3;
     border: 2px solid #1062a3;">
-        <a asp-action="permission">permission</a>
+        <a asp-action="permission" asp-route-id="@Model.Id">permission</a>
 
     </div>
 </div>
