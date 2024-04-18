@@ -101,7 +101,6 @@ namespace AttendanceTrackingSystem.Controllers
             // Check if the record already exists for the given userId and date
             Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
 
-
             bool isAdded;
 
             if (existingAttendance != null)

@@ -29,7 +29,6 @@ namespace AttendanceTrackingSystem.Models
         [Required(ErrorMessage = "Reason is required.")]
         [MinLength(10)]
         [MaxLength(100)]
-        [RegularExpression(@"^(?![0-9])[\p{L}\s]*$", ErrorMessage = "Invalid Reason")]
 
         public string Reason { get; set; }
 
