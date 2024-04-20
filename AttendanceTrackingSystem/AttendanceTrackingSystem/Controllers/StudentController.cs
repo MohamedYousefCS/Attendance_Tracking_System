@@ -74,7 +74,9 @@ namespace AttendanceTrackingSystem.Controllers
                 return NotFound();  
 
             stuRepo.DeletePermission(id);
-            return View("permission");
+            int userId = int.Parse(User.FindFirstValue("UserId"));
+            var permissions = stuRepo.GetAllPermissionRequest(userId);
+            return RedirectToAction("permission", permissions);
         }
 
     
