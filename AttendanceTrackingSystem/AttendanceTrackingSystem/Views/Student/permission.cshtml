@@ -65,7 +65,7 @@
                 <td>@item.Reason</td>
                 <td>@item.Type</td>
                 <td>
-                    <form  >
+                  
                         @if (@item.IsAccepted==IsAccepted.pending)
                         {
                             <div class="btn pending-btn" style="width:49%">
@@ -89,7 +89,7 @@
                         }
 
                        
-                    </form>
+                    
 
                 </td>
             </tr>
@@ -104,9 +104,9 @@
 </div>
 
 <script>
-    function confirmDelete(studentId) {
+    function confirmDelete(pID) {
         if (confirm('Are you sure you want to delete this record?')) {
-            window.location.href = '/Student/DeletePermission/' + studentId;
+            window.location.href = '/Student/DeletePermission/' + pID;
         }
     }
 </script>

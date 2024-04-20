@@ -106,15 +106,25 @@
 </form>
 @using (Html.BeginForm("UploadExcel", "StudentAffairs", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="form-group">
-        <label for="file" style="display:none;">Choose Excel file:</label>
-        <label for="file" class="file-input-label">
-            <img src="~/images/microsoft-excel.svg" width="70px" /> Upload Excel File
-        </label>
-        <input type="file" name="file" id="file" class="form-control-file" accept=".xlsx,.xls" style="display: none;" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <p>Welcome! You can now streamline your student data management by uploading an Excel file. Just click on the image below, select your file</p>
+                <form method="post" action="/UploadExcel" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file" class="file-input-label">
+                            <img src="~/imgs/excel.png" width="70px" />
+                            Click here to Upload Excel File
+                        </label>
+                        <input type="file" name="file" id="file" class="form-control-file" accept=".xlsx,.xls" style="display: none;" />
+                    </div>
+                    <button type="submit" class="btn btn-dark">Upload</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-dark">Upload</button>
 }
+
 <script>
     $(document).ready(function () {
         const FORM = $(".form");
