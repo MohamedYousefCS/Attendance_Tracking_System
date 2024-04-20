@@ -15,6 +15,7 @@ namespace AttendanceTrackingSystem.Controllers
         }
         public IActionResult Index()
         {
+            ViewBag.WideView = "Wide";
             var model = EmpRepo.GetAllEmployees();
             var propertyNames = new List<string> { "Name", "Email", "Salary", "Mobile", "Role" };
             ViewBag.PropertiesToShow = propertyNames;
@@ -25,10 +26,8 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult Create()
         {
-
-
+            ViewBag.WideView = "Wide";
             return View();
-
         }
         [HttpPost]
         public IActionResult Create(Employee Emp)
@@ -42,6 +41,7 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult Details(int? id)
         {
+            ViewBag.WideView = "Wide";
             if (id == null)
                 return BadRequest();
             var model = EmpRepo.GetById(id.Value);
@@ -52,6 +52,7 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult Update(int? id)
         {
+            ViewBag.WideView = "Wide";
             if (id == null)
                 return BadRequest();
             var model = EmpRepo.GetById(id.Value);
@@ -65,7 +66,6 @@ namespace AttendanceTrackingSystem.Controllers
 
             if (ModelState.IsValid)
             {
-
                 EmpRepo.Update(Emp);
                 return RedirectToAction("Index");
             }
