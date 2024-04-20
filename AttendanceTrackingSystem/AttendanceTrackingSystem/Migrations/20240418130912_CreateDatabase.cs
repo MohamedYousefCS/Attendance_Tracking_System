@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AttendanceTrackingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class itit : Migration
+    public partial class CreateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,9 +87,9 @@ namespace AttendanceTrackingSystem.Migrations
                 {
                     AttendanceID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeIn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeOut = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    TimeIn = table.Column<TimeOnly>(type: "time", nullable: true),
+                    TimeOut = table.Column<TimeOnly>(type: "time", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     IsPermission = table.Column<bool>(type: "bit", nullable: true),
                     PermissionType = table.Column<int>(type: "int", nullable: true),
@@ -230,13 +230,42 @@ namespace AttendanceTrackingSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "schedules",
+                columns: table => new
+                {
+                    ScheduleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Day = table.Column<DateOnly>(type: "date", nullable: false),
+                    StartPeriod = table.Column<TimeOnly>(type: "time", nullable: false),
+                    EndPeriod = table.Column<TimeOnly>(type: "time", nullable: false),
+                    TrackID = table.Column<int>(type: "int", nullable: false),
+                    InstructorID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_schedules", x => x.ScheduleID);
+                    table.ForeignKey(
+                        name: "FK_schedules_instructors_InstructorID",
+                        column: x => x.InstructorID,
+                        principalTable: "instructors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_schedules_tracks_TrackID",
+                        column: x => x.TrackID,
+                        principalTable: "tracks",
+                        principalColumn: "TrackId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "students",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     University = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Faculty = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Specialization = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Specialization = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     GraduationYear = table.Column<int>(type: "int", nullable: false),
                     trackId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -265,7 +294,7 @@ namespace AttendanceTrackingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IsAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    IsAccepted = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     studentId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -301,6 +330,16 @@ namespace AttendanceTrackingSystem.Migrations
                 column: "studentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_schedules_InstructorID",
+                table: "schedules",
+                column: "InstructorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_schedules_TrackID",
+                table: "schedules",
+                column: "TrackID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_students_trackId",
                 table: "students",
                 column: "trackId");
@@ -334,6 +373,9 @@ namespace AttendanceTrackingSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "permissionRequests");
+
+            migrationBuilder.DropTable(
+                name: "schedules");
 
             migrationBuilder.DropTable(
                 name: "security");

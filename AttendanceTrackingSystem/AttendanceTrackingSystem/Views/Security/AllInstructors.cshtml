@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Instructor>
+@{
     ViewData["Title"] = "AllInstructors";
     Layout = "~/Views/Shared/MainLayout.cshtml";
     var currentDateAndTime = DateTime.Now.ToString("yyyy-MM-dd");
@@ -17,7 +18,7 @@
     var viewData = new ViewDataDictionary(ViewData)
             {
                 Model = Model,
-                ["PropertiesToShow"] = new List<string> { "Id", "Fname", "Lname" }
+                ["PropertiesToShow"] = new List<string> { "Id", "Fname", "Lname","Role" }
             };
     await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
 }

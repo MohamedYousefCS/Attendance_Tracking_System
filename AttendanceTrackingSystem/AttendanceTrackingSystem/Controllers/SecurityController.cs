@@ -55,11 +55,12 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult AllInstructors()
         {
-            var instructors=instructorRepo.GetInstructorList();
-            var propertyNames = new List<string> { "Id", "Fname", "Lname" };
+            var instructors=instructorRepo.GetAllInstructor();
+            var propertyNames = new List<string> { "Id", "Fname", "Lname","Role" };
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "Security";
             ViewBag.Action = "AllInstructors";
+            ViewBag.Attendance = Attendance;
             return View(instructors);
         }
 

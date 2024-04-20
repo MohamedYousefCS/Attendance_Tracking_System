@@ -19,6 +19,9 @@ namespace AttendanceTrackingSystem.Repos
         public void AssignInstructorToTrack(int trackId, int instructorId);
         public User  GetInstructorByID(int id);
         public void AddSchedule(Schedule schedule);
+
+        public List<Instructor> GetAllInstructor();
+
     }
     public class InstructorRepo : IInstructorRepo
     {
@@ -38,6 +41,11 @@ namespace AttendanceTrackingSystem.Repos
         public List<User> GetInstructorList()
         {
             return db.users.Where(p => p.Role == Role.Instructor).ToList();
+        }
+
+        public List<Instructor> GetAllInstructor()
+        {
+            return db.instructors.ToList();
         }
 
         public List<Track> GetTracks()
