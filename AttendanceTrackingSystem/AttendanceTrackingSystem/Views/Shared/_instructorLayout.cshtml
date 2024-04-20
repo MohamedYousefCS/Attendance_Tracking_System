@@ -1,4 +1,4 @@
-﻿<div class="row mt-2 mb-2">
+﻿@* <div class="row mt-2 mb-2">
     <div class="container-fluid col" id="leftSidebarLinks">
         <i class=" fa-solid fa-book fs-5 m-2" style="color: #ffffff;"></i>
         <a asp-action="GetStudentsWithAttendanceForSupervisor" asp-controller="InsStudentAttendance" asp-route-id="6" class="text-white text-decoration-none fw-bold fs-5"> Attendance</a>
@@ -21,7 +21,7 @@
         <i class="fa-solid fa-scroll fs-5 m-2" style="color: #ffffff;"></i>
         <a asp-action="Schedule" asp-controller="Instructor" class="text-white text-decoration-none fw-bold fs-5">Schedules</a>
     </div>
-</div>
+</div> *@
 <!DOCTYPE html>
 
 <html lang="en">
@@ -44,7 +44,7 @@
     <div style="background-color: #fcfcfc;" class="container-fluid d-flex flex-column min-vh-100" id="mainContainer">
         <!-- Left Sidebar Start -->
         <div class="row flex-grow-1 mt-3 mb-3 justify-content-evenly">
-            <div style="background-color: #033e;" class="col-2 rounded-4 d-flex flex-column" id="leftSidebar">
+            <div style="background-color: darkred;" class="col-2 rounded-4 d-flex flex-column" id="leftSidebar">
                 <div class="row mt-4 mb-4">
                     <div class="container-fluid col-8 p-2 bg-light  rounded-5" id="leftSidebarPicture">
                         <img src="~/assets/iti-logo-text.png" class="col-12">
@@ -120,7 +120,7 @@
             <!-- Left Sidebar End -->
             <!-- Right Main Container Start -->
             <div class="col-9 d-flex flex-column">
-                <div class="row h-25 rounded-4 p-3 ps-5" style="background-color: #033e;" id="leftSidebar">
+                <div class="row h-25 rounded-4 p-3 ps-5" style="background-color: darkred;" id="leftSidebar">
                     <div class="col-9 d-flex flex-column justify-content-evenly h-100">
                         <p class="text-white fs-5" id="dateTime">Current Date and time</p>
                         <div class="container">

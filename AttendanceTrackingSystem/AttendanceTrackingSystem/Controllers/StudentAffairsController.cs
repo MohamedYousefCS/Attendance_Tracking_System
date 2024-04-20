@@ -140,6 +140,7 @@ namespace AttendanceTrackingSystem.Controllers
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "StudentAffairs";
             ViewBag.Action = "TakeAttendance";
+            ViewBag.Attendance = Attendance;
             return View(model);
         }
         //////////////////////

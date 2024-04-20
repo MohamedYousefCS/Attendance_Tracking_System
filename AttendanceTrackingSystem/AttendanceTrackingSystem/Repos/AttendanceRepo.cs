@@ -72,6 +72,7 @@ namespace AttendanceTrackingSystem.Repos
 
         public List<Attendance> GetAllAttendance()
         {
+            
             return db.attendances.Include(a=>a.User).Where(a=> a.User.Role==Role.Student).ToList();
 
         }

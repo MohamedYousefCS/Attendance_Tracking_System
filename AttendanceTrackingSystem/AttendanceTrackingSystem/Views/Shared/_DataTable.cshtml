@@ -120,7 +120,7 @@
                             
                             @{
                                 var studentId = GetId(item); // Rename 'id' to 'studentId'
-                                Attendance existingAttendance = Attendance.GetByIdAndDate(Int32.Parse(GetId(item)), DateOnly.FromDateTime(DateTime.Today));
+                                 Attendance existingAttendance = Attendance.GetByIdAndDate(Int32.Parse(GetId(item)), DateOnly.FromDateTime(DateTime.Today));
                                 bool Timeout=false;
 
                                 if (existingAttendance!=null)
