@@ -22,6 +22,7 @@ namespace AttendanceTrackingSystem.Repos
         public int GetUserId(ClaimsPrincipal user)
         {
             var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+           
             return Convert.ToInt32(userIdClaim.Value);
         }
     }
