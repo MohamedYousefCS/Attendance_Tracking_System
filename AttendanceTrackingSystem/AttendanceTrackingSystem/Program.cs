@@ -30,9 +30,10 @@ namespace AttendanceTrackingSystem
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
             builder.Services.AddTransient<IAttendance,AttendanceRepo>();
             builder.Services.AddTransient<IUserRepo,UserRepo>();
+			builder.Services.AddTransient<IAdmin, Admin>();
 
 
-            builder.Services.AddDbContext<ITIDBContext>();
+			builder.Services.AddDbContext<ITIDBContext>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
                 options.LoginPath = "/Account/Login";
