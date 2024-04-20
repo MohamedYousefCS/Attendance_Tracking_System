@@ -15,12 +15,14 @@ namespace AttendanceTrackingSystem.Controllers
         }
         public IActionResult Display()
         {
+            ViewBag.WideView = "Wide";
             var model = Adtrackrepo.GetTracks();
             return View(model);
         }
 
         public IActionResult GetInstructorsForTrack(int id)
         {
+            ViewBag.WideView = "Wide";
             if (id != null)
             {
                 var model = Adtrackrepo.GetInstructorsForTrack(id);
@@ -31,6 +33,7 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult showstudentinTrack(int id)
         {
+            ViewBag.WideView = "Wide";
             var track = Adtrackrepo.showstudentinTrack(id);
 
             if (track == null)
@@ -42,7 +45,8 @@ namespace AttendanceTrackingSystem.Controllers
         }
         public IActionResult Create()
         {
-           var program=Adtrackrepo.GetProgramList();
+			ViewBag.WideView = "Wide";
+			var program=Adtrackrepo.GetProgramList();
             var ins = Adtrackrepo.GetInstructorList();
             ViewBag.programs= new MultiSelectList(program, "Id", "ProgramName");
             ViewBag.ins=new MultiSelectList(ins,"Id" ,"Fname");
@@ -52,11 +56,11 @@ namespace AttendanceTrackingSystem.Controllers
         public IActionResult Create(Track track) {
             Adtrackrepo.Add(track);
             return RedirectToAction("Display");
-
         }
         public IActionResult Edit(int id)
         {
-            var model = Adtrackrepo.GetTrackById(id);
+			ViewBag.WideView = "Wide";
+			var model = Adtrackrepo.GetTrackById(id);
              var program=Adtrackrepo.GetProgramList();
             var ins = Adtrackrepo.GetInstructorList();
             ViewBag.programs= new MultiSelectList(program, "Id", "ProgramName");
