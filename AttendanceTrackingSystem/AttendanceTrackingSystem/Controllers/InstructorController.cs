@@ -1,6 +1,7 @@
 ﻿using AttendanceTrackingSystem.Models;
 using AttendanceTrackingSystem.Repos;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AttendanceTrackingSystem.Controllers
 {
@@ -16,16 +17,20 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult Index()
         {
-            User instructor = instRepo.GetInstructorByID(1);
+            int userId = int.Parse(User.FindFirstValue("UserId"));
+
+            User instructor = instRepo.GetInstructorByID(userId);
             return View(instructor);
         }
         public IActionResult Schedule()
         {
             // get the user id from the session add it later ok
-            //User instructor = instRepo.GetInstructorByID(1);
+            int userId = int.Parse(User.FindFirstValue("UserId"));
+
+            User instructor = instRepo.GetInstructorByID(userId);
 
             ViewBag.Role = "Supervisor";
-            ViewBag.InstructorID = 2;//add it later
+            ViewBag.InstructorID = instructor.Id;
             ViewBag.TrackID = 1;//add it later
             return View();
         }
