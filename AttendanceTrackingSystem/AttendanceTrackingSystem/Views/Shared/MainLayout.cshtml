@@ -25,26 +25,6 @@
                             </a>
                         </div>
 
-                        @* <div class="header__menu">
-                        <ul class="header__nav">
-                        <li class="header__nav-item">
-                        <a class="header__nav-link" href="index.html" role="button">Home </a>
-                        </li>
-
-                        <li class="header__nav-item">
-                        <a href="faq.html" class="header__nav-link">Help center</a>
-                        </li>
-
-                        <li class="header__nav-item">
-                        <a class="header__nav-link" href="about.html" role="button">About us</a>
-                        </li>
-
-                        <li class="header__nav-item">
-                        <a class="header__nav-link header__nav-link--menu" href="privacy.html">Privacy policy</a>
-                        </li>
-                        </ul>
-                        </div> *@
-
                         <div class="header__actions">
                             @* appear when he isn't logged in in large screens*@
                             <div class="header__action" id="loginLinkLargelScreens">
@@ -102,7 +82,7 @@
     </header>
     <!-- Content -->
     <main class="main">
-        <div class="container">
+        <div class="@(ViewBag.WideView == "Wide" ? "container-fluid" : "container")">
             @RenderBody()
         </div>
     </main>

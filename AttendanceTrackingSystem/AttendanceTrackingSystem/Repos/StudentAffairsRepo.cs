@@ -8,10 +8,11 @@ namespace AttendanceTrackingSystem.Repos
 
     public interface IStudentAffairsRepo
     {
+        public Employee GetStuAffById(int id);
 
-      // public IStudentAffairsRepo GetAllStudents();
-       //public IStudentAffairsRepo GetById(int id);'
-       public Task<AttendanceViewModel> ViewAllAttendance(DateOnly date);
+        // public IStudentAffairsRepo GetAllStudents();
+        //public IStudentAffairsRepo GetById(int id);'
+        public Task<AttendanceViewModel> ViewAllAttendance(DateOnly date);
         public Task<AttendanceViewModel> ViewAttendance(Role role, DateOnly date);
 
 
@@ -25,6 +26,10 @@ namespace AttendanceTrackingSystem.Repos
         public StudentAffairsRepo(ITIDBContext _db )
         {
             db = _db;
+        }
+        public Employee GetStuAffById(int id)
+        {
+            return db.employees.FirstOrDefault(emp => emp.Id == id);
         }
         public async Task<AttendanceViewModel> ViewAllAttendance(DateOnly date)
         {

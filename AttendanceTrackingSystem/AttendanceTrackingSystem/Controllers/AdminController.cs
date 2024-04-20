@@ -16,9 +16,9 @@ namespace AttendanceTrackingSystem.Controllers
         }
         public IActionResult Index()
         {
-            //int userId = int.Parse(User.FindFirstValue("UserId"));
-
-          User admin=adminRepo.GetAdminByID(64);
+            ViewBag.WideView = "Wide";
+            int userId = int.Parse(User.FindFirstValue("UserId"));
+            User admin=adminRepo.GetAdminByID(userId);
             return View(admin);
         }
     }

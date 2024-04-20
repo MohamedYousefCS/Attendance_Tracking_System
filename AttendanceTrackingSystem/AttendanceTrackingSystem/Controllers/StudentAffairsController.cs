@@ -5,6 +5,7 @@ using AttendanceTrackingSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Security.Claims;
 
 
 namespace AttendanceTrackingSystem.Controllers
@@ -31,9 +32,15 @@ namespace AttendanceTrackingSystem.Controllers
         }
         public IActionResult Index()
         {
-            var students=StudentRepo.GetAllStudents();
-            return View(students);
+            int userId = int.Parse(User.FindFirstValue("UserId"));
+            Employee StuAff = StdAffairsRepo.GetStuAffById(userId);
+            return View(StuAff);
         }
+        public IActionResult AllStudents()
+        {
+			var students = StudentRepo.GetAllStudents();
+			return View(students);
+		}
         public IActionResult create()
         {
             ViewBag.tracks= trackrepo.tracks.ToList();
