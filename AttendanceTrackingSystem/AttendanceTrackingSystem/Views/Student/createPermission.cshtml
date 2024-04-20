@@ -74,7 +74,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="form_name">name <span>*</span></label>
-                                                <input id="form_name" type="text" name="name" class="form-control" placeholder="Please enter your name " required="required" data-error="Firstname is required.">
+                                                <input id="form_name" type="text" name="name" class="form-control" value="@ViewBag.student.Fname" readonly>
 
                                             </div>
                                         </div>
@@ -84,7 +84,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="form_email">Email <span>*</span></label>
-                                                <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your email *" required="required" data-error="Valid email is required.">
+                                                <input id="form_email" type="email" name="email" class="form-control" value="@ViewBag.student.Email" readonly>
 
                                             </div>
                                         </div>
@@ -117,11 +117,11 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label asp-for="@Model.Date">Date <span>*</span></label>
-                                                <input type="date" asp-for="@Model.Date" required="required"  />
+                                                <input type="date" asp-for="@Model.Date" required="required" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
                                                 <span asp-validation-for="@Model.Date"></span>
                                             </div>
-
                                         </div>
+
                                         <div class="col-md-12">
 
                                             <input type="submit" class="btn btn-success btn-send  pt-2 btn-block " value="Send Request">
@@ -148,4 +148,9 @@
 
 </body>
 </html>
-
+<script>
+    // Get today's date in the format "YYYY-MM-DD"
+    var today = new Date().toISOString().split('T')[0];
+    // Set the value of the input field to today's date
+    document.querySelector('input[type="date"]').value = today;
+</script>

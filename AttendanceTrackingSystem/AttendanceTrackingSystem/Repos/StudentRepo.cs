@@ -270,8 +270,21 @@ namespace AttendanceTrackingSystem.Repos
                 throw new ArgumentException("Reason cannot be empty or null.", nameof(PR.Reason));
             }
 
-           
-            db.permissionRequests.Add(PR);
+
+            var existingPermission = db.permissionRequests
+                .FirstOrDefault(p => p.Date == PR.Date && p.studentId == PR.studentId);
+
+            if (existingPermission != null)
+            {
+                // Update the existing permission request
+                existingPermission.IsAccepted = PR.IsAccepted;
+                existingPermission.Reason = PR.Reason;
+                existingPermission.Type = PR.Type;
+            }
+            else
+            {
+                db.permissionRequests.Add(PR);
+            }
 
             try
             {
