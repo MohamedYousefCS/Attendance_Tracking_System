@@ -1,0 +1,73 @@
+﻿@model Attendance
+
+@{
+    ViewData["Title"] = "Update Attendance";
+    Layout = "~/Views/Shared/StudentAffairsLayout.cshtml";
+
+}
+<link href="~/css/employeeform.css" rel="stylesheet" />
+
+<div class="container-fluid px-1 py-3 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11">
+
+            <div class="card">
+                <form asp-action="Update" method="post" class="form-card">
+                    <div class="row justify-content-between text-left">
+                 @*       <div class="form-group col-sm-6 flex-column d-flex">
+                            <label asp-for="AttendanceID" class="form-control-label px-3">Attendance ID<span class="text-danger"> *</span></label>
+                            <input asp-for="AttendanceID" class="form-control" placeholder="Enter Attendance ID ">
+                            <span asp-validation-for="AttendanceID" class="text-danger"></span>
+                        </div> *@
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label asp-for="Date" class="form-control-label px-3">Date<span class="text-danger"> *</span></label>
+                            <input asp-for="Date" class="form-control" readonly>
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-12 flex-column d-flex">
+                            <label asp-for="TimeIn" class="form-control-label px-3">TimeIn<span class="text-danger"> *</span></label>
+                            <input asp-for="TimeIn" class="form-control" readonly >
+                            <span asp-validation-for="TimeIn" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-between text-left">
+
+                        <div class="form-group col-sm-12 flex-column d-flex">
+                            <label asp-for="TimeOut" class="form-control-label px-3">TimeOut<span class="text-danger"> *</span></label>
+                            <input asp-for="TimeOut" class="form-control" readonly>
+                            <span asp-validation-for="TimeOut" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row justify-content-between text-left">
+
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label asp-for="Status" class="form-control-label px-3">Role<span class="text-danger"> *</span></label>
+                            <select asp-for="Status" class="form-control">
+                                <option value="Present">Present</option>
+                                <option value="Late">Late</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="form-group col-sm-6">
+                            <button type="submit" class="btn-block btn-outline-success">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

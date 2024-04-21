@@ -155,7 +155,7 @@
                     }
                     else if (ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")
                     {
-                        <a asp-action="Update" asp-controller="StudentAffairs" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+                        <a asp-action="UpdateAttendance" asp-controller="StudentAffairs" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
                         <button class="CalcDegree"><i class="fa-solid fa-eye text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button>
                       
                         <!-- Modal -->
