@@ -105,6 +105,8 @@ namespace AttendanceTrackingSystem.Repos
             DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
             foreach (var student in students)
             {
+                if (student.Attendances.Any(a => a.Date == currentDate))
+                    continue;
                 student.Attendances.Add(new Attendance { Date = currentDate, TimeIn = null, TimeOut = null, Status = Status.Absent });
             }
 
