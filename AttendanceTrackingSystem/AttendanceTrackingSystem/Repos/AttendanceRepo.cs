@@ -20,6 +20,11 @@ namespace AttendanceTrackingSystem.Repos
         public List<Attendance> GetAllAttendance();
         public List<Student> GetAllAbsent();
         public void AutomateAttendance(List<Student> students);
+
+        public Attendance GetAttendanceById(int id);
+
+        public void Update(Attendance attendance);
+
     }
 
     public class AttendanceRepo:IAttendance
@@ -44,6 +49,12 @@ namespace AttendanceTrackingSystem.Repos
             return db.attendances.FirstOrDefault(a => a.userId == id && a.Date == currentDate && a.TimeOut == null);
 
         }
+
+        public Attendance GetAttendanceById(int id)
+        {
+            return db.attendances.FirstOrDefault(a => a.AttendanceID == id);
+        }
+
 
 
         public Attendance GetByIdAndDate(int id, DateOnly date)
@@ -99,6 +110,15 @@ namespace AttendanceTrackingSystem.Repos
 
             db.SaveChanges();
         }
+
+
+
+        public void Update(Attendance attendance)
+        {
+            db.Update(attendance);
+            db.SaveChanges();
+        }
+
 
     }
 }

@@ -158,13 +158,44 @@ namespace AttendanceTrackingSystem.Controllers
         public IActionResult AllAttendance()
         {
             var model = Attendance.GetAllAttendance();
-            var propertyNames = new List<string> { "Id","Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" };
+            var propertyNames = new List<string> { "AttendanceID", "Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" };
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "StudentAffairs";
             ViewBag.Action = "AllAttendance";
             return View(model);
         }
 
+        //update status of attendance
+        public IActionResult UpdateAttendance(int? id)
+        {
+            ViewBag.WideView = "Wide";
+            if (id == null)
+                return BadRequest();
+            var model = Attendance.GetAttendanceById(id.Value);
+            if (model == null)
+                return NotFound();
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public IActionResult UpdateAttendance(Attendance attend, int id)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Attendance.Update(attend);
+                return RedirectToAction("AllAttendance");
+            }
+            else
+            {
+                return View("UpdateAttendance", attend);
+
+            }
+        }
+
+
+        /////////////////////////////////////
 
         public async Task<IActionResult> ViewAttendance(DateOnly date, Role? role = null)
         {

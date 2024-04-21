@@ -78,4 +78,4 @@ To get started with the Attendance Management System, follow these steps:
 
 [EbrahimDawoud](https://github.com/EbrahimDawoud)
 
-[BothinaMesalem)](https://github.com/BothinaMesalem)
+[BothinaMesalem](https://github.com/BothinaMesalem)
