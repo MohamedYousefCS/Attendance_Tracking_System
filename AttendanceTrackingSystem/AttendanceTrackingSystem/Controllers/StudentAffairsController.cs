@@ -220,6 +220,7 @@ namespace AttendanceTrackingSystem.Controllers
         
         public async Task<IActionResult> AutomateAbsentRecords()
         {
+
             var model = Attendance.GetAllAbsent();
 
             Attendance.AutomateAttendance(model);
