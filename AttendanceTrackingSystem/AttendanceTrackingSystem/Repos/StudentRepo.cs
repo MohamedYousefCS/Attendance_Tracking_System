@@ -121,30 +121,39 @@ namespace AttendanceTrackingSystem.Repos
                 for (int row = 2; row <= rowCount; row++)
                 {
                     Student entity = new Student();
-                    entity.Fname = worksheet.Cells[row, 1].Value.ToString();
-                    entity.Lname = worksheet.Cells[row, 2].Value.ToString();
-                    entity.Email = worksheet.Cells[row, 3].Value.ToString();
-                    entity.Password = worksheet.Cells[row, 4].Value.ToString();
-                    string genderStr = worksheet.Cells[row, 5].Value.ToString();
+                    entity.Fname = worksheet.Cells[row, 1].Value?.ToString() ?? "";
+                    entity.Lname = worksheet.Cells[row, 2].Value?.ToString() ?? "";
+                    entity.Email = worksheet.Cells[row, 3].Value?.ToString() ?? "";
+                    entity.Password = worksheet.Cells[row, 4].Value?.ToString() ?? "";
+                    string genderStr = worksheet.Cells[row, 5].Value?.ToString() ?? "";
                     if (Enum.TryParse<Gender>(genderStr, out Gender gender))
                     {
                         entity.gender = gender;
                     }
-                    entity.Mobile = worksheet.Cells[row, 6].Value.ToString();
-                    string birthDateString = worksheet.Cells[row, 7].Value.ToString();
+                    entity.Mobile = worksheet.Cells[row, 6].Value?.ToString() ?? "";
+                    string birthDateString = worksheet.Cells[row, 7].Value?.ToString() ?? "";
 
                     if (DateTime.TryParse(birthDateString, out DateTime birthDate))
                     {
                         entity.BirthDate = birthDate;
                     }
                     entity.Role = Role.Student;
-                    entity.University = worksheet.Cells[row, 8].Value.ToString();
-                    entity.Faculty = worksheet.Cells[row, 9].Value.ToString();
-                    entity.Specialization = worksheet.Cells[row, 10].Value.ToString();
-                    entity.GraduationYear = int.Parse(worksheet.Cells[row, 11].Value.ToString());
-                    entity.trackId = int.Parse(worksheet.Cells[row, 12].Value.ToString());
+                    entity.University = worksheet.Cells[row, 8].Value?.ToString() ?? "";
+                    entity.Faculty = worksheet.Cells[row, 9].Value?.ToString() ?? "";
+                    entity.Specialization = worksheet.Cells[row, 10].Value?.ToString() ?? "";
+                    int graduationYear;
+                    if (int.TryParse(worksheet.Cells[row, 11].Value?.ToString(), out graduationYear))
+                    {
+                        entity.GraduationYear = graduationYear;
+                    }
+                    int trackId;
+                    if (int.TryParse(worksheet.Cells[row, 12].Value?.ToString(), out trackId))
+                    {
+                        entity.trackId = trackId;
+                    }
                     db.students.Add(entity);
                 }
+
 
                 db.SaveChanges();
 

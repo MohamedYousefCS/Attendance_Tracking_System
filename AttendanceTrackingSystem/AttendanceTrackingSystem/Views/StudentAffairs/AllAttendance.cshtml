@@ -13,11 +13,10 @@
     var viewData = new ViewDataDictionary(ViewData)
             {
                 Model = Model,
-                ["PropertiesToShow"] = new List<string> { "Id","Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" }
+                ["PropertiesToShow"] = new List<string> { "AttendanceID", "Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status", "Role" }
             };
     await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
 
 }
-<script>
-    
+<script>    
 </script>
