@@ -113,14 +113,14 @@
         </label>
         <input type="file" name="file" id="file" class="form-control-file" accept=".xlsx,.xls" style="display: none;" />
     </div>
-    <button type="submit" class="btn btn-dark">Upload</button>
+    <button type="submit" id="loadExcel" class="btn btn-dark">Upload</button>
 }
 <script>
     $(document).ready(function () {
         const FORM = $(".form");
         const TYPES = ["input[type=text]", "input[type=email]", "input[type=date]", "input[type=number]", "input[type=submit]"];
         const FOCUS = $(".focus");
-
+        // document.querySelector("#loadExcel").addEventListener("click", e => e.preventDefault());
         function position(e) {
             var props = {
                 top: e.offset().top,

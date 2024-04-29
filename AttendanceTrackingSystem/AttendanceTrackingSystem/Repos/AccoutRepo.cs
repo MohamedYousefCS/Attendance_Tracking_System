@@ -1,6 +1,7 @@
 ﻿using AttendanceTrackingSystem.DBContext;
 using AttendanceTrackingSystem.Models;
 using AttendanceTrackingSystem.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -18,6 +19,8 @@ namespace AttendanceTrackingSystem.Repos
         void UpdateUser(User user);
         void UpdateStudent(Student student);
         void UpdateInstructor(Instructor instructor);
+        public bool CheckPassword(int userId, string password);
+        public bool ChangePassword(int userId, string oldPassword, string newPassword);
     }
 
     public class AccountRepo : IAccountRepo
@@ -106,5 +109,22 @@ namespace AttendanceTrackingSystem.Repos
             db.SaveChanges();
         }
 
+        public bool ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            var user = db.users.FirstOrDefault(u => u.Id == userId && u.Password == oldPassword);
+            if (user != null)
+            {
+                user.Password = newPassword;
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckPassword(int userId, string password)
+        {
+            var user = db.users.FirstOrDefault(u => u.Id == userId && u.Password == password);
+            return user != null;
+        }
     }
 }

@@ -233,12 +233,32 @@ namespace AttendanceTrackingSystem.Controllers
             return RedirectToAction("Index", "Instructor", new { id = user.Id });
         }
 
-        private static void CommonPropertiesToBeChanged(User user, User target)
+        [HttpPost]
+        public IActionResult UpdatePasswordOnProfile(ResetPasswordOnProfileViewModel model)
         {
-            target.Fname = user.Fname;
-            target.Lname = user.Lname;
-            target.Email = user.Email;
-            target.Mobile = user.Mobile;
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = accountRepo.GetUserByEmail(userEmail);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var isOldPasswordCorrect = accountRepo.CheckPassword(user.Id, model.OldPassword);
+            if (!isOldPasswordCorrect)
+            {
+                ModelState.AddModelError(nameof(ResetPasswordOnProfileViewModel.OldPassword), "The old password is incorrect.");
+                return View(model);
+            }
+
+            accountRepo.ChangePassword(user.Email, model.NewPassword);
+            return RedirectToAction("Profile", "Account");
         }
+
     }
 }

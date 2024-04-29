@@ -36,8 +36,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input type="password" class="form-control" placeholder="Password" asp-for="Password">
+                    <button class="btn btn-primary" value="Reset Password">
+                        <a asp-action="ResetPassword" asp-controller="Account" asp-route-email="@Model.Email"></a>
+                    </button>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
