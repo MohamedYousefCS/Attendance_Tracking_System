@@ -155,15 +155,15 @@
                     }
                     else if (ViewBag.Controller == "StudentAffairs" && ViewBag.Action == "AllAttendance")
                     {
-                        <a asp-action="UpdateAttendance" asp-controller="StudentAffairs" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
-                        <button class="CalcDegree"><i class="fa-solid fa-eye text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button>
+@*                         <a asp-action="UpdateAttendance" asp-controller="StudentAffairs" asp-route-id="@GetId(item)"><i class="fa-solid fa-pen-to-square text-secondary"></i></a>
+ *@                        <button class="CalcDegree"><i class="fa-solid fa-eye text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></button>
                       
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Student Grade</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body bg-danger">
