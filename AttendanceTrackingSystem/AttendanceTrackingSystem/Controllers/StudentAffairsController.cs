@@ -153,12 +153,10 @@ namespace AttendanceTrackingSystem.Controllers
             return View(model);
         }
 
-        public IActionResult UpdateAttendance(int? id)
+        public IActionResult UpdateAttendance(int id)
         {
             ViewBag.WideView = "Wide";
-            if (id == null)
-                return BadRequest();
-            var model = attendance.GetAttendanceById(id.Value);
+            var model = attendance.GetAttendanceById(id);
             if (model == null)
                 return NotFound();
             return View(model);
