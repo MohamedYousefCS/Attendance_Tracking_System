@@ -2,26 +2,31 @@
 using AttendanceTrackingSystem.Repos;
 using AttendanceTrackingSystem.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace AttendanceTrackingSystem.Controllers
 {
     public class InsTrackController : Controller
     {
-        AdTrackRepo Adtrackrepo;
+        private readonly IUserRepo userRepo;
+        private readonly AdTrackRepo Adtrackrepo;
 
-        public InsTrackController(AdTrackRepo _adtrackrepo)
+        public InsTrackController(IUserRepo _userRepo, AdTrackRepo _adtrackrepo)
         {
+            userRepo = _userRepo;
             Adtrackrepo = _adtrackrepo;
         }
-        public IActionResult Display(int id=1)
+
+        public IActionResult Display()
         {
-            var model = Adtrackrepo.GetOneTrack(id);
+            int userId = userRepo.GetCurrentUserId(HttpContext.User);
+            var model = Adtrackrepo.GetOneTrack(userId);
             return View(model);
         }
 
         public IActionResult GetInstructorsForInsTrack(int id)
         {
-            if (id != null)
+            if (id != 0)
             {
                 var model = Adtrackrepo.GetInstructorsForTrack(id);
                 return View(model);

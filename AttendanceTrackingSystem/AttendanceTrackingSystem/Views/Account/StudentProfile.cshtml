@@ -3,72 +3,79 @@
 @{
     ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/MainLayout.cshtml";
-
-    // Add any necessary ViewBag data here
 }
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<form asp-action="UpdateStudentProfile" asp-route-id="@Model.Id" method="post">
-    @* <input type="number" class="form-control" placeholder="First Name" asp-for="Id" hidden> *@
-    <div id="focus"></div>
+
+<div class="container">
     <h1>User Profile</h1>
-    <div class="container">
+    <form asp-action="UpdateStudentProfile" asp-route-id="@Model.Id" method="post">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Fname"></label>
-                    <input type="text" class="form-control" placeholder="First Name" asp-for="Fname">
-                    <span asp-validation-for="Fname" class="text-danger"></span>
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="Fname" value="@Model.Fname">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Lname"></label>
-                    <input type="text" class="form-control" placeholder="Last Name" asp-for="Lname">
-                    <span asp-validation-for="Lname" class="text-danger"></span>
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="Lname" value="@Model.Lname">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input type="email" class="form-control" placeholder="Email" asp-for="Email" disabled>
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" value="@Model.Email" disabled>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input type="password" class="form-control" placeholder="Password" asp-for="Password">
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <label for="mobile">Mobile</label>
+                    <input type="text" class="form-control" id="mobile" name="Mobile" value="@Model.Mobile">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Mobile"></label>
-                    <input type="text" class="form-control" placeholder="Mobile" asp-for="Mobile">
-                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                    <label for="university">University</label>
+                    <input type="text" class="form-control" id="university" name="University" value="@Model.University">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="University"></label>
-                    <input type="text" class="form-control" placeholder="University" asp-for="University">
-                    <span asp-validation-for="University" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Faculty"></label>
-                    <input type="text" class="form-control" placeholder="Faculty" asp-for="Faculty">
-                    <span asp-validation-for="Faculty" class="text-danger"></span>
+                    <label for="faculty">Faculty</label>
+                    <input type="text" class="form-control" id="faculty" name="Faculty" value="@Model.Faculty">
                 </div>
             </div>
         </div>
-    </div>
 
-    <input type="submit" class="btn btn-primary" value="Update Profile">
-</form>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="form-group text-center">
+                    <input type="submit" class="btn btn-primary" value="Save Changes">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group text-center">
+                    <button class="btn btn-warning">
+                        <a class="text-white" asp-action="ResetPasswordEmail" asp-controller="Account">Reset Password</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Show the Reset Password modal when the button is clicked
+        $('#resetPasswordBtn').click(function () {
+            $('#resetPasswordModal').modal('show');
+        });
+    });
+</script>

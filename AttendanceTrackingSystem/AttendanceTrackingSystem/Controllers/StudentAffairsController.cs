@@ -12,46 +12,47 @@ namespace AttendanceTrackingSystem.Controllers
 {
     public class StudentAffairsController : Controller
     {
-         IStudentAffairsRepo StdAffairsRepo;
-        
-         IStudentRepo StudentRepo;
+        private readonly IUserRepo userRepo;
+        private readonly IStudentAffairsRepo stdAffairsRepo;
+        private readonly IStudentRepo studentRepo;
+        private readonly IEmployeeRepo empRepo;
+        private readonly IAttendance attendance;
+        private readonly ITIDBContext trackrepo = new ITIDBContext();
 
-        IEmployeeRepo EmpRepo;
-
-        IAttendance Attendance;
-
-
-        ITIDBContext trackrepo = new ITIDBContext();
-
-        public StudentAffairsController(IStudentAffairsRepo _repo, IStudentRepo _stuRepo, IEmployeeRepo empRepo,IAttendance attendance)
+        public StudentAffairsController(IUserRepo _userRepo, IStudentAffairsRepo _repo, IStudentRepo _stuRepo, IEmployeeRepo _empRepo,IAttendance _attendance)
         {
-            StdAffairsRepo = _repo;
-            StudentRepo = _stuRepo;
-            EmpRepo = empRepo;
-            Attendance = attendance;
+            userRepo = _userRepo;
+            stdAffairsRepo = _repo;
+            studentRepo = _stuRepo;
+            empRepo = _empRepo;
+            attendance = _attendance;
         }
+
         public IActionResult Index()
         {
-            int userId = int.Parse(User.FindFirstValue("UserId"));
-            Employee StuAff = StdAffairsRepo.GetStuAffById(userId);
+            int userId = userRepo.GetCurrentUserId(HttpContext.User);
+            Employee StuAff = stdAffairsRepo.GetStuAffById(userId);
             return View(StuAff);
         }
+
         public IActionResult AllStudents()
         {
-			var students = StudentRepo.GetAllStudents();
+			var students = studentRepo.GetAllStudents();
 			return View(students);
 		}
-        public IActionResult create()
+
+        public IActionResult Create()
         {
             ViewBag.tracks= trackrepo.tracks.ToList();
             return View();
         }
+
         [HttpPost]
-        public IActionResult create(Student student)
+        public IActionResult Create(Student student)
         {
             if (ModelState.IsValid)
             {
-                StudentRepo.AddStudent(student);
+                studentRepo.AddStudent(student);
                 return RedirectToAction("Index");
             }
             ViewBag.tracks = trackrepo.tracks.ToList();
@@ -62,23 +63,21 @@ namespace AttendanceTrackingSystem.Controllers
         {
             if(id==null)
                 return BadRequest();
-
-            var Cruntstudent = StudentRepo.GetStudentById(id.Value);
+            var Cruntstudent = studentRepo.GetStudentById(id.Value);
             if( Cruntstudent==null )
                 return NotFound();
             ViewBag.tracks = trackrepo.tracks.ToList();
-
             return View(Cruntstudent);
         }
+
         [HttpPost]
         public IActionResult Edit(int? id, Student student)
         {
             if (id == null)
                 return BadRequest();
-
             if (ModelState.IsValid)
             {
-                StudentRepo.UpdateStudent(student);
+                studentRepo.UpdateStudent(student);
                 return RedirectToAction("index");
             }
             ViewBag.tracks = trackrepo.tracks.ToList();
@@ -89,22 +88,20 @@ namespace AttendanceTrackingSystem.Controllers
         {
             if (id==null)
                 return BadRequest();
-            var student = StudentRepo.GetStudentById(id.Value);
-
+            var student = studentRepo.GetStudentById(id.Value);
             if (student == null)
-                return NotFound(); // Student not found
-                                   // Delete student and related records
+                return NotFound();
             try
             {
-                StudentRepo.DeleteStudent(id.Value);
+                studentRepo.DeleteStudent(id.Value);
                 return RedirectToAction("index");
             }
             catch (Exception ex)
             {
-                // Handle exception
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
+
         [HttpPost]
         public ActionResult UploadExcel(IFormFile file)
         {
@@ -114,14 +111,11 @@ namespace AttendanceTrackingSystem.Controllers
                 {
                     string fileName = Path.GetFileName(file.FileName);
                     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
-
                     using (FileStream stream = new FileStream(filePath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
-
-                    StudentRepo.ImportDataFromExcel(filePath);
-
+                    studentRepo.ImportDataFromExcel(filePath);
                     ViewBag.Message = "Bulk insert from Excel to database successful!";
                 }
                 else
@@ -133,31 +127,25 @@ namespace AttendanceTrackingSystem.Controllers
             {
                 ViewBag.Message = "Error: " + ex.Message;
             }
-
             return RedirectToAction("index");
         }
-
-        //mohamed
 
         [HttpGet("StudentAffairs/TakeAttendance")]
         public IActionResult TakeEmployeeAttendance()
         {
-            var model = EmpRepo.GetAllEmployees();
+            var model = empRepo.GetAllEmployees();
             var propertyNames = new List<string> { "Id","Fname", "Lname","Role" };
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "StudentAffairs";
             ViewBag.Action = "TakeAttendance";
-            ViewBag.Attendance = Attendance;
+            ViewBag.Attendance = attendance;
             return View(model);
         }
-        //////////////////////
-
-        //Get All attendance
 
         [HttpGet("StudentAffairs/AllAttendance")]
         public IActionResult AllAttendance()
         {
-            var model = Attendance.GetAllAttendance();
+            var model = attendance.GetAllAttendance();
             var propertyNames = new List<string> { "AttendanceID", "Fname", "Lname", "Date", "TimeIn", "TimeOut", "Status","Role" };
             ViewBag.PropertiesToShow = propertyNames;
             ViewBag.Controller = "StudentAffairs";
@@ -165,13 +153,12 @@ namespace AttendanceTrackingSystem.Controllers
             return View(model);
         }
 
-        //update status of attendance
         public IActionResult UpdateAttendance(int? id)
         {
             ViewBag.WideView = "Wide";
             if (id == null)
                 return BadRequest();
-            var model = Attendance.GetAttendanceById(id.Value);
+            var model = attendance.GetAttendanceById(id.Value);
             if (model == null)
                 return NotFound();
             return View(model);
@@ -184,18 +171,14 @@ namespace AttendanceTrackingSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                Attendance.Update(attend);
+                attendance.Update(attend);
                 return RedirectToAction("AllAttendance");
             }
             else
             {
                 return View("UpdateAttendance", attend);
-
             }
         }
-
-
-        /////////////////////////////////////
 
         public async Task<IActionResult> ViewAttendance(DateOnly date, Role? role = null)
         {
@@ -206,12 +189,12 @@ namespace AttendanceTrackingSystem.Controllers
             }
             if (role == null)
             {
-                attendance = await StdAffairsRepo.ViewAllAttendance(date);
+                attendance = await stdAffairsRepo.ViewAllAttendance(date);
                 ViewBag.Role = null;
             }
             else
             {
-                attendance = await StdAffairsRepo.ViewAttendance(role.Value, date);
+                attendance = await stdAffairsRepo.ViewAttendance(role.Value, date);
                 ViewBag.Role = (int)role.Value;
             }
             ViewBag.Date = date;
@@ -220,26 +203,16 @@ namespace AttendanceTrackingSystem.Controllers
         
         public async Task<IActionResult> AutomateAbsentRecords()
         {
-
-            var model = Attendance.GetAllAbsent();
-
-            Attendance.AutomateAttendance(model);
-            
-
+            var model = attendance.GetAllAbsent();
+            attendance.AutomateAttendance(model);
             return RedirectToAction("AllAttendance");
         }
 
         public async Task<IActionResult> CaclcDegree(int id)
         {
-            var degree = StudentRepo.GetStudetnDegree(id);
-
+            var degree = studentRepo.GetStudetnDegree(id);
             return Json(new { degree}); ;
-
         }
-
-
-
-
     }
 
 }

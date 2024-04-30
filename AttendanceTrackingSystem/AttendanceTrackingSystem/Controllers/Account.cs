@@ -232,13 +232,5 @@ namespace AttendanceTrackingSystem.Controllers
             accountRepo.UpdateUser(user);
             return RedirectToAction("Index", "Instructor", new { id = user.Id });
         }
-
-        private static void CommonPropertiesToBeChanged(User user, User target)
-        {
-            target.Fname = user.Fname;
-            target.Lname = user.Lname;
-            target.Email = user.Email;
-            target.Mobile = user.Mobile;
-        }
     }
 }

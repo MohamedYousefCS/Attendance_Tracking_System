@@ -8,7 +8,7 @@ namespace AttendanceTrackingSystem.Repos
 {
     public interface IUserRepo
     {
-        public int GetUserId(ClaimsPrincipal user);
+        public int GetCurrentUserId(ClaimsPrincipal user);
     }
     public class UserRepo : IUserRepo
     {
@@ -19,11 +19,18 @@ namespace AttendanceTrackingSystem.Repos
             db = _db;
         }
 
-        public int GetUserId(ClaimsPrincipal user)
+        public int GetCurrentUserId(ClaimsPrincipal user)
         {
-            var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-           
-            return Convert.ToInt32(userIdClaim.Value);
+            var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == "UserId" && int.TryParse(c.Value, out _));
+
+            if (userIdClaim != null)
+            {
+                return int.Parse(userIdClaim.Value);
+            }
+            else
+            {
+                return 0; // Return 0 or any other default value if user ID is not found
+            }
         }
     }
 }

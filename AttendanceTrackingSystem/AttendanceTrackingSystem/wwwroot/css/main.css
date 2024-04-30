@@ -376,10 +376,16 @@ ul {
 /*==============================
 	Main
 ==============================*/
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
 .main {
     position: relative;
-    margin-top: 107px;
-    padding: 0 0 60px;
+    padding: 0 0 20px;
+    flex: 1;
 }
 
 /*==============================
@@ -390,12 +396,6 @@ ul {
     padding-top: 30px;
     position: relative;
     overflow: hidden;
-}
-
-.fixed-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
 }
 
 

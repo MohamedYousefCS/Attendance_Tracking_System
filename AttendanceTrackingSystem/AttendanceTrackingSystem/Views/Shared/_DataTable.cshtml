@@ -119,7 +119,7 @@
                         <div class="row">
                             
                             @{
-                                var studentId = GetId(item); // Rename 'id' to 'studentId'
+                                var studentId = GetId(item);
                                  Attendance existingAttendance = Attendance.GetByIdAndDate(Int32.Parse(GetId(item)), DateOnly.FromDateTime(DateTime.Today));
                                 bool Timeout=false;
 
@@ -256,8 +256,8 @@
                         console.log(btnConfirm);
                         console.log("Attendance confirmed");
                     } else {
-                        btnConfirm.prop('disabled', false); // Ensure the Confirm button is enabled
-                        btnLeave.prop('disabled', true); // Ensure the Leave button is disabled
+                        btnConfirm.prop('disabled', false);
+                        btnLeave.prop('disabled', true);
                         console.log("No records to update");
                     }
                 })

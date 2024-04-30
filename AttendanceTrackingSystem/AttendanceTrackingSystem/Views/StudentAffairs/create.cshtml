@@ -11,7 +11,7 @@
 
 <link rel="stylesheet" href="/css/StudentForm.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<form asp-action="create">
+<form asp-action="Create">
     <div id="focus"></div>
     <h1>Add Student</h1>
     <div style="display: flex;">
@@ -130,7 +130,7 @@
         const FORM = $(".form");
         const TYPES = ["input[type=text]", "input[type=email]", "input[type=date]", "input[type=number]", "input[type=submit]"];
         const FOCUS = $(".focus");
-
+        // document.querySelector("#loadExcel").addEventListener("click", e => e.preventDefault());
         function position(e) {
             var props = {
                 top: e.offset().top,
