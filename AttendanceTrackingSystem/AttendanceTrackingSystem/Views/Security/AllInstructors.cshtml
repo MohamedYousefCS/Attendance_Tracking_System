@@ -5,7 +5,20 @@
     var currentDateAndTime = DateTime.Now.ToString("yyyy-MM-dd");
 
 }
+
+
+@section Styles {
+    <style>
+        #mainContainer {
+            margin-top: 110px;
+        }
+
+    </style>
 <link href="~/css/attendance.css" rel="stylesheet" />
+
+}
+
+<div id="mainContainer">
 
 <h2 class="head">Add Instructors Attendance</h2>
 <div class="date-section">
@@ -22,4 +35,4 @@
             };
     await Html.RenderPartialAsync("~/Views/Shared/_DataTable.cshtml", Model, ViewData);
 }
-
+</div>
