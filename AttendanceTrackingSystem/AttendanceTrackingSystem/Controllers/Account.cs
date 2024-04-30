@@ -19,7 +19,7 @@ namespace AttendanceTrackingSystem.Controllers
         {
             accountRepo = _accountRepo;
         }
-
+         
         public IActionResult Login()
         {
             return View();
@@ -57,7 +57,7 @@ namespace AttendanceTrackingSystem.Controllers
             switch (user.Role)
             {
                 case "Student":
-                    return RedirectToAction("Index", "Student", new { id = user.Id });
+                    return RedirectToAction("Index", "Student");
                 case "Instructor":
                     return RedirectToAction("Index", "Instructor", new { id = user.Id });
                 case "Employee":

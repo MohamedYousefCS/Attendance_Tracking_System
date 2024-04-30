@@ -71,7 +71,7 @@ namespace AttendanceTrackingSystem.Controllers
             return RedirectToAction("permission", permissions);
         }
 
-        public IActionResult createPermission()
+        public IActionResult CreatePermission()
         {
             int userId = userRepo.GetCurrentUserId(HttpContext.User);
             ViewBag.student= stuRepo.GetStudentById(userId);
@@ -79,7 +79,7 @@ namespace AttendanceTrackingSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult createPermission(PermissionRequest PR)
+        public IActionResult CreatePermission(PermissionRequest PR)
         {
             if (ModelState.IsValid)
             {

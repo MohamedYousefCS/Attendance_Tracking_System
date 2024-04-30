@@ -29,7 +29,7 @@ namespace AttendanceTrackingSystem.Repos
             }
             else
             {
-                return 0; // Return 0 or any other default value if user ID is not found
+                return 0;
             }
         }
     }
