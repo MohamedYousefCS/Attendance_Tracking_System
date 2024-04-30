@@ -1,13 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.WideView = "Wide";
 }
 
 @section Styles{
     <link rel="shortcut icon" href="/imgs/itilogo.png" type="image/x-icon">
+    <style>
+        #mainContainer {
+            background-color: #fcfcfc;
+            margin-top: 70px;
+            min-height: 90vh;
+        }
+    </style>
 }
 
-<div style="background-color: #fcfcfc;" class="container-fluid d-flex flex-column min-vh-100" id="mainContainer">
+<div class="container-fluid d-flex flex-column" id="mainContainer">
         <!-- Left Sidebar Start -->
         <div class="row flex-grow-1 mt-3 mb-3 justify-content-evenly">
             <div style="background-color: darkred;" class="col-2 rounded-4 d-flex flex-column" id="leftSidebar">

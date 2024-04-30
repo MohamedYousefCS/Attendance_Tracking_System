@@ -8,16 +8,17 @@ namespace AttendanceTrackingSystem.Controllers
 {
     public class AdminController : Controller
     {
-        public IAdmin adminRepo;
+        private readonly IUserRepo userRepo;
+        private readonly IAdmin adminRepo;
 
-        public AdminController(IAdmin adminRepo)
+        public AdminController(IUserRepo _userRepo, IAdmin _adminRepo)
         {
-            this.adminRepo = adminRepo;
+            userRepo = _userRepo;
+            adminRepo = _adminRepo;
         }
         public IActionResult Index()
         {
-            ViewBag.WideView = "Wide";
-            int userId = int.Parse(User.FindFirstValue("UserId"));
+            int userId = userRepo.GetCurrentUserId(HttpContext.User);
             User admin=adminRepo.GetAdminByID(userId);
             return View(admin);
         }

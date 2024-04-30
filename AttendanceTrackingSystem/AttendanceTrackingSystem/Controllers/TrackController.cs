@@ -13,17 +13,16 @@ namespace AttendanceTrackingSystem.Controllers
         {
             Adtrackrepo= _adtrackrepo;
         }
+
         public IActionResult Display()
         {
-            ViewBag.WideView = "Wide";
             var model = Adtrackrepo.GetTracks();
             return View(model);
         }
 
         public IActionResult GetInstructorsForTrack(int id)
         {
-            ViewBag.WideView = "Wide";
-            if (id != null)
+            if (id != 0)
             {
                 var model = Adtrackrepo.GetInstructorsForTrack(id);
                 return View(model);
@@ -33,40 +32,39 @@ namespace AttendanceTrackingSystem.Controllers
 
         public IActionResult showstudentinTrack(int id)
         {
-            ViewBag.WideView = "Wide";
             var track = Adtrackrepo.showstudentinTrack(id);
-
             if (track == null)
             {
                 return NotFound(); 
             }
-
             return View(track.Students.ToList());
         }
+
         public IActionResult Create()
         {
-			ViewBag.WideView = "Wide";
 			var program=Adtrackrepo.GetProgramList();
             var ins = Adtrackrepo.GetInstructorList();
             ViewBag.programs= new MultiSelectList(program, "Id", "ProgramName");
             ViewBag.ins=new MultiSelectList(ins,"Id" ,"Fname");
             return View(new Track());
         }
+
         [HttpPost]
         public IActionResult Create(Track track) {
             Adtrackrepo.Add(track);
             return RedirectToAction("Display");
         }
+
         public IActionResult Edit(int id)
         {
-			ViewBag.WideView = "Wide";
 			var model = Adtrackrepo.GetTrackById(id);
-             var program=Adtrackrepo.GetProgramList();
+            var program=Adtrackrepo.GetProgramList();
             var ins = Adtrackrepo.GetInstructorList();
             ViewBag.programs= new MultiSelectList(program, "Id", "ProgramName");
             ViewBag.ins=new MultiSelectList(ins,"Id" ,"Fname");
             return View(model);
         }
+
         [HttpPost]
         public IActionResult Edit(Track track, int id, int supervisorId)
         {
@@ -93,22 +91,12 @@ namespace AttendanceTrackingSystem.Controllers
         public IActionResult Delete(int? id)
         {
             Track track = Adtrackrepo.showstudentinTrack(id.Value);
-           
-                if (track.Students.Count != 0)
-                {
-
-                    TempData["AlertMessage"] = "Cannot delete track";
-                }
-            
+            if (track.Students.Count != 0)
+                TempData["AlertMessage"] = "Cannot delete track";
             else
-            {
                 Adtrackrepo.Delete(track);
-            }
 
             return RedirectToAction("Display");
         }
-
-
-
     }
 }

@@ -232,33 +232,5 @@ namespace AttendanceTrackingSystem.Controllers
             accountRepo.UpdateUser(user);
             return RedirectToAction("Index", "Instructor", new { id = user.Id });
         }
-
-        [HttpPost]
-        public IActionResult UpdatePasswordOnProfile(ResetPasswordOnProfileViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var userEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = accountRepo.GetUserByEmail(userEmail);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var isOldPasswordCorrect = accountRepo.CheckPassword(user.Id, model.OldPassword);
-            if (!isOldPasswordCorrect)
-            {
-                ModelState.AddModelError(nameof(ResetPasswordOnProfileViewModel.OldPassword), "The old password is incorrect.");
-                return View(model);
-            }
-
-            accountRepo.ChangePassword(user.Email, model.NewPassword);
-            return RedirectToAction("Profile", "Account");
-        }
-
     }
 }

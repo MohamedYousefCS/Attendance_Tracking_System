@@ -13,41 +13,34 @@ namespace AttendanceTrackingSystem.Repos
         {
             db = _db;
         }
+
         public List<program>   GetProgramList()
         {
             return db.programs.ToList();
         }
 
-        //mohamed
         public List<Track>GetAllTracks()
         {
-
             return db.tracks.ToList();
         }
 
-
         public List<Student> GetStudentsByTrackId(int trackId)
         {
-
             var students = db.students.Include(a => a.Track).Where(s => s.trackId == trackId).ToList();
             return students;
         }
 
-        ///////////////
         public List<Instructor> GetInstructorsForTrack(int trackId)
         {
-           
-             var track=db.tracks.FirstOrDefault(a=>a.TrackId==trackId);
+            var track=db.tracks.FirstOrDefault(a=>a.TrackId==trackId);
             var ins=track.Instructors.ToList();
             return ins;
         }
-
       
         public List<User> GetInstructorList()
         {
             return db.users.Where(p=>p.Role==Role.Instructor).ToList();
-        }
-       
+        }       
       
         public List<Track> GetTracks()
         {
@@ -62,19 +55,15 @@ namespace AttendanceTrackingSystem.Repos
         }
         public Track showstudentinTrack(int trackId)
         {
-            return db.tracks
-                     .Include(t => t.Students)
-                    
-                     .FirstOrDefault(t => t.TrackId == trackId);
-        
+            return db.tracks.Include(t => t.Students).FirstOrDefault(t => t.TrackId == trackId);
         }
        
         public void Add(Track track)
         {
             db.tracks.Add(track);
             db.SaveChanges();
-
         }
+
         public void update(Track track)
         {
             var model = db.tracks.FirstOrDefault(a => a.TrackId == track.TrackId);
@@ -85,32 +74,28 @@ namespace AttendanceTrackingSystem.Repos
             model.supervisorId=track.supervisorId;
             db.SaveChanges();
         }
+
         public void Delete(Track track)
         {
-                    db.tracks.Remove(track);
-                    db.SaveChanges(); 
+            db.tracks.Remove(track);
+            db.SaveChanges(); 
         }
+
         public Instructor GetInstructorById(int id)
         {
             return db.instructors.FirstOrDefault(a=>a.Id == id);
         }
+
         public void UpdateInstructor(Instructor instructor)
         {
             db.instructors.Update(instructor);
             db.SaveChanges();
         }
+
         public Instructor GetSupervisorByTrackId(int trackId)
         {
-            var track = db.tracks
-                .Where(t => t.TrackId == trackId)
-                .FirstOrDefault();
-
+            var track = db.tracks.Where(t => t.TrackId == trackId).FirstOrDefault();
             return track?.Instructor;
         }
-
-
-
-
-
     }
 }

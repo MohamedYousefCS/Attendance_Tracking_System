@@ -50,27 +50,26 @@
     <button id="submit" type="submit" class="btn btn-lg btn-primary float-end">Submit</button>
 </form>
 
-@section Scripts{
+@section InstructorScripts{
+    <script>
+        $(document).ready(
+            function () {
+                $('#submit').on('click', function () {
+                    var startPeriod = $('#StartPeriod').val();
+                    let endPeriod = $('#EndPeriod').val();
+                    let day = $('#Day').val();
+                    // create ajax call for createSchedule
+                    console.log(day);
+                    $.ajax({
+                        url: '/Instructor/AddSchedule',
+                        type: 'POST',
+                        data: { StartPeriod: startPeriod, EndPeriod: endPeriod, Day: day, },
+                        success: function (response) {
+                            alert("Added successfully");
+                        }
 
-<script>
-    $(document).ready(
-        function () {
-            $('#submit').on('click', function () {
-                var startPeriod = $('#StartPeriod').val();
-                let endPeriod = $('#EndPeriod').val();
-                let day = $('#Day').val();
-                // create ajax call for createSchedule
-                console.log(day);
-                $.ajax({
-                    url: '/Instructor/AddSchedule',
-                    type: 'POST',
-                    data: { StartPeriod: startPeriod, EndPeriod: endPeriod, Day: day, },
-                    success: function (response) {
-                        alert("Added successfully");
-                    }
-
+                    });
                 });
             });
-        });
-</script>
+    </script>
 }

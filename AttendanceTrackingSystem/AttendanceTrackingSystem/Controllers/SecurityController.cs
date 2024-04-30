@@ -9,33 +9,33 @@ namespace AttendanceTrackingSystem.Controllers
 {
     public class SecurityController : Controller
     {
-        IStudentRepo stuRepo;
-        IAttendance Attendance;
-        AdTrackRepo trackrepo;
-        IInstructorRepo instructorRepo;
-        IEmployeeRepo emplyeeRepo;
+        private readonly IUserRepo userRepo;
+        private readonly IStudentRepo stuRepo;
+        private readonly IAttendance Attendance;
+        private readonly AdTrackRepo trackrepo;
+        private readonly IInstructorRepo instructorRepo;
+        private readonly IEmployeeRepo emplyeeRepo;
 
-
-        public SecurityController(IStudentRepo stuRepo, IAttendance attendance, AdTrackRepo trackrepo, IInstructorRepo instructorRepo, IEmployeeRepo emplyeeRepo)
+        public SecurityController(IUserRepo _userRepo, IStudentRepo _stuRepo, IAttendance _attendance, AdTrackRepo _trackrepo, IInstructorRepo _instructorRepo, IEmployeeRepo _emplyeeRepo)
         {
-            this.stuRepo = stuRepo;
-            Attendance = attendance;
-            this.trackrepo = trackrepo;
-            this.instructorRepo = instructorRepo;
-            this.emplyeeRepo = emplyeeRepo;
+            userRepo = _userRepo;
+            stuRepo = _stuRepo;
+            Attendance = _attendance;
+            trackrepo = _trackrepo;
+            instructorRepo = _instructorRepo;
+            emplyeeRepo = _emplyeeRepo;
         }
+
         public IActionResult Index()
         {
-            int userId = int.Parse(User.FindFirstValue("UserId"));
+            int userId = userRepo.GetCurrentUserId(HttpContext.User);
             var model = emplyeeRepo.GetById(userId);
             return View(model);
         }
 
         [HttpGet("Security/Tracks")]
-
         public ActionResult GetAllTracks()
         {
-
             var tracks = trackrepo.GetAllTracks();
             return View(tracks);
         }
@@ -68,22 +68,16 @@ namespace AttendanceTrackingSystem.Controllers
         public IActionResult CheckStudentAttendace(int Id)
         {
             DateOnly todayDate = DateOnly.FromDateTime(DateTime.Today);
-
-            // Check if the record already exists for the given userId and date
             Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
-
             int isAdded;
             if (existingAttendance == null)
             {
-                isAdded = 1; // Indicate that the record was not added
+                isAdded = 1;
                 return Json(new { isAdded = isAdded });
             }
-
             if (existingAttendance.TimeIn != null && existingAttendance.TimeOut == null)
             {
-                Console.WriteLine(existingAttendance);
-                // If the record already exists, return an error or handle as needed
-                isAdded = 0; // Indicate that the record was not added
+                isAdded = 0;
                 return Json(new { isAdded = isAdded });
             }
             if(existingAttendance.TimeOut == null)
@@ -92,27 +86,20 @@ namespace AttendanceTrackingSystem.Controllers
                 return Json(new { isAdded = isAdded });
             }
             else { 
-            isAdded = 2;
-            return Json(new { isAdded = isAdded });
+                isAdded = 2;
+                return Json(new { isAdded = isAdded });
             }
         }
 
 
         public IActionResult ConfirmStudentAttendace(int Id)
         {
-            // Get today's date
             DateOnly todayDate = DateOnly.FromDateTime(DateTime.Today);
-
-            // Check if the record already exists for the given userId and date
             Attendance existingAttendance = Attendance.GetByIdAndDate(Id, todayDate);
-
             bool isAdded;
-
             if (existingAttendance != null)
             {
-                Console.WriteLine(existingAttendance);
-                // If the record already exists, return an error or handle as needed
-                isAdded = true; // Indicate that the record was not added
+                isAdded = true;
                 return Json(new { isAdded = isAdded });
             }
 
@@ -122,13 +109,9 @@ namespace AttendanceTrackingSystem.Controllers
             string studentTime = studentDate.ToString("HH:mm:ss");
             string correctTime = String.Format("09:00:00");
             Attendance studentAttendance = new Attendance() { Date = DateOnly.Parse(dateOnly.ToString("yyyy-MM-dd")), TimeIn = TimeOnly.Parse(studentTime), userId = Id };
-
-
             TimeSpan studentTimeSpan = TimeSpan.Parse(studentTime);
             TimeSpan correctTimeSpan = TimeSpan.Parse(correctTime);
-
             int comparison = TimeSpan.Compare(studentTimeSpan, correctTimeSpan);
-
             if (comparison <= 0)
             {
                 studentAttendance.Status = Status.Present;
@@ -137,14 +120,10 @@ namespace AttendanceTrackingSystem.Controllers
             {
                 studentAttendance.Status = Status.Late;
             }
-            
             Attendance.ConfirmStudentAttendance(studentAttendance);
-
-             isAdded = true;
+            isAdded = true;
             return Json(new { isAdded = isAdded });
         }
-
-
 
         public IActionResult ConfirmStudentCheckout( int Id)
         {
@@ -154,7 +133,5 @@ namespace AttendanceTrackingSystem.Controllers
             return Json(new { isAdded});
 
         }
-
-
     }
-    }
+}

@@ -49,52 +49,23 @@
             </div>
         </div>
 
-        <!-- Save Changes button -->
         <div class="row mt-4">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group text-center">
                     <input type="submit" class="btn btn-primary" value="Save Changes">
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group text-center">
+                    <button class="btn btn-warning">
+                        <a class="text-white" asp-action="ResetPasswordEmail" asp-controller="Account">Reset Password</a>
+                    </button>
+                </div>
+            </div>
         </div>
-        <!-- End of Save Changes button -->
     </form>
 </div>
 
-<!-- Reset Password Modal -->
-<div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="UpdatePasswordOnProfile" asp-controller="Account">
-                    <div class="form-group">
-                        <label for="oldPassword">Old Password</label>
-                        <input type="password" class="form-control" id="oldPassword" name="OldPassword" placeholder="Old Password" required>
-                        <span asp-validation-for="OldPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="newPassword">New Password</label>
-                        <input type="password" class="form-control" id="newPassword" name="NewPassword" placeholder="New Password" required>
-                        <span asp-validation-for="NewPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm New Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" placeholder="Confirm New Password" required>
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Reset Password</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End of Reset Password Modal -->
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

@@ -19,9 +19,8 @@ namespace AttendanceTrackingSystem.Repos
         public void AssignInstructorToTrack(int trackId, int instructorId);
         public User  GetInstructorByID(int id);
         public void AddSchedule(Schedule schedule);
-
+        public Track GetTrackForInstructor(int instructorId);
         public List<Instructor> GetAllInstructor();
-
     }
     public class InstructorRepo : IInstructorRepo
     {
@@ -31,12 +30,26 @@ namespace AttendanceTrackingSystem.Repos
         {
             db = _db;
         }
+
         public List<Instructor> GetInstructorsForTrack(int trackId)
         {
             var track = db.tracks.FirstOrDefault(a => a.TrackId == trackId);
             var ins = track.Instructors.ToList();
             return ins;
         }
+
+        public Track GetTrackForInstructor(int instructorId)
+        {
+            Instructor instructor = db.instructors.Include(i => i.Track).FirstOrDefault(i => i.Id == instructorId);
+
+            if (instructor != null)
+            {
+                Track track = instructor.Track;
+                return track;
+            }
+            return null;
+        }
+
 
         public List<User> GetInstructorList()
         {
