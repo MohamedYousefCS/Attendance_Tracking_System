@@ -20,6 +20,5 @@ namespace AttendanceTrackingSystem.ViewModels
         public string Name { get; set; }
 
         public string ErrorMessage { get; set; }
-
     }
 }

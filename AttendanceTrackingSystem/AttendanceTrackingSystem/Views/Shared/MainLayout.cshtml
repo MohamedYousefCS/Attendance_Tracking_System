@@ -6,6 +6,7 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
     <script src="https://kit.fontawesome.com/d3bc0f0f7a.js" crossorigin="anonymous"></script>
@@ -214,17 +215,6 @@
         $(document).ready(function () {
             $("#dataTable").DataTable();
         });
-        $(window).on('load', function () {
-            const wrapperHeight = $('.wrapper').outerHeight();
-            const viewportHeight = $(window).height();
-            const main = $('.main');
-            console.log(wrapperHeight);
-            console.log(viewportHeight);
-
-            if (wrapperHeight <= viewportHeight) {
-                main.addClass('full-height');
-            }
-        });
     </script>
     @if (!User.Identity.IsAuthenticated)
     {
@@ -247,7 +237,6 @@
             $('#loginLinkSmallScreens').hide();
         </script>
     }
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
