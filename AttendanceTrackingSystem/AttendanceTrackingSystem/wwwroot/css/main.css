@@ -19,10 +19,10 @@ html {
     --transition-time: 0.4s;
 }
 
-html,
+/*html,
 body {
     height: 500%;
-}
+}*/
 
 body {
     font-family: "Open Sans", sans-serif;
@@ -30,7 +30,12 @@ body {
     background-color: var(--body-color);
     -webkit-font-smoothing: antialiased;
 }
-
+.container form {
+    margin: 55px 0px !important;
+}
+.container .Profile {
+    margin-top: 130px;
+}
 button {
     padding: 0;
     border: none;
@@ -96,6 +101,13 @@ ul {
     .container-xl,
     .container-xxl {
         max-width: 1224px;
+    }
+}
+
+@media (max-width: 687px) {
+
+    .header-image {
+        display: none;
     }
 }
 /*==============================
