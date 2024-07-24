@@ -13,6 +13,32 @@ This web application is developed using the following technologies:
 - **HTML, JavaScript, jQuery:** Used for frontend development.
 - **Bootstrap:** Provides responsive design components for the user interface.
 
+  ## You can use the site via the link :
+  ### attendancesystem.runasp.net
+
+
+  # Student
+  - username: ahmedAli@gmail.com
+  - password: password123
+
+   # security
+  - username: youssef.ahmed@gmail.com
+  - password: password123
+ 
+  # Instructor
+  - username: nadia.ali@gmail.com
+  - password: password123
+
+  # Student Affairs
+  - username: laila.ali31@gmail.com
+  - password: password123
+    
+   # admin
+  - username: admin@admin.com
+  - password: password123
+
+
+
 ## Main Features
 
 ### 1. User Registration
